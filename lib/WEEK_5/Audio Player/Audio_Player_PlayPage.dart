@@ -7,12 +7,15 @@ import 'package:rxdart/rxdart.dart';
 import 'Audio_Player List Page .dart';
 
 class AudioPage extends StatefulWidget {
-  final allSongs;
+  List allSongs;
   final currentIndex;
   bool isplaying;
 
   AudioPage(
-      {Key? key, this.allSongs, this.currentIndex, required this.isplaying})
+      {Key? key,
+      required this.allSongs,
+      this.currentIndex,
+      required this.isplaying})
       : super(key: key);
 
   @override
@@ -22,10 +25,9 @@ class AudioPage extends StatefulWidget {
 class _AudioPageState extends State<AudioPage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
-  String sName = "";
+
   String currentSongTitle = '';
 
-  // int currentindex = 0;
   var mIndex;
 
   @override
@@ -42,9 +44,6 @@ class _AudioPageState extends State<AudioPage> {
         initialIndex: mIndex);
     _audioPlayer.play();
   }
-
-
-
 
   AudioSource createplaylist(List<SongModel> mySong) {
     List<AudioSource> sources = [];
@@ -112,19 +111,8 @@ class _AudioPageState extends State<AudioPage> {
                               context,
                             );
                           },
-                          //hides the player view
                           child: Container(
                             padding: const EdgeInsets.all(10.0),
-                            // decoration: const BoxDecoration(
-                            //   gradient: LinearGradient(
-                            //     begin: Alignment.topRight,
-                            //     end: Alignment.bottomLeft,
-                            //     colors: [
-                            //       Colors.black54,
-                            //       Color.fromRGBO(0, 41, 102, 1)
-                            //     ],
-                            //   ),
-                            // ),
                             child: const Icon(
                               Icons.arrow_back_ios_new,
                               color: Colors.white70,
@@ -238,6 +226,9 @@ class _AudioPageState extends State<AudioPage> {
                         Flexible(
                             child: InkWell(
                           onTap: () {
+                            mIndex--;
+
+                            currentSongTitle = widget.allSongs[mIndex].title;
                             if (_audioPlayer.hasPrevious) {
                               _audioPlayer.seekToPrevious();
                             }
@@ -252,8 +243,8 @@ class _AudioPageState extends State<AudioPage> {
                         )),
                         Flexible(
                             child: InkWell(
-                          onTap: () async {
-                            await _audioPlayer.seek(Duration(
+                          onTap: () {
+                             _audioPlayer.seek(Duration(
                                 seconds: _audioPlayer.position.inSeconds - 10));
                           },
                           child: Container(
@@ -302,8 +293,8 @@ class _AudioPageState extends State<AudioPage> {
                         ),
                         Flexible(
                             child: InkWell(
-                          onTap: () async {
-                            await _audioPlayer.seek(Duration(
+                          onTap: ()  {
+                             _audioPlayer.seek(Duration(
                                 seconds: _audioPlayer.position.inSeconds + 10));
                           },
                           child: Container(
@@ -317,6 +308,8 @@ class _AudioPageState extends State<AudioPage> {
                         Flexible(
                           child: InkWell(
                             onTap: () {
+                              mIndex++;
+                              currentSongTitle = widget.allSongs[mIndex].title;
                               if (_audioPlayer.hasNext) {
                                 _audioPlayer.seekToNext();
                               }

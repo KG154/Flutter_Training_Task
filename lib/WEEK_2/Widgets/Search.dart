@@ -149,6 +149,7 @@ class _Search1State extends State<Search1> {
         // ],
         title: search
             ? Container(
+                width: double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   // color: Colors.blue.shade200,
@@ -173,9 +174,10 @@ class _Search1State extends State<Search1> {
                     // enabledBorder: InputBorder.none,
                     // errorBorder: InputBorder.none,
                     // disabledBorder: InputBorder.none,
+
                     hintText: 'Search...',
                     hintStyle: TextStyle(color: Colors.white),
-                    // contentPadding: EdgeInsets.all(8),
+                    contentPadding: EdgeInsets.all(8),
                     suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
@@ -188,20 +190,23 @@ class _Search1State extends State<Search1> {
                   ),
                 ),
               )
-            : Text('Search'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              setState(() {
-                search = true;
-              });
-            },
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-          ),
-        ],
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Search'),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        search = true;
+                      });
+                    },
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
       ),
       body: _textEditingController.text.isNotEmpty && foodListSearch.isEmpty
           ? Container(

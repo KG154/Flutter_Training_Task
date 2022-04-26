@@ -23,6 +23,19 @@ class _Gridview1State extends State<Gridview1> {
     'Images/Elephant.jpg',
   ];
 
+  List tex = [
+    "img 1",
+    "img 2",
+    "img 3",
+    "img 4",
+    "img 5",
+    "img 6",
+    "img 7",
+    "img 8",
+    "img 9",
+    "img 10",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,10 +107,10 @@ class _Gridview1State extends State<Gridview1> {
                           imag[index],
                           fit: BoxFit.cover,
                         ),
-                        footer: GridTileBar(
-                          title: Text('Wallpaper'),
-                          backgroundColor: Colors.black87,
-                        ),
+                        // footer: GridTileBar(
+                        //   title: Text(tex[index]),
+                        //   backgroundColor: Colors.black87,
+                        // ),
                       );
                     }),
               ),

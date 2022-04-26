@@ -34,33 +34,33 @@ class _slidersState extends State<sliders> {
           padding: const EdgeInsets.only(top: 170, left: 20, right: 20),
           child: Column(
             children: [
-              FlutterSlider(
-                values: [0],
-                max: 100,
-                min: 0,
-                jump: true,
-                handler: FlutterSliderHandler(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("Images/im2.jpg"), fit: BoxFit.cover),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
+              // FlutterSlider(
+              //   values: [0],
+              //   max: 100,
+              //   min: 0,
+              //   jump: true,
+              //   handler: FlutterSliderHandler(
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //           image: AssetImage("Images/im2.jpg"), fit: BoxFit.cover),
+              //       shape: BoxShape.circle,
+              //     ),
+              //   ),
+              // ),
               SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   activeTrackColor: Colors.red[700],
                   inactiveTrackColor: Colors.red[100],
-                  trackShape: RoundedRectSliderTrackShape(),
-                  trackHeight: 3.0,
+                  // trackShape: RoundedRectSliderTrackShape(),
+                  trackHeight: 5.0,
                   thumbColor: Colors.redAccent,
-                  overlayColor: Colors.red.withAlpha(32),
-                  overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
-                  tickMarkShape: RoundSliderTickMarkShape(),
-                  activeTickMarkColor: Colors.red[700],
-                  inactiveTickMarkColor: Colors.red[100],
-                  valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                  valueIndicatorColor: Colors.redAccent,
+                  // overlayColor: Colors.red.withAlpha(32),
+                  // overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
+                  // tickMarkShape: RoundSliderTickMarkShape(),
+                  // activeTickMarkColor: Colors.red[700],
+                  // inactiveTickMarkColor: Colors.red[100],
+                  // valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                  // valueIndicatorColor: Colors.redAccent,
                   valueIndicatorTextStyle: TextStyle(
                     color: Colors.white,
                   ),

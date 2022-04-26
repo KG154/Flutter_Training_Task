@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Six extends StatefulWidget {
   const Six({Key? key}) : super(key: key);
@@ -15,6 +16,16 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
     print("initState");
+
+    // Fluttertoast.showToast(
+    //     msg: "initState",
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.CENTER,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.red,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0
+    // );
     super.initState();
   }
 
@@ -22,6 +33,15 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance!.removeObserver(this);
     print("Dispose");
+    // Fluttertoast.showToast(
+    //     msg: "Dispose",
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.CENTER,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.red,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0
+    // );
     super.dispose();
   }
 
@@ -74,14 +94,28 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
     );
   }
 
+
+
+
+  // showInSnackBar(String value) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       duration: const Duration(milliseconds: 200),
+  //       backgroundColor: Colors.black54,
+  //       behavior: SnackBarBehavior.fixed,
+  //       content: Text(value),
+  //     ),
+  //   );
+  // }
   showInSnackBar(String value) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(milliseconds: 200),
-        backgroundColor: Colors.black54,
-        behavior: SnackBarBehavior.fixed,
-        content: Text(value),
-      ),
+    Fluttertoast.showToast(
+        msg: value,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
     );
   }
 }

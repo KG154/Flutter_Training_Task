@@ -119,6 +119,8 @@ class _Map_integrationState extends State<Map_integration> {
                           margin: EdgeInsets.only(left: 10, right: 10, top: 3),
                           width: MediaQuery.of(context).size.width - 15,
                           child: TextField(
+                            readOnly: true,
+                            // enableInteractiveSelection: true,
                             onTap: () async {
                               prefix.Prediction? p =
                                   await PlacesAutocomplete.show(
@@ -158,6 +160,8 @@ class _Map_integrationState extends State<Map_integration> {
                           margin: EdgeInsets.all(10),
                           width: MediaQuery.of(context).size.width - 15,
                           child: TextField(
+                            readOnly: true,
+                            // enableInteractiveSelection: true,
                             onTap: () async {
                               prefix.Prediction? p =
                                   await PlacesAutocomplete.show(
@@ -216,7 +220,6 @@ class _Map_integrationState extends State<Map_integration> {
                                       _currentPosition.longitude),
                                   zoom: 14.5)));
                           // markers.clear();
-
 
                           markers.add(Marker(
                               markerId: MarkerId('currentLocation'),

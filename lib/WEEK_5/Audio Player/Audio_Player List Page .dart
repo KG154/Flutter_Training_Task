@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import 'dart:io';
@@ -25,7 +24,8 @@ class Audio_Player extends StatefulWidget {
 
 class _Audio_PlayerState extends State<Audio_Player> {
   final OnAudioQuery _audioQuery = OnAudioQuery();
-  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  // final AudioPlayer _audioPlayer = AudioPlayer();
 
   bool isplaying = false;
 
@@ -59,6 +59,8 @@ class _Audio_PlayerState extends State<Audio_Player> {
     // setState(() {});
     return SongDetail.allsongs;
   }
+
+
 
   /// Record /
   String statusText = "";
@@ -103,9 +105,8 @@ class _Audio_PlayerState extends State<Audio_Player> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     _timer?.cancel();
-
     // TODO: implement dispose
     super.dispose();
   }
@@ -134,7 +135,7 @@ class _Audio_PlayerState extends State<Audio_Player> {
         child: Column(
           children: [
             Container(
-              height: 150,
+              height: 130,
               width: double.infinity,
               color: Colors.black45,
               child: Column(
@@ -151,7 +152,6 @@ class _Audio_PlayerState extends State<Audio_Player> {
                             onPressed: () {
                               startRecord();
                               startTime();
-
                               setState(() {
                                 status = false;
                                 print(status);
@@ -179,7 +179,7 @@ class _Audio_PlayerState extends State<Audio_Player> {
                                 ),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 15,
                               ),
                               InkWell(
                                 onTap: () {
@@ -209,78 +209,90 @@ class _Audio_PlayerState extends State<Audio_Player> {
             ),
             Flexible(
               child: FutureBuilder<List<SongModel>>(
-                // Default values:
                 future: gonext(),
                 builder: (context, snapshot) {
-                  // Loading content
-                  if (snapshot.data == null) {
-                    return CircularProgressIndicator();
-                  }
-
-                  if (snapshot.data!.isEmpty)
-                    return Center(child: const Text("Nothing found!"));
-
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20, bottom: 20, left: 10, right: 10),
-                    child: ListView.builder(
-                      itemCount: SongDetail.allsongs.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black87.withOpacity(0.3),
-                                    blurRadius: 1,
-                                    offset: const Offset(0, 1),
-                                    spreadRadius: 1)
-                              ],
-                              border: Border.all(color: Colors.blue)),
-                          child: ListTile(
-                            onTap: () {
-                              changeplaymusic();
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return AudioPage(
-                                    isplaying: true,
-                                    allSongs: SongDetail.allsongs,
-                                    currentIndex: index,
-                                  );
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            top: 5, bottom: 5, left: 10, right: 10),
+                        child: ListView.builder(
+                          itemCount: SongDetail.allsongs.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black87.withOpacity(0.3),
+                                        blurRadius: 1,
+                                        offset: const Offset(0, 1),
+                                        spreadRadius: 1)
+                                  ],
+                                  border: Border.all(color: Colors.blue)),
+                              child: ListTile(
+                                onTap: () {
+                                  changeplaymusic();
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return AudioPage(
+                                        isplaying: true,
+                                        allSongs: SongDetail.allsongs,
+                                        currentIndex: index,
+                                      );
+                                    },
+                                  ));
                                 },
-                              ));
-                            },
-                            title: Text(
-                              SongDetail.allsongs[index].title,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  overflow: TextOverflow.ellipsis),
-                            ),
-                            subtitle: Text(
-                              SongDetail.allsongs[index].artist ?? "No Artist",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-
-                              },
-                              color: Colors.red,
-                              icon: const Icon(Icons.delete),
-                            ),
-                            leading: QueryArtworkWidget(
-                              id: SongDetail.allsongs[index].id,
-                              type: ArtworkType.AUDIO,
-                            ),
+                                title: Text(
+                                  SongDetail.allsongs[index].title,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                                subtitle: Text(
+                                  SongDetail.allsongs[index].artist ??
+                                      "No Artist",
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () {},
+                                  color: Colors.red,
+                                  icon: const Icon(Icons.delete),
+                                ),
+                                leading: QueryArtworkWidget(
+                                  id: SongDetail.allsongs[index].id,
+                                  type: ArtworkType.AUDIO,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: Center(
+                          child: Text(
+                            "No Data",
+                            style:
+                                TextStyle(fontSize: 50, color: Colors.black87),
                           ),
-                        );
-                      },
-                    ),
-                  );
+                        ),
+                      );
+                    }
+                  } else {
+                    return const SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(color: Colors.indigo),
+                    );
+                  }
                 },
               ),
             ),
@@ -308,12 +320,10 @@ class _Audio_PlayerState extends State<Audio_Player> {
       // isComplete = false;
       RecordMp3.instance.start(recordFilePath!, (type) {
         statusText = "record error--->$type";
-        // setState(() {});
       });
     } else {
       statusText = "not microphone permission ";
     }
-    // setState(() {});
   }
 
   void pauseRecord() {
@@ -321,15 +331,19 @@ class _Audio_PlayerState extends State<Audio_Player> {
     if (RecordMp3.instance.status == RecordStatus.PAUSE) {
       bool s = RecordMp3.instance.resume();
       if (s) {
-        statusText = "Recording...";
-        startTime();
-        setState(() {});
+        setState(() {
+          statusText = "Recording...";
+          startTime();
+        });
+        // setState(() {});
       }
     } else {
       bool s = RecordMp3.instance.pause();
       if (s) {
-        statusText = "Recording pause...";
-        setState(() {});
+        setState(() {
+          statusText = "Recording pause...";
+        });
+        // setState(() {});
       }
     }
   }
@@ -337,43 +351,36 @@ class _Audio_PlayerState extends State<Audio_Player> {
   void stopRecord() {
     bool s = RecordMp3.instance.stop();
     if (s) {
-      statusText = "Record complete";
-      // isComplete = true;
-      _timer?.cancel();
-      timeCount = 0;
-      setState(() {});
+      setState(() {
+        statusText = "Record complete";
+        _timer?.cancel();
+        timeCount = 0;
+      });
+      // setState(() {});
     }
   }
 
   void resumeRecord() {
     bool s = RecordMp3.instance.resume();
     if (s) {
-      statusText = "Recording...";
-      setState(() {});
-    }
-  }
-
-  void play() {
-    if (recordFilePath != null && File(recordFilePath!).existsSync()) {
-      _audioPlayer.play();
-
-      // _audioPlayer.play(recordFilePath, isLocal: true);
+      setState(() {
+        statusText = "Recording...";
+      });
+      // setState(() {});
     }
   }
 
   Future<String> getFilePath() async {
     final directory = await getExternalStorageDirectory();
-    String sdPath = directory!.path + "/recordfile";
+    String sdPath = directory!.path + "/record";
     print("Path : - ${sdPath}");
-    var d = Directory("storage/emulated/0/Recording");
-    if (!d.existsSync()) {
-      d.createSync(recursive: true);
-    }
+    // var d = Directory("storage/emulated/0/Recording");
+    var d = Directory(sdPath);
+    //
 
-    return "storage/emulated/0/Recording" +
+    return sdPath +
         "/Recorde_${i++}${DateTime.now().millisecondsSinceEpoch}.mp3";
   }
-
 
   ///
 
@@ -384,7 +391,6 @@ class _Audio_PlayerState extends State<Audio_Player> {
       }
     } catch (e) {
       print(e);
-      // Error in getting access to the file.
     }
   }
 }
