@@ -1,13 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
-import 'dart:io';
-import 'dart:async';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:record_mp3/record_mp3.dart';
+import 'package:taskproject/WEEK_5/Audio%20Player/Audio Record.dart';
 
 import 'Audio_Player_PlayPage.dart';
 
@@ -23,14 +17,20 @@ class Audio_Player extends StatefulWidget {
 }
 
 class _Audio_PlayerState extends State<Audio_Player> {
+//audio plugin
   final OnAudioQuery _audioQuery = OnAudioQuery();
-
-  // final AudioPlayer _audioPlayer = AudioPlayer();
-
   bool isplaying = false;
 
-  /// permission
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    requestPermission();
+    gonext();
+  }
+
   requestPermission() async {
+    // Web platform don't support permissions methods.
     if (!kIsWeb) {
       bool permissionStatus = await _audioQuery.permissionsStatus();
       if (!permissionStatus) {
@@ -40,15 +40,6 @@ class _Audio_PlayerState extends State<Audio_Player> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    requestPermission();
-    stopRecord();
-    gonext();
-  }
-
-  /// future modal /
   Future<List<SongModel>> gonext() async {
     SongDetail.allsongs = await _audioQuery.querySongs(
       sortType: null,
@@ -60,67 +51,27 @@ class _Audio_PlayerState extends State<Audio_Player> {
     return SongDetail.allsongs;
   }
 
-
-
-  /// Record /
-  String statusText = "";
-  bool isComplete = false;
-  bool status = true;
-  int i = 0;
-  Timer? _timer;
-  int timeCount = 0;
-  String? recordFilePath;
-
-  startTime() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (time) {
-      setState(() {
-        timeCount++;
-      });
-    });
-  }
-
-  String _printDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-
-    if (twoDigits(duration.inHours) != "00") {
-      return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
-    } else if (twoDigits(duration.inHours) == "00") {
-      if (twoDigitMinutes != "00") {
-        return "$twoDigitMinutes:$twoDigitSeconds";
-      } else {
-        return twoDigitSeconds;
-      }
-    } else {
-      return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
-    }
-  }
-
-  void changeplaymusic() {
-    setState(() {
-      isplaying = !isplaying;
-    });
-  }
-
-  @override
-  void dispose() {
-    // _audioPlayer.dispose();
-    _timer?.cancel();
-    // TODO: implement dispose
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Audio Player",
-          style: TextStyle(fontSize: 20),
-        ),
+        title: const Text("Audio Player"),
+        elevation: 2,
         centerTitle: true,
-        backgroundColor: Colors.black45,
+        backgroundColor: Colors.black54,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.mic),
+        backgroundColor: Colors.black87,
+        onPressed: () async {
+          var record = await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Recording_sound()));
+          if (record == true) {
+            setState(() {
+              gonext();
+            });
+          }
+        },
       ),
       body: Container(
         width: double.infinity,
@@ -129,268 +80,103 @@ class _Audio_PlayerState extends State<Audio_Player> {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Colors.black54, Color.fromRGBO(0, 41, 102, 1)],
+            colors: [Colors.black45, Color.fromRGBO(0, 41, 102, 1)],
           ),
         ),
-        child: Column(
-          children: [
-            Container(
-              height: 130,
-              width: double.infinity,
-              color: Colors.black45,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _printDuration(Duration(seconds: timeCount)),
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: status
-                        ? IconButton(
-                            onPressed: () {
-                              startRecord();
-                              startTime();
-                              setState(() {
-                                status = false;
-                                print(status);
-                              });
-                            },
-                            icon: Icon(
-                              Icons.mic,
-                              size: 35,
-                              color: Colors.white,
-                            ))
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  pauseRecord();
-                                },
-                                child: Icon(
-                                  RecordMp3.instance.status ==
-                                          RecordStatus.PAUSE
-                                      ? Icons.play_circle_filled
-                                      : Icons.pause_circle_filled,
-                                  color: Colors.white,
-                                  size: 35,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  stopRecord();
-                                  setState(() {
-                                    status = true;
-                                    print(status);
-                                  });
-                                },
-                                child: Container(
-                                  //   color: Colors.black26,
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    size: 35,
-                                    color: Colors.white,
-                                  ),
-                                  //  color: Colors.black,
-                                  height: 50,
-                                  width: 60,
-                                ),
-                              ),
+        child: FutureBuilder<List<SongModel>>(
+          future: gonext(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      top: 5, bottom: 5, left: 10, right: 10),
+                  child: ListView.builder(
+                    itemCount: SongDetail.allsongs.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black87.withOpacity(0.3),
+                                  blurRadius: 1,
+                                  offset: const Offset(0, 1),
+                                  spreadRadius: 1)
                             ],
-                          ),
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              child: FutureBuilder<List<SongModel>>(
-                future: gonext(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5, bottom: 5, left: 10, right: 10),
-                        child: ListView.builder(
-                          itemCount: SongDetail.allsongs.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black87.withOpacity(0.3),
-                                        blurRadius: 1,
-                                        offset: const Offset(0, 1),
-                                        spreadRadius: 1)
-                                  ],
-                                  border: Border.all(color: Colors.blue)),
-                              child: ListTile(
-                                onTap: () {
-                                  changeplaymusic();
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) {
-                                      return AudioPage(
-                                        isplaying: true,
-                                        allSongs: SongDetail.allsongs,
-                                        currentIndex: index,
-                                      );
-                                    },
-                                  ));
-                                },
-                                title: Text(
-                                  SongDetail.allsongs[index].title,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      overflow: TextOverflow.ellipsis),
-                                ),
-                                subtitle: Text(
-                                  SongDetail.allsongs[index].artist ??
-                                      "No Artist",
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {},
-                                  color: Colors.red,
-                                  icon: const Icon(Icons.delete),
-                                ),
-                                leading: QueryArtworkWidget(
-                                  id: SongDetail.allsongs[index].id,
-                                  type: ArtworkType.AUDIO,
-                                ),
-                              ),
-                            );
+                            border: Border.all(color: Colors.blue)),
+                        child: ListTile(
+                          onTap: () {
+                            changeplaymusic();
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return AudioPage(
+                                  isplaying: true,
+                                  allSongs: SongDetail.allsongs,
+                                  currentIndex: index,
+                                );
+                              },
+                            ));
                           },
-                        ),
-                      );
-                    } else {
-                      return const SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: Center(
-                          child: Text(
-                            "No Data",
-                            style:
-                                TextStyle(fontSize: 50, color: Colors.black87),
+                          title: Text(
+                            SongDetail.allsongs[index].title,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          subtitle: Text(
+                            SongDetail.allsongs[index].artist ?? "No Artist",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12),
+                          ),
+                          // trailing: IconButton(
+                          //   onPressed: () {},
+                          //   color: Colors.red,
+                          //   icon: const Icon(Icons.delete),
+                          // ),
+                          leading: const Icon(
+                            Icons.music_note_outlined,
+                            color: Colors.deepOrange,
+                            size: 30,
                           ),
                         ),
                       );
-                    }
-                  } else {
-                    return const SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: CircularProgressIndicator(color: Colors.indigo),
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
+                    },
+                  ),
+                );
+              } else {
+                return const SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Center(
+                    child: Text(
+                      "No Data",
+                      style: TextStyle(fontSize: 50, color: Colors.black87),
+                    ),
+                  ),
+                );
+              }
+            } else {
+              return const SizedBox(
+                width: 60,
+                height: 60,
+                child: Center(
+                    child: CircularProgressIndicator(color: Colors.indigo)),
+              );
+            }
+          },
         ),
       ),
     );
   }
 
-  Future<bool> checkPermission() async {
-    if (!await Permission.microphone.isGranted) {
-      PermissionStatus status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  void startRecord() async {
-    bool hasPermission = await checkPermission();
-    if (hasPermission) {
-      statusText = "Recording...";
-      recordFilePath = await getFilePath();
-      // isComplete = false;
-      RecordMp3.instance.start(recordFilePath!, (type) {
-        statusText = "record error--->$type";
-      });
-    } else {
-      statusText = "not microphone permission ";
-    }
-  }
-
-  void pauseRecord() {
-    _timer?.cancel();
-    if (RecordMp3.instance.status == RecordStatus.PAUSE) {
-      bool s = RecordMp3.instance.resume();
-      if (s) {
-        setState(() {
-          statusText = "Recording...";
-          startTime();
-        });
-        // setState(() {});
-      }
-    } else {
-      bool s = RecordMp3.instance.pause();
-      if (s) {
-        setState(() {
-          statusText = "Recording pause...";
-        });
-        // setState(() {});
-      }
-    }
-  }
-
-  void stopRecord() {
-    bool s = RecordMp3.instance.stop();
-    if (s) {
-      setState(() {
-        statusText = "Record complete";
-        _timer?.cancel();
-        timeCount = 0;
-      });
-      // setState(() {});
-    }
-  }
-
-  void resumeRecord() {
-    bool s = RecordMp3.instance.resume();
-    if (s) {
-      setState(() {
-        statusText = "Recording...";
-      });
-      // setState(() {});
-    }
-  }
-
-  Future<String> getFilePath() async {
-    final directory = await getExternalStorageDirectory();
-    String sdPath = directory!.path + "/record";
-    print("Path : - ${sdPath}");
-    // var d = Directory("storage/emulated/0/Recording");
-    var d = Directory(sdPath);
-    //
-
-    return sdPath +
-        "/Recorde_${i++}${DateTime.now().millisecondsSinceEpoch}.mp3";
-  }
-
-  ///
-
-  Future<void> deleteFile(File file) async {
-    try {
-      if (await file.exists()) {
-        await file.delete();
-      }
-    } catch (e) {
-      print(e);
-    }
+  void changeplaymusic() {
+    setState(() {
+      isplaying = !isplaying;
+    });
   }
 }

@@ -17,7 +17,7 @@ class _AddUserState extends State<AddUser> {
 
   bool isloding = false;
 
-  var uri = "http://192.168.1.14/Practical_Api/api/add_user";
+  var uri = "http://192.168.1.38/Practical_Api/api/add_user";
 
   login(String path, String name, String email) async {
     final request = await http.MultipartRequest(

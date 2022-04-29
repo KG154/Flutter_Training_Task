@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:taskproject/wekk_5.dart';
+import 'package:taskproject/week_5.dart';
+import 'package:taskproject/week_6.dart';
 
 import 'WEEK_1/Navigator.dart';
 import 'WEEK_1/NavigatorPage/Page3.dart';
@@ -31,6 +32,7 @@ Future<void> main() async {
       '/Week3': (context) => Week3(),
       '/Week4': (context) => Week4(),
       '/Week5': (context) => Week5(),
+      '/Week6': (context) => Week6(),
       '/Social_Media_Login': (context) => googlelogine1(),
       '/ViewPage': (context) => ViewPage(),
       '/SqfLite': (context) => SqfLite(),
@@ -245,6 +247,37 @@ class _MyAppState extends State<MyApp> {
                   child: const Center(
                     child: Text(
                       "WEEK 5",
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/Week6');
+                },
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.elliptical(70, 70),
+                      bottomLeft: Radius.elliptical(70, 70),
+                      // bottomRight: Radius.elliptical(100, 100)
+                    ),
+                    border: Border.all(width: 1.0, color: Colors.blue),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black87.withOpacity(0.3),
+                          blurRadius: 1,
+                          offset: Offset(0, 1),
+                          spreadRadius: 1)
+                    ],
+                  ),
+                  height: 100,
+                  child: const Center(
+                    child: Text(
+                      "WEEK 6",
                       style: TextStyle(fontSize: 30, color: Colors.white),
                     ),
                   ),

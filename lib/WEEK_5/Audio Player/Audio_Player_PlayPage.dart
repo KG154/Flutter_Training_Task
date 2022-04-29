@@ -1,5 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,7 +25,6 @@ class AudioPage extends StatefulWidget {
 
 class _AudioPageState extends State<AudioPage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
-
 
   String currentSongTitle = '';
 
@@ -75,6 +75,8 @@ class _AudioPageState extends State<AudioPage> {
     _audioPlayer.dispose();
     super.dispose();
   }
+
+
 
   Stream<DurationState> get _durationStateStream =>
       Rx.combineLatest2<Duration, Duration?, DurationState>(
@@ -135,13 +137,16 @@ class _AudioPageState extends State<AudioPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 30, bottom: 50),
-                    height: 150,
-                    width: 150,
+                    height: 300,
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      shape: BoxShape.circle,
+                      // color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10),
+                      // shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: AssetImage("Images/music.webp"),
+                          fit: BoxFit.cover),
                     ),
-                    child: Icon(Icons.music_note_outlined),
                   ),
                   StreamBuilder<DurationState>(
                     stream: _durationStateStream,
@@ -216,115 +221,140 @@ class _AudioPageState extends State<AudioPage> {
                       );
                     },
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 20, bottom: 20, left: 30, right: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                            child: InkWell(
-                          onTap: () {
-                            mIndex--;
-
-                            currentSongTitle = widget.allSongs[mIndex].title;
-                            if (_audioPlayer.hasPrevious) {
-                              _audioPlayer.seekToPrevious();
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: const Icon(
-                              Icons.skip_previous,
-                              color: Colors.white70,
-                            ),
-                          ),
-                        )),
-                        Flexible(
-                            child: InkWell(
-                          onTap: () {
-                             _audioPlayer.seek(Duration(
-                                seconds: _audioPlayer.position.inSeconds - 10));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: const Icon(
-                              Icons.keyboard_arrow_left_sharp,
-                              color: Colors.white70,
-                            ),
-                          ),
-                        )),
-                        Flexible(
-                          child: InkWell(
-                            onTap: () {
-                              if (_audioPlayer.playing) {
-                                _audioPlayer.pause();
-                              } else {
-                                if (_audioPlayer.currentIndex != null) {
-                                  _audioPlayer.play();
+                  StreamBuilder<DurationState>(
+                    stream: _durationStateStream,
+                    builder: (context, snapshot) {
+                      final durationState = snapshot.data;
+                      final progress = durationState?.position ?? Duration.zero;
+                      final total = durationState?.total ?? Duration.zero;
+                      return Container(
+                        margin: const EdgeInsets.only(
+                            top: 20, bottom: 20, left: 5, right: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Flexible(
+                                child: InkWell(
+                              onTap: () {
+                                if (_audioPlayer.hasPrevious) {
+                                  mIndex--;
+                                  currentSongTitle =
+                                      widget.allSongs[mIndex].title;
+                                  _audioPlayer.seekToPrevious();
                                 }
-                              }
-                            },
-                            child: Container(
-                              // padding: const EdgeInsets.all(20.0),
-                              margin: const EdgeInsets.only(
-                                  right: 20.0, left: 20.0),
-                              child: StreamBuilder<bool>(
-                                stream: _audioPlayer.playingStream,
-                                builder: (context, snapshot) {
-                                  bool? playingState = snapshot.data;
-                                  if (playingState != null && playingState) {
-                                    return const Icon(
-                                      Icons.pause,
-                                      size: 30,
-                                      color: Colors.white70,
-                                    );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                child: const Icon(
+                                  Icons.skip_previous,
+                                  color: Colors.white70,
+                                  size: 35,
+                                ),
+                              ),
+                            )),
+                            Flexible(
+                                child: InkWell(
+                              onTap: () async {
+                                if (_audioPlayer.position.inSeconds >= 10) {
+                                  await _audioPlayer.seek(Duration(
+                                      seconds: _audioPlayer.position.inSeconds -
+                                          10));
+                                } else {
+                                  await _audioPlayer.seek(Duration.zero);
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                child: const Icon(
+                                  Icons.replay_10_outlined,
+                                  color: Colors.white70,
+                                  size: 35,
+                                ),
+                              ),
+                            )),
+                            Flexible(
+                              child: InkWell(
+                                onTap: () {
+                                  if (_audioPlayer.playing) {
+                                    _audioPlayer.pause();
+                                  } else {
+                                    if (_audioPlayer.currentIndex != null) {
+                                      _audioPlayer.play();
+                                    }
                                   }
-                                  return const Icon(
-                                    Icons.play_arrow,
-                                    size: 30,
-                                    color: Colors.white70,
-                                  );
                                 },
+                                child: Container(
+                                  // padding: const EdgeInsets.all(20.0),
+                                  // margin: const EdgeInsets.only(
+                                  //     right: 20.0, left: 20.0),
+                                  child: StreamBuilder<bool>(
+                                    stream: _audioPlayer.playingStream,
+                                    builder: (context, snapshot) {
+                                      bool? playingState = snapshot.data;
+                                      if (playingState != null &&
+                                          playingState) {
+                                        return const Icon(
+                                          Icons.pause_circle_filled_outlined,
+                                          size: 35,
+                                          color: Colors.white70,
+                                        );
+                                      }
+                                      return const Icon(
+                                        Icons.play_circle_fill_outlined,
+                                        size: 35,
+                                        color: Colors.white70,
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        Flexible(
-                            child: InkWell(
-                          onTap: ()  {
-                             _audioPlayer.seek(Duration(
-                                seconds: _audioPlayer.position.inSeconds + 10));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: const Icon(
-                              Icons.keyboard_arrow_right_sharp,
-                              color: Colors.white70,
-                            ),
-                          ),
-                        )),
-                        Flexible(
-                          child: InkWell(
-                            onTap: () {
-                              mIndex++;
-                              currentSongTitle = widget.allSongs[mIndex].title;
-                              if (_audioPlayer.hasNext) {
-                                _audioPlayer.seekToNext();
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: const Icon(
-                                Icons.skip_next,
-                                color: Colors.white70,
+                            Flexible(
+                                child: InkWell(
+                              onTap: () async {
+                                if (_audioPlayer.position.inSeconds <=
+                                    total.inSeconds - 9) {
+                                  await _audioPlayer.seek(Duration(
+                                      seconds: _audioPlayer.position.inSeconds +
+                                          10));
+                                } else {
+                                  _audioPlayer.seekToNext();
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                child: const Icon(
+                                  Icons.forward_10_outlined,
+                                  color: Colors.white70,
+                                  size: 35,
+                                ),
+                              ),
+                            )),
+                            Flexible(
+                              child: InkWell(
+                                onTap: () {
+                                  if (_audioPlayer.hasNext) {
+                                    mIndex++;
+                                    currentSongTitle =
+                                        widget.allSongs[mIndex].title;
+                                    _audioPlayer.seekToNext();
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: const Icon(
+                                    Icons.skip_next,
+                                    color: Colors.white70,
+                                    size: 35,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ],
               ),

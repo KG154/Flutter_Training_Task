@@ -44,6 +44,10 @@
             android:value="AIzaSyDJdsa3g6TdmOCfwJs2A5_xZbTWpKjezCk" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider[facebook_app_id]"
+            android:exported="false" />
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
