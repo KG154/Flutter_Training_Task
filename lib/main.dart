@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:taskproject/week_5.dart';
 import 'package:taskproject/week_6.dart';
 
@@ -8,12 +9,13 @@ import 'WEEK_1/NavigatorPage/Page3.dart';
 import 'WEEK_1/NavigatorPage/page1.dart';
 import 'WEEK_1/NavigatorPage/page2.dart';
 import 'WEEK_2/Widgets/Alert Dialog.dart';
-import 'WEEK_2/Widgets/mainScreen.dart';
+import 'WEEK_2/Widgets/1_mainScreen.dart';
 import 'WEEK_2/drawer.dart';
 import 'WEEK_3/SqfLite/View Page.dart';
 import 'WEEK_3/SqfLite/sqflite.dart';
 import 'WEEK_5/google_facbook/Social Media Login.dart';
 import 'WEEK_5/Google-Facebook/googlelogin.dart';
+import 'Widget/commonWidget.dart';
 import 'week_1.dart';
 import 'week_2.dart';
 import 'week_3.dart';
@@ -22,6 +24,8 @@ import 'week_4.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await MobileAds.instance.initialize();
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: MyApp(),
@@ -82,206 +86,43 @@ class _MyAppState extends State<MyApp> {
                 onTap: () {
                   Navigator.of(context).pushNamed('/week1');
                 },
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.elliptical(70, 70),
-                      bottomLeft: Radius.elliptical(70, 70),
-                      // bottomRight: Radius.elliptical(100, 100)
-                    ),
-                    // gradient: LinearGradient(
-                    //   colors: [Color(0xFFD62828), Color(0xFFF77F00)],
-                    //   begin: Alignment.centerLeft,
-                    //   end: Alignment.centerRight,
-                    // ),
-                    border: Border.all(width: 1.0, color: Colors.blue),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black87.withOpacity(0.3),
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                          spreadRadius: 1)
-                    ],
-                  ),
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      "WEEK 1",
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                  ),
-                ),
+                child:
+                    commonContainer(height: 100, title: "WEEK 1", textSize: 25),
               ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/week2');
                 },
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.elliptical(70, 70),
-                      bottomLeft: Radius.elliptical(70, 70),
-                      // bottomRight: Radius.elliptical(100, 100)
-                    ),
-                    // gradient: const LinearGradient(
-                    //   colors: [Color(0xFF0D22EC), Color(0xFF428EC1)],
-                    //   begin: Alignment.centerLeft,
-                    //   end: Alignment.centerRight,
-                    // ),
-                    border: Border.all(width: 1.0, color: Colors.blue),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black87.withOpacity(0.3),
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                          spreadRadius: 1),
-                    ],
-                  ),
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      "WEEK 2",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),
+                child:
+                    commonContainer(height: 100, title: "WEEK 2", textSize: 25),
               ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/Week3');
                 },
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.elliptical(70, 70),
-                      bottomLeft: Radius.elliptical(70, 70),
-                      // bottomRight: Radius.elliptical(100, 100)
-                    ),
-                    border: Border.all(width: 1.0, color: Colors.blue),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black87.withOpacity(0.3),
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                          spreadRadius: 1)
-                    ],
-                  ),
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      "WEEK 3",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),
+                child:
+                    commonContainer(height: 100, title: "WEEK 3", textSize: 25),
               ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/Week4');
                 },
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.elliptical(70, 70),
-                      bottomLeft: Radius.elliptical(70, 70),
-                      // bottomRight: Radius.elliptical(100, 100)
-                    ),
-                    // gradient: const LinearGradient(
-                    //   colors: [Color(0xFF0D22EC), Color(0xFF428EC1)],
-                    //   begin: Alignment.centerLeft,
-                    //   end: Alignment.centerRight,
-                    // ),
-                    border: Border.all(width: 1.0, color: Colors.blue),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black87.withOpacity(0.3),
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                          spreadRadius: 1)
-                    ],
-                  ),
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      "WEEK 4",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),
+                child:
+                    commonContainer(height: 100, title: "WEEK 4", textSize: 25),
               ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/Week5');
                 },
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.elliptical(70, 70),
-                      bottomLeft: Radius.elliptical(70, 70),
-                      // bottomRight: Radius.elliptical(100, 100)
-                    ),
-                    // gradient: const LinearGradient(
-                    //   colors: [Color(0xFF0D22EC), Color(0xFF428EC1)],
-                    //   begin: Alignment.centerLeft,
-                    //   end: Alignment.centerRight,
-                    // ),
-                    border: Border.all(width: 1.0, color: Colors.blue),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black87.withOpacity(0.3),
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                          spreadRadius: 1)
-                    ],
-                  ),
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      "WEEK 5",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),
+                child:
+                    commonContainer(height: 100, title: "WEEK 5", textSize: 25),
               ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/Week6');
                 },
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.elliptical(70, 70),
-                      bottomLeft: Radius.elliptical(70, 70),
-                      // bottomRight: Radius.elliptical(100, 100)
-                    ),
-                    border: Border.all(width: 1.0, color: Colors.blue),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black87.withOpacity(0.3),
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                          spreadRadius: 1)
-                    ],
-                  ),
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      "WEEK 6",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),
+                child:
+                    commonContainer(height: 100, title: "WEEK 6", textSize: 25),
               ),
             ],
           ),

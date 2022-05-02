@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 
 class sharingScreen extends StatefulWidget {
   const sharingScreen({Key? key}) : super(key: key);
@@ -17,8 +18,6 @@ class _sharingScreenState extends State<sharingScreen> {
   final ImagePicker _picker = ImagePicker();
   XFile? image;
   bool namestatus = false;
-
-  // bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -233,35 +232,10 @@ class _sharingScreenState extends State<sharingScreen> {
                             });
                       });
                     },
-                    child: Container(
-                      width: size.width * 0.3,
-                      height: size.height * 0.07,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          // color: Colors.black54,
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Colors.black54,
-                                Color.fromRGBO(0, 41, 102, 1)
-                              ]),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black87.withOpacity(0.3),
-                                blurRadius: 1,
-                                offset: Offset(0, 1),
-                                spreadRadius: 1)
-                          ],
-                          border: Border.all(color: Colors.blue)),
-                      child: Text(
-                        "Add photo",
-                        style: TextStyle(
-                          letterSpacing: 2,
-                          color: const Color(0xFFFFFFFF),
-                        ),
-                      ),
+                    child: commonButton(
+                      width: size.width * 0.27,
+                      height: size.height * 0.06,
+                      title: "Add photo",
                     ),
                   ),
                 ],
@@ -413,7 +387,6 @@ class _sharingScreenState extends State<sharingScreen> {
   }
 
   Future<void> onButtonTap(ShareSocial share) async {
-
     String? response;
     final FlutterShareMe flutterShareMe = FlutterShareMe();
     switch (share) {

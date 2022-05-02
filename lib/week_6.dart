@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/WEEK_6/Admob_Facebook%20Ads/ADS.dart';
 import 'package:taskproject/WEEK_6/sharing.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 
 import 'WEEK_6/Share with default intent.dart';
 
@@ -44,29 +46,9 @@ class _Week6State extends State<Week6> {
                   },
                 ));
               },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.elliptical(70, 70),
-                    bottomLeft: Radius.elliptical(70, 70),
-                  ),
-                  border: Border.all(width: 1.0, color: Colors.blue),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black87.withOpacity(0.3),
-                        blurRadius: 1,
-                        offset: Offset(0, 1),
-                        spreadRadius: 1)
-                  ],
-                ),
-                height: 75,
-                child: const Center(
-                  child: Text(
-                    "sharing",
-                    style: TextStyle(fontSize: 25, color: Colors.white),
-                  ),
-                ),
+              child: commonContainer(
+                title: "sharing",
+                height: 75
               ),
             ),
             InkWell(
@@ -77,29 +59,22 @@ class _Week6State extends State<Week6> {
                   },
                 ));
               },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.elliptical(70, 70),
-                    bottomLeft: Radius.elliptical(70, 70),
-                  ),
-                  border: Border.all(width: 1.0, color: Colors.blue),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black87.withOpacity(0.3),
-                        blurRadius: 1,
-                        offset: Offset(0, 1),
-                        spreadRadius: 1)
-                  ],
-                ),
-                height: 75,
-                child: const Center(
-                  child: Text(
-                    "Share with default intent",
-                    style: TextStyle(fontSize: 25, color: Colors.white),
-                  ),
-                ),
+              child: commonContainer(
+                title: "Share with default intent",
+                height: 75
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const Ads();
+                  },
+                ));
+              },
+              child: commonContainer(
+                title: "ADS",
+                height: 75
               ),
             ),
 

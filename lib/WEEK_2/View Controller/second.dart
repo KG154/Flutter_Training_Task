@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 
 class Second2 extends StatefulWidget {
   String tt = '';
@@ -40,10 +41,12 @@ class _Second2State extends State<Second2> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode current = FocusScope.of(context);
-        if(!current.hasPrimaryFocus){
+        if (!current.hasPrimaryFocus) {
           current.unfocus();
         }
       },
@@ -164,76 +167,81 @@ class _Second2State extends State<Second2> {
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 110, vertical: 20),
-                child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        String name = tname.text;
-                        String email = temail.text;
-                        String password = tpass.text;
-                        bool emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(email);
-                        // bool passwordValid = RegExp(
-                        //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-                        //     .hasMatch(password);
-                        if (name.isEmpty && email.isEmpty && password.isEmpty) {
-                          namestatus = true;
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (name.isEmpty && email.isEmpty) {
-                          namestatus = true;
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                        } else if (email.isEmpty && password.isEmpty) {
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (name.isEmpty &&
-                            password.isEmpty &&
-                            !emailValid) {
-                          namestatus = true;
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else if (name.isEmpty && password.isEmpty) {
-                          namestatus = true;
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (name.isEmpty && !emailValid) {
-                          namestatus = true;
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else if (password.isEmpty && !emailValid) {
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else if (name.isEmpty) {
-                          namestatus = true;
-                        } else if (email.isEmpty) {
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                        } else if (password.isEmpty) {
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (!emailValid) {
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        }  else {
-                          widget.onEdit(tname.text, temail.text, tpass.text);
-                          Navigator.pop(
-                            context,
-                          );
-                        }
-                      });
-                    },
-                    child: Text('Edit')),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    String name = tname.text;
+                    String email = temail.text;
+                    String password = tpass.text;
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email);
+                    // bool passwordValid = RegExp(
+                    //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                    //     .hasMatch(password);
+                    if (name.isEmpty && email.isEmpty && password.isEmpty) {
+                      namestatus = true;
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (name.isEmpty && email.isEmpty) {
+                      namestatus = true;
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                    } else if (email.isEmpty && password.isEmpty) {
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (name.isEmpty &&
+                        password.isEmpty &&
+                        !emailValid) {
+                      namestatus = true;
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else if (name.isEmpty && password.isEmpty) {
+                      namestatus = true;
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (name.isEmpty && !emailValid) {
+                      namestatus = true;
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else if (password.isEmpty && !emailValid) {
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else if (name.isEmpty) {
+                      namestatus = true;
+                    } else if (email.isEmpty) {
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                    } else if (password.isEmpty) {
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (!emailValid) {
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else {
+                      widget.onEdit(tname.text, temail.text, tpass.text);
+                      Navigator.pop(
+                        context,
+                      );
+                    }
+                  });
+                },
+                child: commonButton(
+                  title: "Edit",
+                  margin: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.3,
+                      vertical: size.height * 0.02),
+                  width: size.width * 0.27,
+                  height: size.height * 0.06,
+                ),
               ),
             ],
           ),

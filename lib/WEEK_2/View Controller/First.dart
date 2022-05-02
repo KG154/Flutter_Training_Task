@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 
 import 'second.dart';
 
@@ -23,6 +24,8 @@ class _First1State extends State<First1> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode current = FocusScope.of(context);
@@ -54,7 +57,7 @@ class _First1State extends State<First1> {
                       namestatus = false;
                     });
                   },
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -148,88 +151,92 @@ class _First1State extends State<First1> {
                   ),
                 ),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        String name = tname.text;
-                        String email = temail.text;
-                        String password = tpass.text;
 
-                        bool emailValid = RegExp(
-                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                            .hasMatch(email);
-                        // bool passwordValid = RegExp(
-                        //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-                        //     .hasMatch(password);
-                        if (name.isEmpty && email.isEmpty && password.isEmpty) {
-                          namestatus = true;
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (name.isEmpty && email.isEmpty) {
-                          namestatus = true;
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                        } else if (email.isEmpty && password.isEmpty) {
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (name.isEmpty &&
-                            password.isEmpty &&
-                            !emailValid) {
-                          namestatus = true;
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else if (name.isEmpty && password.isEmpty) {
-                          namestatus = true;
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (name.isEmpty && !emailValid) {
-                          namestatus = true;
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else if (password.isEmpty && !emailValid) {
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else if (name.isEmpty) {
-                          namestatus = true;
-                        } else if (email.isEmpty) {
-                          emailstatus = true;
-                          emailerror = 'Email Is required';
-                        } else if (password.isEmpty) {
-                          passstatus = true;
-                          passworderror = 'Password Is required';
-                        } else if (!emailValid) {
-                          emailstatus = true;
-                          emailerror = 'Enter Valid Email..';
-                        } else {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return Second2(
-                                tt: name,
-                                hh: email,
-                                kk: password,
-                                onEdit: (n1, n2, n3) {
-                                  tname.text = n1;
-                                  temail.text = n2;
-                                  tpass.text = n3;
-                                },
-                              );
+              InkWell(
+                onTap: () {
+
+                  setState(() {
+                    String name = tname.text;
+                    String email = temail.text;
+                    String password = tpass.text;
+
+                    bool emailValid = RegExp(
+                        r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                        .hasMatch(email);
+                    // bool passwordValid = RegExp(
+                    //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                    //     .hasMatch(password);
+                    if (name.isEmpty && email.isEmpty && password.isEmpty) {
+                      namestatus = true;
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (name.isEmpty && email.isEmpty) {
+                      namestatus = true;
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                    } else if (email.isEmpty && password.isEmpty) {
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (name.isEmpty &&
+                        password.isEmpty &&
+                        !emailValid) {
+                      namestatus = true;
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else if (name.isEmpty && password.isEmpty) {
+                      namestatus = true;
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (name.isEmpty && !emailValid) {
+                      namestatus = true;
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else if (password.isEmpty && !emailValid) {
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else if (name.isEmpty) {
+                      namestatus = true;
+                    } else if (email.isEmpty) {
+                      emailstatus = true;
+                      emailerror = 'Email Is required';
+                    } else if (password.isEmpty) {
+                      passstatus = true;
+                      passworderror = 'Password Is required';
+                    } else if (!emailValid) {
+                      emailstatus = true;
+                      emailerror = 'Enter Valid Email..';
+                    } else {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Second2(
+                            tt: name,
+                            hh: email,
+                            kk: password,
+                            onEdit: (n1, n2, n3) {
+                              tname.text = n1;
+                              temail.text = n2;
+                              tpass.text = n3;
                             },
-                          ));
-                        }
-                      });
-                    },
-                    child: Text('SUBMIT')),
+                          );
+                        },
+                      ));
+                    }
+                  });
+                },
+                child: commonButton(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.3,vertical: size.height * 0.02),
+                    width: size.width * 0.27,
+                    height: size.height * 0.06,
+                    title: "Submit",),
               ),
             ],
           ),

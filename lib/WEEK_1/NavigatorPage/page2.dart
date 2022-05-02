@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Widget/commonWidget.dart';
 import 'Page3.dart';
 
 class Page2 extends StatefulWidget {
@@ -28,45 +29,23 @@ class _Page2State extends State<Page2> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
                 InkWell(
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/pag4');
                   },
-                  child: Container(
+                  child: commonButton(
                     width: 200,
                     height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        // color: Colors.black54,
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Colors.black54,
-                              Color.fromRGBO(0, 41, 102, 1)
-                            ]),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black87.withOpacity(0.3),
-                              blurRadius: 1,
-                              offset: Offset(0, 1),
-                              spreadRadius: 1)
-                        ],
-                        border: Border.all(color: Colors.blue)),
-                    child: const Text(
-                      "pushReplacement",
-                      style: TextStyle(
-                        letterSpacing: 2,
-                        fontSize: 20,
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    ),
+                    title: "pushReplacement",
                   ),
                 ),
+
+
                 SizedBox(
                   height: 20,
                 ),
+
                 InkWell(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -75,38 +54,13 @@ class _Page2State extends State<Page2> {
                       },
                     ));
                   },
-                  child: Container(
+                  child: commonButton(
                     width: 120,
                     height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        // color: Colors.black54,
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Colors.black54,
-                              Color.fromRGBO(0, 41, 102, 1)
-                            ]),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black87.withOpacity(0.3),
-                              blurRadius: 1,
-                              offset: Offset(0, 1),
-                              spreadRadius: 1)
-                        ],
-                        border: Border.all(color: Colors.blue)),
-                    child: Text(
-                      "Next Page",
-                      style: TextStyle(
-                        letterSpacing: 2,
-                        fontSize: 20,
-                        color: const Color(0xFFFFFFFF),
-                      ),
-                    ),
+                    title: "Next Page",
                   ),
                 ),
+
               ],
             ),
           ),

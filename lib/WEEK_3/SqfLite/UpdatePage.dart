@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 
 import 'Databasehelper.dart';
 
@@ -41,6 +42,8 @@ class _UpdatepageState extends State<Updatepage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -155,82 +158,83 @@ class _UpdatepageState extends State<Updatepage> {
                         showpass = !showpass;
                       });
                     },
-                    icon:
-                        Icon(showpass ? Icons.visibility_off : Icons.visibility),
+                    icon: Icon(
+                        showpass ? Icons.visibility_off : Icons.visibility),
                   ),
                   errorText: passstatus ? '$passworderror' : null,
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 120),
-              child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      String name = tname.text;
-                      String email = temail.text;
-                      String password = tpass.text;
+            InkWell(
+              onTap: () {
+                setState(() {
+                  String name = tname.text;
+                  String email = temail.text;
+                  String password = tpass.text;
 
-                      bool emailValid = RegExp(
-                              r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                  bool emailValid =
+                      RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
                           .hasMatch(email);
-                      if (name.isEmpty && email.isEmpty && password.isEmpty) {
-                        namestatus = true;
-                        emailstatus = true;
-                        emailerror = 'Email Is required';
-                        passstatus = true;
-                        passworderror = 'Password Is required';
-                      } else if (name.isEmpty && email.isEmpty) {
-                        namestatus = true;
-                        emailstatus = true;
-                        emailerror = 'Email Is required';
-                      } else if (email.isEmpty && password.isEmpty) {
-                        emailstatus = true;
-                        emailerror = 'Email Is required';
-                        passstatus = true;
-                        passworderror = 'Password Is required';
-                      } else if (name.isEmpty &&
-                          password.isEmpty &&
-                          !emailValid) {
-                        namestatus = true;
-                        passstatus = true;
-                        passworderror = 'Password Is required';
-                        emailstatus = true;
-                        emailerror = 'Enter Valid Email..';
-                      } else if (name.isEmpty && password.isEmpty) {
-                        namestatus = true;
-                        passstatus = true;
-                        passworderror = 'Password Is required';
-                      } else if (name.isEmpty && !emailValid) {
-                        namestatus = true;
-                        emailstatus = true;
-                        emailerror = 'Enter Valid Email..';
-                      } else if (password.isEmpty && !emailValid) {
-                        passstatus = true;
-                        passworderror = 'Password Is required';
-                        emailstatus = true;
-                        emailerror = 'Enter Valid Email..';
-                      } else if (name.isEmpty) {
-                        namestatus = true;
-                      } else if (email.isEmpty) {
-                        emailstatus = true;
-                        emailerror = 'Email Is required';
-                      } else if (password.isEmpty) {
-                        passstatus = true;
-                        passworderror = 'Password Is required';
-                      } else if (!emailValid) {
-                        emailstatus = true;
-                        emailerror = 'Enter Valid Email..';
-                      } else {
-                        DatabaseHandler().updateData(
-                            _database!, userid, name, email, password);
-                        Navigator.pop(context,true);
-                        // Navigator.popUntil(context, ModalRoute.withName('/SqfLite'));
+                  if (name.isEmpty && email.isEmpty && password.isEmpty) {
+                    namestatus = true;
+                    emailstatus = true;
+                    emailerror = 'Email Is required';
+                    passstatus = true;
+                    passworderror = 'Password Is required';
+                  } else if (name.isEmpty && email.isEmpty) {
+                    namestatus = true;
+                    emailstatus = true;
+                    emailerror = 'Email Is required';
+                  } else if (email.isEmpty && password.isEmpty) {
+                    emailstatus = true;
+                    emailerror = 'Email Is required';
+                    passstatus = true;
+                    passworderror = 'Password Is required';
+                  } else if (name.isEmpty && password.isEmpty && !emailValid) {
+                    namestatus = true;
+                    passstatus = true;
+                    passworderror = 'Password Is required';
+                    emailstatus = true;
+                    emailerror = 'Enter Valid Email..';
+                  } else if (name.isEmpty && password.isEmpty) {
+                    namestatus = true;
+                    passstatus = true;
+                    passworderror = 'Password Is required';
+                  } else if (name.isEmpty && !emailValid) {
+                    namestatus = true;
+                    emailstatus = true;
+                    emailerror = 'Enter Valid Email..';
+                  } else if (password.isEmpty && !emailValid) {
+                    passstatus = true;
+                    passworderror = 'Password Is required';
+                    emailstatus = true;
+                    emailerror = 'Enter Valid Email..';
+                  } else if (name.isEmpty) {
+                    namestatus = true;
+                  } else if (email.isEmpty) {
+                    emailstatus = true;
+                    emailerror = 'Email Is required';
+                  } else if (password.isEmpty) {
+                    passstatus = true;
+                    passworderror = 'Password Is required';
+                  } else if (!emailValid) {
+                    emailstatus = true;
+                    emailerror = 'Enter Valid Email..';
+                  } else {
+                    DatabaseHandler()
+                        .updateData(_database!, userid, name, email, password);
+                    Navigator.pop(context, true);
+                    // Navigator.popUntil(context, ModalRoute.withName('/SqfLite'));
 
-                      }
-                    });
-                  },
-                  child: Text('Save')),
+                  }
+                });
+              },
+              child: commonButton(
+                margin: EdgeInsets.symmetric(horizontal: size.width * 0.3),
+                width: size.width * 0.5,
+                height: size.height * 0.06,
+                title: "Save",
+              ),
             ),
           ],
         ),
