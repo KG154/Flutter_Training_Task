@@ -267,7 +267,7 @@ class _SqfLiteState extends State<SqfLite> {
                                   _database!, name, email, password);
                               setState(() {
                                 _loading = true;
-                                Future.delayed(Duration(seconds: 1), () {
+                                Future.delayed(Duration(milliseconds: 200), () {
                                   setState(() {
                                     _loading = false;
                                     Fluttertoast.showToast(

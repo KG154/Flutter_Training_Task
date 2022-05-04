@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:taskproject/WEEK_6/Admob_Facebook%20Ads/ADS.dart';
+import 'package:taskproject/WEEK_6/Admob_Facebook%20Ads/Admob ad.dart';
 import 'package:taskproject/WEEK_6/sharing.dart';
 import 'package:taskproject/Widget/commonWidget.dart';
 
+import 'WEEK_6/Admob_Facebook Ads/Facebook ads.dart';
 import 'WEEK_6/Share with default intent.dart';
 
 class Week6 extends StatefulWidget {
@@ -73,7 +74,20 @@ class _Week6State extends State<Week6> {
                 ));
               },
               child: commonContainer(
-                title: "ADS",
+                title: "Admob AD",
+                height: 75
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const fbAds();
+                  },
+                ));
+              },
+              child: commonContainer(
+                title: "Facebook AD",
                 height: 75
               ),
             ),

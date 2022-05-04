@@ -233,7 +233,7 @@ class _sharingScreenState extends State<sharingScreen> {
                       });
                     },
                     child: commonButton(
-                      width: size.width * 0.27,
+                      width: size.width * 0.4,
                       height: size.height * 0.06,
                       title: "Add photo",
                     ),
@@ -387,12 +387,16 @@ class _sharingScreenState extends State<sharingScreen> {
   }
 
   Future<void> onButtonTap(ShareSocial share) async {
+    String url =
+        'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&psig=AOvVaw3FvJd3Q6U8kRm4fbyM1z1K&ust=1651753537991000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNjl5MvrxfcCFQAAAAAdAAAAABAJ';
+
     String? response;
     final FlutterShareMe flutterShareMe = FlutterShareMe();
+
     switch (share) {
       case ShareSocial.facebook:
         response = await flutterShareMe.shareToFacebook(
-          url: image!.path,
+          url: url,
           msg: tname.text,
         );
         // if (image != null) {
