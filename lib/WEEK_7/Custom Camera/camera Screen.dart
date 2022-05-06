@@ -44,7 +44,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-
+    getPermissionStatus();
     // controller = CameraController(cameras[0], ResolutionPreset.max);
     // controller!.initialize().then((_) {
     //   if (!mounted) {
