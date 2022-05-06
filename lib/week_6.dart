@@ -39,19 +39,19 @@ class _Week6State extends State<Week6> {
             SizedBox(
               height: 20,
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const sharingScreen();
-                  },
-                ));
-              },
-              child: commonContainer(
-                title: "sharing",
-                height: 75
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(
+            //       builder: (context) {
+            //         return const sharingScreen();
+            //       },
+            //     ));
+            //   },
+            //   child: commonContainer(
+            //     title: "sharing",
+            //     height: 75
+            //   ),
+            // ),
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
@@ -61,7 +61,7 @@ class _Week6State extends State<Week6> {
                 ));
               },
               child: commonContainer(
-                title: "Share with default intent",
+                title: "Share",
                 height: 75
               ),
             ),

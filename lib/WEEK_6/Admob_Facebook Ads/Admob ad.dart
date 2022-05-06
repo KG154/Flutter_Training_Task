@@ -22,6 +22,9 @@ class _AdsState extends State<Ads> {
   var rewardedPoint = 0;
   var rewardedInterstitalPoint = 0;
 
+  NativeAd? _adSmall;
+  bool _isAdLoaded = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -47,6 +50,28 @@ class _AdsState extends State<Ads> {
     _createRewardedAd();
     _createRewardedInterstitialAd();
     _createInterstitialvideoAd();
+
+    _adSmall = NativeAd(
+      // Here in adUnitId: add your own ad unit ID before release build
+      adUnitId: NativeAd.testAdUnitId,
+      factoryId: 'listTileSmall',
+      request: const AdRequest(),
+      listener: NativeAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          // Releases an ad resource when it fails to load
+          ad.dispose();
+
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+      ),
+    );
+
+    _adSmall!.load();
   }
 
   /// InterstitialAd
@@ -246,7 +271,6 @@ class _AdsState extends State<Ads> {
     }
   }
 
-
   // final _controller = NativeAdmobController();
 
   @override
@@ -257,6 +281,7 @@ class _AdsState extends State<Ads> {
     rewardedAd!.dispose();
     interstitialAd!.dispose();
     rewardedInterstitialAd!.dispose();
+    _adSmall!.dispose();
   }
 
   @override
@@ -331,8 +356,19 @@ class _AdsState extends State<Ads> {
 //                   ),
 //                 )
 //             ),
+
+            _isAdLoaded
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: AdWidget(ad: _adSmall!),
+                      height: 150,
+                      width: 400,
+                    ),
+                  )
+                : const SizedBox.shrink(),
             Text(
-              "Native Advanced Ad",
+              "Native Ad",
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
             InkWell(
@@ -357,10 +393,10 @@ class _AdsState extends State<Ads> {
                 height: size.height * 0.08,
               ),
             ),
-            Text(
-              "Native Video Ad",
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
+            // Text(
+            //   "Native Video Ad",
+            //   style: TextStyle(fontSize: 20, color: Colors.white),
+            // ),
             SizedBox(
               height: 10,
             ),

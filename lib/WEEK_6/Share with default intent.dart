@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share_me/flutter_share_me.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -155,7 +157,8 @@ class _share_with_default_intentState extends State<share_with_default_intent> {
                   child: Container(
                     width: size.width * 0.45,
                     height: size.width * 0.12,
-                    margin: EdgeInsets.only(top: size.width * 0.08),
+                    margin: EdgeInsets.only(
+                        top: size.width * 0.08, bottom: size.width * 0.08),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -189,12 +192,158 @@ class _share_with_default_intentState extends State<share_with_default_intent> {
                     ),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        onButtonTap(ShareSocial.facebook);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            // color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  Colors.black54,
+                                  Color.fromRGBO(0, 41, 102, 1)
+                                ]),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black87.withOpacity(0.3),
+                                  blurRadius: 1,
+                                  offset: Offset(0, 1),
+                                  spreadRadius: 1)
+                            ],
+                            border: Border.all(color: Colors.blue)),
+                        child: FaIcon(
+                          FontAwesomeIcons.facebook,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        onButtonTap(ShareSocial.whatsapp);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            // color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  Colors.black54,
+                                  Color.fromRGBO(0, 41, 102, 1)
+                                ]),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black87.withOpacity(0.3),
+                                  blurRadius: 1,
+                                  offset: Offset(0, 1),
+                                  spreadRadius: 1)
+                            ],
+                            border: Border.all(color: Colors.blue)),
+                        child: FaIcon(
+                          FontAwesomeIcons.whatsapp,
+                          color: Colors.green,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        onButtonTap(ShareSocial.instagram);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            // color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  Colors.black54,
+                                  Color.fromRGBO(0, 41, 102, 1)
+                                ]),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black87.withOpacity(0.3),
+                                  blurRadius: 1,
+                                  offset: Offset(0, 1),
+                                  spreadRadius: 1)
+                            ],
+                            border: Border.all(color: Colors.blue)),
+                        child: FaIcon(
+                          FontAwesomeIcons.instagram,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> onButtonTap(ShareSocial share) async {
+    String url =
+        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg';
+
+    String? response;
+    final FlutterShareMe flutterShareMe = FlutterShareMe();
+    switch (share) {
+      case ShareSocial.facebook:
+        if (tname.text.isNotEmpty) {
+          response = await flutterShareMe.shareToFacebook(
+            url: url,
+            msg: tname.text,
+          );
+        } else {
+          showInSnackBar("Required Message");
+        }
+
+        break;
+      case ShareSocial.whatsapp:
+        if (image != null) {
+          response = await flutterShareMe.shareToWhatsApp(
+              imagePath: image!.path, msg: tname.text);
+        } else if (tname.value.text.isNotEmpty) {
+          response = await flutterShareMe.shareToWhatsApp(
+            msg: tname.text,
+          );
+        } else {
+          showInSnackBar("Required Images or Message");
+        }
+        break;
+      case ShareSocial.instagram:
+        if (image != null) {
+          response =
+              await flutterShareMe.shareToInstagram(filePath: image!.path);
+        } else {
+          showInSnackBar("Required Images");
+        }
+        break;
+    }
+    debugPrint(response);
   }
 
   showInSnackBar(String value) {
@@ -208,3 +357,5 @@ class _share_with_default_intentState extends State<share_with_default_intent> {
     );
   }
 }
+
+enum ShareSocial { facebook, whatsapp, twitter, instagram }

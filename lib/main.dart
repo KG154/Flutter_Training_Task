@@ -1,8 +1,10 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:taskproject/week_5.dart';
 import 'package:taskproject/week_6.dart';
+import 'package:taskproject/week_7.dart';
 
 import 'WEEK_1/Navigator.dart';
 import 'WEEK_1/NavigatorPage/Page3.dart';
@@ -13,7 +15,6 @@ import 'WEEK_2/Widgets/1_mainScreen.dart';
 import 'WEEK_2/drawer.dart';
 import 'WEEK_3/SqfLite/View Page.dart';
 import 'WEEK_3/SqfLite/sqflite.dart';
-import 'WEEK_5/google_facbook/Social Media Login.dart';
 import 'WEEK_5/Google-Facebook/googlelogin.dart';
 import 'Widget/commonWidget.dart';
 import 'week_1.dart';
@@ -21,10 +22,15 @@ import 'week_2.dart';
 import 'week_3.dart';
 import 'week_4.dart';
 
+
+List<CameraDescription> cameras = [];
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await MobileAds.instance.initialize();
+  cameras = await availableCameras();
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -37,6 +43,7 @@ Future<void> main() async {
       '/Week4': (context) => Week4(),
       '/Week5': (context) => Week5(),
       '/Week6': (context) => Week6(),
+      '/Week7': (context) => Week7(),
       '/Social_Media_Login': (context) => googlelogine1(),
       '/ViewPage': (context) => ViewPage(),
       '/SqfLite': (context) => SqfLite(),
@@ -123,6 +130,13 @@ class _MyAppState extends State<MyApp> {
                 },
                 child:
                     commonContainer(height: 100, title: "WEEK 6", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/Week7');
+                },
+                child:
+                    commonContainer(height: 100, title: "WEEK 7", textSize: 25),
               ),
             ],
           ),
