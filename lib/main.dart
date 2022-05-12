@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:taskproject/week_5.dart';
 import 'package:taskproject/week_6.dart';
@@ -22,15 +23,18 @@ import 'week_2.dart';
 import 'week_3.dart';
 import 'week_4.dart';
 
-
 List<CameraDescription> cameras = [];
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await MobileAds.instance.initialize();
   cameras = await availableCameras();
+
+  /// payment gateways
+  // Stripe.publishableKey =
+  //     "pk_test_51Kxk6qSCa4VaXPSqbWdqnGukVeJknMcampX2gG2HNYktsuJQWswbcCMgZ6x4sCiKdWzrQb1PNikUk8hJlQILJciV00TUsT9hrw";
+  // Stripe.instance.applySettings();
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

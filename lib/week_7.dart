@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:taskproject/WEEK_7/Custom%20Camera/camera%20Screen.dart';
 
+import 'WEEK_7/Custom Camera/camera Screen.dart';
+import 'WEEK_7/In App Purchase/in App Purchase.dart';
+import 'WEEK_7/Payment GateWays/Payment GateWays.dart';
+import 'WEEK_7/refreshScrenn.dart';
 import 'Widget/commonWidget.dart';
 
 class Week7 extends StatefulWidget {
@@ -41,6 +44,36 @@ class _Week7State extends State<Week7> {
                 ));
               },
               child: commonContainer(title: "Camera", height: 75),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return refreshScrenn();
+                  },
+                ));
+              },
+              child: commonContainer(title: "Pull To Refresh", height: 75),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return In_App_Purchase();
+                  },
+                ));
+              },
+              child: commonContainer(title: "In App Purchase", height: 75),
+            ),
+            InkWell(
+              onTap: () {
+                // Navigator.push(context, MaterialPageRoute(
+                //   builder: (context) {
+                //     return payment_GetWays();
+                //   },
+                // ));
+              },
+              child: commonContainer(title: "payment GetWays", height: 75),
             ),
           ],
         ),

@@ -5,27 +5,18 @@ import 'package:flutter/material.dart';
 import 'AllImageScreen.dart';
 
 class imageVideo_Show_Screen extends StatefulWidget {
-   File imageFile;
-   List<File> fileList;
+  File imageFile;
+  List<File> fileList;
 
-  imageVideo_Show_Screen(
-      {required this.imageFile,
-      required this.fileList}); // const imageVideo_Show_Screen({Key? key}) : super(key: key);
+  imageVideo_Show_Screen({required this.imageFile, required this.fileList});
+
+  // const imageVideo_Show_Screen({Key? key}) : super(key: key);
 
   @override
   State<imageVideo_Show_Screen> createState() => _imageVideo_Show_ScreenState();
 }
 
 class _imageVideo_Show_ScreenState extends State<imageVideo_Show_Screen> {
-  // var fileList;
-  //
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   fileList = widget.fileList;
-  // }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -47,7 +38,7 @@ class _imageVideo_Show_ScreenState extends State<imageVideo_Show_Screen> {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => AllImageScreen(
-                      FileList: widget.fileList,
+                      fileList: widget.fileList,
                     ),
                   ),
                 );

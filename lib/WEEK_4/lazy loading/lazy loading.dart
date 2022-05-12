@@ -19,7 +19,7 @@ class _lazy_loadingState extends State<lazy_loading> {
   bool isLoading = false;
 
   List<Users> list = [];
-  List<String> categories = [];
+  // List<String> categories = [];
 
   void initState() {
     super.initState();

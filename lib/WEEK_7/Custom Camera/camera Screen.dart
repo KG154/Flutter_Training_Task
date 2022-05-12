@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -45,6 +46,7 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
     getPermissionStatus();
+
     // controller = CameraController(cameras[0], ResolutionPreset.max);
     // controller!.initialize().then((_) {
     //   if (!mounted) {
@@ -52,6 +54,22 @@ class _CameraScreenState extends State<CameraScreen> {
     //   }
     //   setState(() {});
     // });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final CameraController? cameraController = controller;
+
+    // App state changed before we got the chance to initialize.
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      return;
+    }
+
+    if (state == AppLifecycleState.inactive) {
+      cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      onNewCameraSelected(cameraController.description);
+    }
   }
 
   getPermissionStatus() async {
@@ -149,6 +167,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   refreshAlreadyCapturedImages() async {
     final directory = await getApplicationDocumentsDirectory();
+    print("image Path : - ${directory}");
     List<FileSystemEntity> fileList = await directory.list().toList();
     allFileList.clear();
     List<Map<int, dynamic>> fileNames = [];
@@ -156,6 +175,7 @@ class _CameraScreenState extends State<CameraScreen> {
     fileList.forEach((file) {
       if (file.path.contains('.jpg') || file.path.contains('.mp4')) {
         allFileList.add(File(file.path));
+        // print("---------------------------------${allFileList}");
 
         String name = file.path.split('/').last.split('.').first;
         fileNames.add({0: int.parse(name), 1: file.path.split('/').last});
@@ -168,10 +188,14 @@ class _CameraScreenState extends State<CameraScreen> {
       String recentFileName = recentFile[1];
       if (recentFileName.contains('.mp4')) {
         _videoFile = File('${directory.path}/$recentFileName');
+        print("video Path : - ${_videoFile}");
+
         _imageFile = null;
         // _startVideoPlayer();
       } else {
         _imageFile = File('${directory.path}/$recentFileName');
+        print("_imageFile Path : - ${_imageFile}");
+
         _videoFile = null;
       }
 
@@ -182,7 +206,6 @@ class _CameraScreenState extends State<CameraScreen> {
   /// video
 
   bool _isRecordingInProgress = false;
-  bool _isVideoCameraSelected = false;
 
   Future<void> startVideoRecording() async {
     final CameraController? cameraController = controller;
@@ -256,7 +279,7 @@ class _CameraScreenState extends State<CameraScreen> {
         setState(() {});
       });
       await videoController!.setLooping(true);
-      await videoController!.play();
+      await videoController!.pause();
     }
   }
 
@@ -314,6 +337,7 @@ class _CameraScreenState extends State<CameraScreen> {
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _isFaceLiteSelected
                                       ? InkWell(
@@ -361,13 +385,15 @@ class _CameraScreenState extends State<CameraScreen> {
                                             !_isFrontCameraSelected;
                                       });
                                     },
-                                    child: Icon(
-                                      _isFrontCameraSelected
-                                          ? Icons.photo_camera_outlined
-                                          : Icons.photo_camera_sharp,
-                                      color: Colors.white38,
-                                      size: 35,
-                                    ),
+                                    child: _isRecordingInProgress
+                                        ? Container()
+                                        : Icon(
+                                            _isFrontCameraSelected
+                                                ? Icons.photo_camera_outlined
+                                                : Icons.photo_camera_sharp,
+                                            color: Colors.white38,
+                                            size: 35,
+                                          ),
                                   ),
                                   _isTouchSelected
                                       ? InkWell(
@@ -528,10 +554,9 @@ class _CameraScreenState extends State<CameraScreen> {
                                       ),
 
                                       ///  CapturedImages & stop record video
-
-                                      _isRecordingInProgress
-                                          ? InkWell(
-                                              onTap: () async {
+                                      InkWell(
+                                        onTap: _isRecordingInProgress
+                                            ? () async {
                                                 XFile? rawVideo =
                                                     await stopVideoRecording();
                                                 File videoFile =
@@ -550,29 +575,15 @@ class _CameraScreenState extends State<CameraScreen> {
 
                                                 _videoFile =
                                                     await videoFile.copy(
-                                                  '${directory.path}/$currentUnix.$fileFormat',
+                                                  '${directory.path}/$currentUnix.$fileFormat'
+                                                  '',
                                                 );
 
-                                                // _startVideoPlayer();
-                                              },
-                                              child: Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.circle,
-                                                    color: Colors.white38,
-                                                    size: 80,
-                                                  ),
-                                                  Icon(
-                                                    Icons.stop_rounded,
-                                                    color: Colors.white,
-                                                    size: 35,
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          : InkWell(
-                                              onTap: () async {
+                                                refreshAlreadyCapturedImages();
+                                                _startVideoPlayer();
+                                                // setState(() {});
+                                              }
+                                            : () async {
                                                 XFile? rawImage =
                                                     await takePicture();
                                                 File imageFile =
@@ -596,8 +607,25 @@ class _CameraScreenState extends State<CameraScreen> {
                                                 );
 
                                                 refreshAlreadyCapturedImages();
+                                                setState(() {});
                                               },
-                                              child: Stack(
+                                        child: _isRecordingInProgress
+                                            ? Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.circle,
+                                                    color: Colors.white38,
+                                                    size: 80,
+                                                  ),
+                                                  Icon(
+                                                    Icons.stop_rounded,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ],
+                                              )
+                                            : Stack(
                                                 alignment: Alignment.center,
                                                 children: [
                                                   Icon(
@@ -612,7 +640,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                                   ),
                                                 ],
                                               ),
-                                            ),
+                                      ),
 
                                       /// show image and video container
 
@@ -625,6 +653,8 @@ class _CameraScreenState extends State<CameraScreen> {
                                                     builder: (context) =>
                                                         imageVideo_Show_Screen(
                                                       imageFile: _imageFile!,
+
+                                                      // videoFile: _videoFile!,
                                                       fileList: allFileList,
                                                     ),
                                                   ),
@@ -650,14 +680,21 @@ class _CameraScreenState extends State<CameraScreen> {
                                                   )
                                                 : null,
                                           ),
-                                          child: videoController != null &&
-                                                  videoController!
-                                                      .value.isInitialized
-                                              ? AspectRatio(
-                                                  aspectRatio: videoController!
-                                                      .value.aspectRatio,
-                                                  child: VideoPlayer(
-                                                    videoController!,
+                                          child:
+                                          // videoController != null &&
+                                          //         videoController!
+                                          //             .value.isInitialized &&
+                                              _videoFile != null
+                                              ? ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: AspectRatio(
+                                                    aspectRatio:
+                                                        videoController!
+                                                            .value.aspectRatio,
+                                                    child: VideoPlayer(
+                                                        videoController!),
                                                   ),
                                                 )
                                               : Container(),
@@ -692,7 +729,7 @@ class _CameraScreenState extends State<CameraScreen> {
                       'Give permission',
                       style: TextStyle(
                         color: Colors.white,
-                        // fontSize: 24,
+                        fontSize: 24,
                       ),
                     ),
                   ),
