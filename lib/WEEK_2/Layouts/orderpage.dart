@@ -899,6 +899,7 @@ class _AllPageState extends State<AllPage> {
             ],
           ),
         ),
+
         /*
         Main image
         */
@@ -909,7 +910,7 @@ class _AllPageState extends State<AllPage> {
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisExtent: 200,
+              mainAxisExtent: 202,
             ),
             itemBuilder: (context, index) {
               return Container(
@@ -924,7 +925,7 @@ class _AllPageState extends State<AllPage> {
                     Stack(
                       children: [
                         Container(
-                          height: size.height * 0.19,
+                          height: size.height * 0.20,
                           decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.all(
@@ -934,7 +935,6 @@ class _AllPageState extends State<AllPage> {
                               image: AssetImage(_list[index].img),
                               fit: BoxFit.cover,
                             ),
-                            // shape: BoxShape.circle,
                           ),
                           child: Container(
                             decoration: BoxDecoration(
@@ -950,12 +950,12 @@ class _AllPageState extends State<AllPage> {
                                   child: Text(_list[index].toplab,
                                       style: TextStyle(
                                         color: Colors.orange[800],
-                                        //backgroundColor: Colors.white
+                                        // backgroundColor: Colors.white
                                       )),
                                 ),
                                 Container(
                                   width: size.width * 0.35,
-                                  margin: EdgeInsets.only(right: 50, top: 65),
+                                  margin: EdgeInsets.only(right: 50, top: 70),
                                   decoration: BoxDecoration(
                                     color: Colors.indigo,
                                     borderRadius: const BorderRadius.only(
@@ -997,6 +997,7 @@ class _AllPageState extends State<AllPage> {
                                         ),
                                       ),
                                       Container(
+                                        alignment: Alignment.center,
                                         height: size.width * 0.05,
                                         decoration: BoxDecoration(
                                           color: Colors.green,

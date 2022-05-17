@@ -78,8 +78,17 @@ dependencies:
   facebook_audience_network: ^1.0.1
   #week7
   camera: ^0.9.4+21
+  gallery_saver: ^2.3.2
   flutter_inapp_purchase: ^5.1.2
   flutter_stripe: ^2.5.0
+
+  #week8
+  popover: ^0.2.6+3
+  adaptive_action_sheet: ^2.0.1
+  get: 4.6.1
+  shared_preferences: ^2.0.15
+  sizer: ^2.0.15
+  delayed_display: ^2.0.0
 
 dev_dependencies:
   flutter_test:

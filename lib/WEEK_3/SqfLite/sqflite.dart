@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:taskproject/Widget/commonWidget.dart';
 
@@ -26,6 +30,9 @@ class _SqfLiteState extends State<SqfLite> {
   Database? _database;
 
   bool _loading = false;
+
+  final ImagePicker _picker = ImagePicker();
+  XFile? image;
 
   @override
   void initState() {
@@ -69,8 +76,60 @@ class _SqfLiteState extends State<SqfLite> {
                     child: CircularProgressIndicator(),
                   )
                 : ListView(
-                    padding: EdgeInsets.only(top: 100, left: 10, right: 10),
+                    padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 90),
+                        child: InkWell(
+                          onTap: () async {
+                            image = await _picker.pickImage(
+                                source: ImageSource.gallery);
+                            setState(() {});
+                          },
+                          child: image != null
+                              ? Container(
+                                  height: 150,
+                                  width: 150,
+                                  margin: EdgeInsets.only(top: 20, bottom: 50),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFFFFF),
+                                    image: DecorationImage(
+                                      image: FileImage(
+                                        File(image!.path),
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  width: 150,
+                                  height: 150,
+                                  margin: EdgeInsets.only(bottom: 40),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFFFFF),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    size: 100,
+                                  ),
+                                ),
+                        ),
+                      ),
+
                       Container(
                         child: TextField(
                           controller: tname,
@@ -294,16 +353,19 @@ class _SqfLiteState extends State<SqfLite> {
                             height: size.height * 0.06,
                             title: "Submit"),
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/ViewPage');
-                        },
-                        child: commonButton(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.3),
-                          width: size.width * 0.5,
-                          height: size.height * 0.06,
-                          title: "View",
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/ViewPage');
+                          },
+                          child: commonButton(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.3),
+                            width: size.width * 0.5,
+                            height: size.height * 0.06,
+                            title: "View",
+                          ),
                         ),
                       ),
                     ],

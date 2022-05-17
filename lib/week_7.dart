@@ -19,7 +19,7 @@ class _Week7State extends State<Week7> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Week 6",
+          "Week 7",
           style: TextStyle(fontSize: 25),
         ),
         centerTitle: true,

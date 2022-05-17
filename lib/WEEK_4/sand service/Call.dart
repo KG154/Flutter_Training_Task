@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Call extends StatefulWidget {
@@ -34,36 +35,25 @@ class _CallState extends State<Call> {
                 Container(
                   margin: EdgeInsets.only(
                       top: 100, left: 20, right: 20, bottom: 50),
-                  child: TextField(
+                  child: commonTextField(
                     controller: tcall,
                     keyboardType: TextInputType.number,
-                    onChanged: (value) {
+                    onchange: (value) {
                       setState(() {
                         callstatus = false;
                       });
                     },
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      labelText: 'Enter mobile no.',
-                      labelStyle: TextStyle(color: Colors.white),
-                      hintStyle: TextStyle(color: Colors.white),
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Icon(
-                          Icons.phone,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                      errorText: callstatus ? 'Call Is required' : null,
-                    ),
+                    labelText: 'Enter mobile no.',
+                    errorText: callstatus ? 'Call Is required' : null,
+                    prefixIcon: Icons.phone,
                   ),
                 ),
+
+
+
                 InkWell(
                   onTap: () {
+
                     setState(() {
                       String mobile = tcall.text;
                       if (mobile.isEmpty || mobile.length < 10) {
@@ -74,37 +64,11 @@ class _CallState extends State<Call> {
                     });
                     // launch('tel:+91$mobile');
                   },
-                  child: Container(
+                  child: commonButton(
                     margin: EdgeInsets.only(bottom: 10),
                     width: 120,
                     height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        // color: Colors.black54,
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Colors.black54,
-                              Color.fromRGBO(0, 41, 102, 1)
-                            ]),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black87.withOpacity(0.3),
-                              blurRadius: 1,
-                              offset: Offset(0, 1),
-                              spreadRadius: 1)
-                        ],
-                        border: Border.all(color: Colors.blue)),
-                    child: Text(
-                      "Make Call",
-                      style: TextStyle(
-                        letterSpacing: 2,
-                        fontSize: 20,
-                        color: const Color(0xFFFFFFFF),
-                      ),
-                    ),
+                    title: "Make Call",
                   ),
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/Widget/commonWidget.dart';
 import 'Call.dart';
 import 'Email.dart';
 import 'SMS.dart';
@@ -32,115 +33,48 @@ class _Sand_ServiceState extends State<Sand_Service> {
               InkWell(
                 onTap: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Call()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Call(),
+                    ),
+                  );
                 },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                child: commonButton(
                   width: 120,
                   height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      // color: Colors.black54,
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Colors.black54,
-                            Color.fromRGBO(0, 41, 102, 1)
-                          ]),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black87.withOpacity(0.3),
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                            spreadRadius: 1)
-                      ],
-                      border: Border.all(color: Colors.blue)),
-                  child: Text(
-                    "Call",
-                    style: TextStyle(
-                      letterSpacing: 2,
-                      fontSize: 20,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                  ),
+                  title: "Call",
                 ),
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SendSMS()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SendSMS(),
+                    ),
+                  );
                 },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 10),
-
+                child: commonButton(
+                  margin: EdgeInsets.only(top: 10, bottom: 10),
                   width: 120,
                   height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      // color: Colors.black54,
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Colors.black54,
-                            Color.fromRGBO(0, 41, 102, 1)
-                          ]),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black87.withOpacity(0.3),
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                            spreadRadius: 1)
-                      ],
-                      border: Border.all(color: Colors.blue)),
-                  child: Text(
-                    "SMS",
-                    style: TextStyle(
-                      letterSpacing: 2,
-                      fontSize: 20,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                  ),
+                  title: "SMS",
                 ),
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Email()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Email(),
+                    ),
+                  );
                 },
-                child: Container(
+                child: commonButton(
+                  // margin: EdgeInsets.only(top: 10, bottom: 10),
                   width: 120,
                   height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      // color: Colors.black54,
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Colors.black54,
-                            Color.fromRGBO(0, 41, 102, 1)
-                          ]),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black87.withOpacity(0.3),
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                            spreadRadius: 1)
-                      ],
-                      border: Border.all(color: Colors.blue)),
-                  child: Text(
-                    "EMAIL",
-                    style: TextStyle(
-                      letterSpacing: 2,
-                      fontSize: 20,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                  ),
+                  title: "EMAIL",
                 ),
               ),
             ],

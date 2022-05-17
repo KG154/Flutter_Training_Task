@@ -75,7 +75,10 @@ Widget commonButton({
 Widget commonTextField({
   TextEditingController? controller,
   TextInputType? keyboardType,
+  int? maxLength,
+  int? maxLines,
   bool obscureText = false,
+  bool? enabled,
   Function? onchange,
   Color? color,
   String? labelText,
@@ -87,10 +90,13 @@ Widget commonTextField({
   return TextField(
     controller: controller,
     keyboardType: keyboardType ?? TextInputType.text,
+    maxLength: maxLength,
+    maxLines: maxLines ?? 1,
     obscureText: obscureText,
     onChanged: (value) {
       onchange!(value);
     },
+    enabled: enabled,
     style: TextStyle(color: color ?? Colors.white),
     decoration: InputDecoration(
       border: OutlineInputBorder(
@@ -102,7 +108,7 @@ Widget commonTextField({
       hintStyle: TextStyle(color: color ?? Colors.white),
       prefixIcon: Icon(
         prefixIcon,
-        color: Colors.white,
+        color: color ?? Colors.white,
         size: 30,
       ),
       suffixIcon: suffixIcon,

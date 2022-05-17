@@ -10,8 +10,6 @@ class imageVideo_Show_Screen extends StatefulWidget {
 
   imageVideo_Show_Screen({required this.imageFile, required this.fileList});
 
-  // const imageVideo_Show_Screen({Key? key}) : super(key: key);
-
   @override
   State<imageVideo_Show_Screen> createState() => _imageVideo_Show_ScreenState();
 }
@@ -19,38 +17,23 @@ class imageVideo_Show_Screen extends StatefulWidget {
 class _imageVideo_Show_ScreenState extends State<imageVideo_Show_Screen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
+      body: Center(
+        child: InteractiveViewer(
+          panEnabled: false,
+          boundaryMargin: EdgeInsets.all(100),
+          minScale: 0.5,
+          maxScale: 2,
+          child: Container(
             width: double.infinity,
             height: double.infinity,
-            child: Image.file(widget.imageFile),
-          ),
-          Positioned(
-            top: size.height * 0.9,
-            left: size.width * 0.75,
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => AllImageScreen(
-                      fileList: widget.fileList,
-                    ),
-                  ),
-                );
-              },
-              child: Text('All Images'),
-              style: TextButton.styleFrom(
-                primary: Colors.black,
-                backgroundColor: Colors.white,
-              ),
+            child: Image.file(
+              widget.imageFile,
+              fit: BoxFit.cover,
             ),
           ),
-        ],
+        ),
       ),
     );
   }

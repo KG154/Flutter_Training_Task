@@ -1,11 +1,12 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:taskproject/week_5.dart';
 import 'package:taskproject/week_6.dart';
 import 'package:taskproject/week_7.dart';
+import 'package:taskproject/week_8.dart';
+import 'package:taskproject/week_9.dart';
 
 import 'WEEK_1/Navigator.dart';
 import 'WEEK_1/NavigatorPage/Page3.dart';
@@ -23,7 +24,7 @@ import 'week_2.dart';
 import 'week_3.dart';
 import 'week_4.dart';
 
-List<CameraDescription> cameras = [];
+List<CameraDescription>? cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,30 +37,28 @@ Future<void> main() async {
   //     "pk_test_51Kxk6qSCa4VaXPSqbWdqnGukVeJknMcampX2gG2HNYktsuJQWswbcCMgZ6x4sCiKdWzrQb1PNikUk8hJlQILJciV00TUsT9hrw";
   // Stripe.instance.applySettings();
 
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyApp(),
-    initialRoute: '/',
-    routes: {
-      '/week1': (context) => Week1(),
-      '/week2': (context) => Week2(),
-      '/Week3': (context) => Week3(),
-      '/Week4': (context) => Week4(),
-      '/Week5': (context) => Week5(),
-      '/Week6': (context) => Week6(),
-      '/Week7': (context) => Week7(),
-      '/Social_Media_Login': (context) => googlelogine1(),
-      '/ViewPage': (context) => ViewPage(),
-      '/SqfLite': (context) => SqfLite(),
-      '/widget': (context) => MainScreen(),
-      '/Alert': (context) => alert1(),
-      '/Drawer': (context) => Drawerr(),
-      '/pag1': (context) => Seven(),
-      '/pag2': (context) => Page1(),
-      '/pag3': (context) => Page2(),
-      '/pag4': (context) => Page3(),
-    },
-  ));
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
+      initialRoute: '/',
+      routes: {
+        '/week1': (context) => Week1(),
+        '/week2': (context) => Week2(),
+        '/Week3': (context) => Week3(),
+        '/Social_Media_Login': (context) => googlelogine1(),
+        '/ViewPage': (context) => ViewPage(),
+        '/SqfLite': (context) => SqfLite(),
+        '/widget': (context) => MainScreen(),
+        '/Alert': (context) => alert1(),
+        '/Drawer': (context) => Drawerr(),
+        '/pag1': (context) => Seven(),
+        '/pag2': (context) => Page1(),
+        '/pag3': (context) => Page2(),
+        '/pag4': (context) => Page3(),
+      },
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -116,31 +115,69 @@ class _MyAppState extends State<MyApp> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/Week4');
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week4();
+                    },
+                  ));
                 },
                 child:
                     commonContainer(height: 100, title: "WEEK 4", textSize: 25),
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/Week5');
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week5();
+                    },
+                  ));
                 },
                 child:
                     commonContainer(height: 100, title: "WEEK 5", textSize: 25),
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/Week6');
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week6();
+                    },
+                  ));
                 },
                 child:
                     commonContainer(height: 100, title: "WEEK 6", textSize: 25),
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/Week7');
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week7();
+                    },
+                  ));
                 },
                 child:
                     commonContainer(height: 100, title: "WEEK 7", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week8();
+                    },
+                  ));
+                },
+                child:
+                    commonContainer(height: 100, title: "WEEK 8", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week9();
+                    },
+                  ));
+                },
+                child:
+                    commonContainer(height: 100, title: "WEEK 9", textSize: 25),
               ),
             ],
           ),
