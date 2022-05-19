@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/WEEK_9/RealTime%20Database/R_Singup.dart';
 
 import 'WEEK_9/Authentication/LoginScrenn.dart';
 import 'Widget/commonWidget.dart';
@@ -36,44 +37,22 @@ class _Week9State extends State<Week9> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return FireBase_AuthenticationScreen();
+                    return LoginScreen();
                   },
                 ));
               },
-              child:
-                  commonContainer(title: "Authentication", height: 75),
+              child: commonContainer(title: "Authentication", height: 75),
             ),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.push(context, MaterialPageRoute(
-            //       builder: (context) {
-            //         return ResponsiveScreen();
-            //       },
-            //     ));
-            //   },
-            //   child: commonContainer(title: "Responsive apps", height: 75),
-            // ),
-            // InkWell(
-            //   onTap: () {
-            //     // Navigator.push(context, MaterialPageRoute(
-            //     //   builder: (context) {
-            //     //     return localizationScreen();
-            //     //   },
-            //     // ));
-            //   },
-            //   child: commonContainer(title: "localization", height: 75),
-            // ),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.push(context, MaterialPageRoute(
-            //       builder: (context) {
-            //         return ActionSheet_popover();
-            //       },
-            //     ));
-            //   },
-            //   child:
-            //       commonContainer(title: "ActionSheet & popover", height: 75),
-            // ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return R_SignUpScreen();
+                  },
+                ));
+              },
+              child: commonContainer(title: "Realtime database", height: 75),
+            ),
           ],
         ),
       ),

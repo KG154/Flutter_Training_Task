@@ -127,7 +127,7 @@ class _Gestures1State extends State<Gestures1> {
                       inx = index;
                       return PhotoViewGalleryPageOptions(
                         imageProvider: AssetImage(
-                          urlImages[inx],
+                          urlImages[index],
                         ),
                         minScale: PhotoViewComputedScale.contained * 0.8,
                         maxScale: PhotoViewComputedScale.covered * 2,

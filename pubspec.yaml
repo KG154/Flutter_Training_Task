@@ -65,10 +65,8 @@ dependencies:
   photo_manager: ^1.3.10
   video_player: ^2.2.19
   rxdart:
-  firebase_auth:
   font_awesome_flutter: ^10.1.0
   provider:
-  firebase_core:
   flutter_facebook_auth: ^4.2.1
   flutter_login_facebook: ^1.4.1
   #week6
@@ -89,6 +87,12 @@ dependencies:
   shared_preferences: ^2.0.15
   sizer: ^2.0.15
   delayed_display: ^2.0.0
+
+
+  #Firebase
+  firebase_auth:
+  firebase_core:
+  firebase_database: ^9.0.14
 
 dev_dependencies:
   flutter_test:
