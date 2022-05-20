@@ -10,15 +10,15 @@ class DatabaseHandler {
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await db.execute(
-          'CREATE TABLE MyData (id INTEGER PRIMARY KEY, tname TEXT, temail TEXT, tpass TEXT)');
+          'CREATE TABLE MyData (id INTEGER PRIMARY KEY, tname TEXT, temail TEXT, tpass TEXT,image BLOB)');
     });
     return database;
   }
 
   Future<void> insertdata(
-      Database database, String name, String email, String password) async {
+      Database database, String name, String email, String password ,[String? image]) async {
     String qry =
-        "insert into MyData(tname,temail,tpass) values('$name','$email','$password')";
+        "insert into MyData(tname,temail,tpass,image) values('$name','$email','$password','$image')";
     var cnt = await database.rawInsert(qry);
     print(cnt);
   }
@@ -35,9 +35,9 @@ class DatabaseHandler {
   }
 
   Future<void> updateData(Database database, int userid, String name,
-      String email, String password) async {
+      String email, String password,[String? image]) async {
     String qry =
-        "update MyData set tname = '$name',temail = '$email',tpass = '$password' where id = '$userid'";
+        "update MyData set tname = '$name',temail = '$email',tpass = '$password' ,image='$image'where id = '$userid'";
     await database.rawUpdate(qry);
   }
 }

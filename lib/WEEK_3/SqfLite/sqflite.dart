@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,7 @@ class _SqfLiteState extends State<SqfLite> {
 
   final ImagePicker _picker = ImagePicker();
   XFile? image;
+  File? _image;
 
   @override
   void initState() {
@@ -84,9 +86,11 @@ class _SqfLiteState extends State<SqfLite> {
                           onTap: () async {
                             image = await _picker.pickImage(
                                 source: ImageSource.gallery);
-                            setState(() {});
+                            setState(() {
+                              _image = File(image!.path);
+                            });
                           },
-                          child: image != null
+                          child: _image != null
                               ? Container(
                                   height: 150,
                                   width: 150,
@@ -94,9 +98,7 @@ class _SqfLiteState extends State<SqfLite> {
                                   decoration: BoxDecoration(
                                     color: const Color(0xFFFFFFFF),
                                     image: DecorationImage(
-                                      image: FileImage(
-                                        File(image!.path),
-                                      ),
+                                      image: FileImage(_image!),
                                       fit: BoxFit.cover,
                                     ),
                                     shape: BoxShape.circle,
@@ -321,9 +323,15 @@ class _SqfLiteState extends State<SqfLite> {
                             } else if (!emailValid) {
                               emailstatus = true;
                               emailerror = 'Enter Valid Email..';
+                            } else if (_image == null) {
+                              print("image is null");
                             } else {
+                              String? _a;
+                              if (_image != null) {
+                                _a = base64Encode(_image!.readAsBytesSync());
+                              }
                               DatabaseHandler().insertdata(
-                                  _database!, name, email, password);
+                                  _database!, name, email, password, _a);
                               setState(() {
                                 _loading = true;
                                 Future.delayed(Duration(milliseconds: 200), () {
@@ -343,6 +351,7 @@ class _SqfLiteState extends State<SqfLite> {
                               tname.text = "";
                               temail.text = "";
                               tpass.text = "";
+                              image = null;
                             }
                           });
                         },

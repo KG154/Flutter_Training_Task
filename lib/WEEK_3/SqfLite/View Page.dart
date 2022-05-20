@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -71,11 +73,9 @@ class _ViewPageState extends State<ViewPage> {
                     margin: EdgeInsets.only(top: 10, bottom: 5),
                     child: ListTile(
                       leading: CircleAvatar(
-                        child: Text(
-                          "${_list[index]['tname'].split(" ")[0][0]}",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                        child: Image.memory(base64Decode(_list[index]['image'])),
+
+                                             ),
                       title: Text("${_list[index]['tname']}",
                           style: TextStyle(color: Colors.white)),
                       subtitle: Column(

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taskproject/WEEK_9/Authentication/SignupScreen.dart';
-import 'package:taskproject/WEEK_9/Authentication/userMainScareen.dart';
+import 'package:taskproject/WEEK_9/Authentication/userMain_Screen/userMainScareen.dart';
 
 import '../../Widget/commonWidget.dart';
 import 'forgetpassword.dart';

@@ -318,7 +318,7 @@ class _AddUserState extends State<AddUser> {
                               login(image!.path, name, email);
                               setState(() {
                                 isloding = true;
-                                Future.delayed(Duration(seconds: 3), () {
+                                Future.delayed(Duration(seconds: 1), () {
                                   setState(() {
                                     isloding = false;
                                   });

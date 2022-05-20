@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:taskproject/Widget/commonWidget.dart';
 
@@ -39,6 +43,8 @@ class _UpdatepageState extends State<Updatepage> {
       _database = value;
     });
   }
+  
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +68,14 @@ class _UpdatepageState extends State<Updatepage> {
         child: ListView(
           padding: EdgeInsets.only(top: 100, left: 10, right: 10),
           children: [
+             InkWell(onTap: ()async{
+               final  _piked=await ImagePicker.platform.getImage(source: ImageSource.gallery);
+               _image=File(_piked!.path);
+               setState(() {
+                 
+               });
+               
+             },child: CircleAvatar(child:_image==null?Image.memory(base64Decode( widget._map['image'])):Image.file(_image!) ,)),
             Container(
               child: TextField(
                 controller: tname,
@@ -220,9 +234,13 @@ class _UpdatepageState extends State<Updatepage> {
                   } else if (!emailValid) {
                     emailstatus = true;
                     emailerror = 'Enter Valid Email..';
-                  } else {
+                  } else {   String? _a;
+                  if(_image!=null){
+                    _a =base64Encode(_image!.readAsBytesSync());
+
+                  }
                     DatabaseHandler()
-                        .updateData(_database!, userid, name, email, password);
+                        .updateData(_database!, userid, name, email, password,_a!);
                     Navigator.pop(context, true);
                     // Navigator.popUntil(context, ModalRoute.withName('/SqfLite'));
 

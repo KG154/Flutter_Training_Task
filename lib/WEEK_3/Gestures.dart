@@ -27,6 +27,7 @@ class _Gestures1State extends State<Gestures1> {
   double? endPositionV;
   double? endPositionH;
   int inx = 0;
+  int? selectinx;
 
   Axis axisDirection = Axis.horizontal;
 
