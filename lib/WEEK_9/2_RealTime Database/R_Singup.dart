@@ -1,7 +1,13 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:ui';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../Widget/commonWidget.dart';
 import 'R_ViewPage.dart';
@@ -20,7 +26,8 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
     }
   }
 
-  final databaseRef = FirebaseDatabase.instance.reference();
+  final databaseRef = FirebaseDatabase.instance.ref();
+  final storageRef = FirebaseStorage.instance.ref();
 
   ///
   TextEditingController tname = TextEditingController();
@@ -35,8 +42,10 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
   bool designationStatus = false;
   bool salaryStatus = false;
   String emailError = "";
+  String callError = "";
   String choice = "";
   bool loding = false;
+  File? _image;
 
   @override
   void initState() {
@@ -74,7 +83,60 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+                        padding: EdgeInsets.only(
+                            top: 15, left: 10, right: 10, bottom: 20),
+                        child: InkWell(
+                          onTap: () async {
+                            final photo = await ImagePicker.platform.getImage(
+                              source: ImageSource.gallery,
+                              imageQuality: 50,
+                            );
+                            _image = File(photo!.path);
+                            updateui();
+                          },
+                          child: _image != null
+                              ? Container(
+                                  height: 100,
+                                  width: 100,
+                                  // margin: EdgeInsets.only(top: 20, bottom: 50),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFFFFF),
+                                    image: DecorationImage(
+                                      image: FileImage(_image!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  width: 100,
+                                  height: 100,
+                                  margin: EdgeInsets.only(bottom: 40),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFFFFF),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    size: 50,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
                         child: commonTextField(
                           controller: tname,
                           onchange: (value) {
@@ -89,7 +151,7 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+                        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                         child: Container(
                           child: commonTextField(
                             keyboardType: TextInputType.emailAddress,
@@ -107,7 +169,7 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+                        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                         child: commonTextField(
                           controller: tcall,
                           keyboardType: TextInputType.number,
@@ -118,13 +180,12 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                           },
                           color: Colors.black54,
                           labelText: 'Mobile no.',
-                          errorText:
-                              callStatus ? 'Mobile no.Is required' : null,
+                          errorText: callStatus ? '${callError}' : null,
                           prefixIcon: Icons.phone,
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+                        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                         child: commonTextField(
                           controller: tdesignation,
                           keyboardType: TextInputType.text,
@@ -142,7 +203,7 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+                        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                         child: commonTextField(
                           controller: tsalary,
                           keyboardType: TextInputType.phone,
@@ -158,7 +219,7 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 20, right: 10),
+                        padding: EdgeInsets.only(top: 10, left: 20, right: 10),
                         child: Row(
                           children: [
                             Text("Gender : "),
@@ -233,6 +294,13 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                             }
                             if (tcall.text.isEmpty) {
                               callStatus = true;
+                              callError = 'Mobile no.Is required';
+                            }
+                            if (tcall.text.isNotEmpty) {
+                              if (tcall.text.length != 10) {
+                                callStatus = true;
+                                callError = 'Mobile no. must be of 10 digit';
+                              }
                             }
                             if (tdesignation.text.isEmpty) {
                               designationStatus = true;
@@ -261,24 +329,54 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                               if (!emailValid) {
                                 emailStatus = true;
                                 emailError = 'Enter Valid Email';
+                              }
+                              if (tcall.text.length != 10) {
+                                callStatus = true;
+                                callError = 'Mobile no. must be of 10 digit';
                               } else {
-                                setState(() {});
-                                insertdata(
+                                if (_image == null) {
+                                  Fluttertoast.showToast(
+                                    msg: "Please Provided Image.. ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.deepPurple,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
+                                  );
+                                } else {
+                                  setState(() {
+                                    loding = true;
+                                  });
+                                  String uplodfilename = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
+                                  var fileName =
+                                      "id-${tname.text}-${uplodfilename}";
+                                  final destination = 'files/$fileName';
+                                  TaskSnapshot snapshot = await FirebaseStorage
+                                      .instance
+                                      .ref()
+                                      .child(destination)
+                                      .putFile(_image!);
+                                  final String downloadUrl =
+                                      await snapshot.ref.getDownloadURL();
+
+                                  ///
+                                  insertdata(
                                     tname.text,
                                     temail.text,
                                     tcall.text,
                                     tdesignation.text,
                                     tsalary.text,
-                                    choice.toString());
-                                print("success");
-                                setState(() {
-                                  loding = true;
-                                  Future.delayed(Duration(seconds: 1), () {
-                                    setState(() {
-                                      loding = false;
-                                    });
+                                    choice.toString(),
+                                    downloadUrl,
+                                  );
+                                  print("success");
+                                  setState(() {
+                                    loding = false;
                                   });
-                                });
+                                }
                               }
                             }
 
@@ -350,16 +448,19 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
   }
 
   void insertdata(String name, String email, String phone, String designation,
-      String salary, String gender) {
+      String salary, String gender, String downloadUrl) {
     String? key = databaseRef.child("Employee").push().key;
     databaseRef.child("Employee").child(key!).set({
+      'key': key,
       'name': name,
       'email': email,
       'phone': phone,
       'designation': designation,
       'salary': salary,
       'gender': gender,
+      'url': downloadUrl,
     });
+    _image = null;
     tname.clear();
     temail.clear();
     tcall.clear();

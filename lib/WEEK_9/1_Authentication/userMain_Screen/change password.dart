@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taskproject/WEEK_9/Authentication/LoginScrenn.dart';
 
 import '../../../Widget/commonWidget.dart';
+import '../LoginScrenn.dart';
 
 class Change_Password_Screen extends StatefulWidget {
   const Change_Password_Screen({Key? key}) : super(key: key);

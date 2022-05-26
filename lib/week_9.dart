@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:taskproject/WEEK_9/RealTime%20Database/R_Singup.dart';
-
-import 'WEEK_9/Authentication/LoginScrenn.dart';
+import 'WEEK_9/1_Authentication/LoginScrenn.dart';
+import 'WEEK_9/2_RealTime Database/R_Singup.dart';
+import 'WEEK_9/3_Firestore database/F_LoginScreen.dart';
+import 'WEEK_9/Local Notification/Local_NotificationScreen.dart';
 import 'Widget/commonWidget.dart';
 
 class Week9 extends StatefulWidget {
@@ -52,6 +53,26 @@ class _Week9State extends State<Week9> {
                 ));
               },
               child: commonContainer(title: "Realtime database", height: 75),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return F_LoginScreen();
+                  },
+                ));
+              },
+              child: commonContainer(title: "FireStore database", height: 75),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return Local_NotificationScreen();
+                  },
+                ));
+              },
+              child: commonContainer(title: "Local Notification", height: 75),
             ),
           ],
         ),

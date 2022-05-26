@@ -149,8 +149,7 @@ class _Recording_soundState extends State<Recording_sound> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text('Recording'),
           backgroundColor: Colors.black87,
@@ -258,7 +257,6 @@ class _Recording_soundState extends State<Recording_sound> {
             // ),
           ]),
         ),
-      ),
     );
   }
 // void play() {

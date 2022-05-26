@@ -25,14 +25,6 @@ class _ViewPageState extends State<ViewPage> {
   DatabaseHandler _databaseHandler = DatabaseHandler();
   List<Map> _list = [];
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   // getalldata();
-  //   // _list = [];
-  // }
-
   Future<List<Map>> getalldata() async {
     await _databaseHandler.CreateDataBase().then((value) async {
       _database = value;
@@ -41,7 +33,15 @@ class _ViewPageState extends State<ViewPage> {
         print('list =  $_list');
       });
     });
+    print("listall = {$_list}");
     return _list;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getalldata();
   }
 
   @override
@@ -56,115 +56,125 @@ class _ViewPageState extends State<ViewPage> {
         backgroundColor: Colors.black45,
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Colors.black54, Color.fromRGBO(0, 41, 102, 1)])),
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.black54, Color.fromRGBO(0, 41, 102, 1)],
+          ),
+        ),
         child: FutureBuilder(
           future: getalldata(),
           builder: (context, snapshot) {
             // if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: _list.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 5),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Image.memory(base64Decode(_list[index]['image'])),
-
-                                             ),
-                      title: Text("${_list[index]['tname']}",
-                          style: TextStyle(color: Colors.white)),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${_list[index]['temail']}",
-                              style: TextStyle(color: Colors.white)),
-                          Text("${_list[index]['tpass']}",
-                              style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              // Navigator.pushNamed(context, '/Updatepage',arguments: _list[index]);
-
-                              var dd = await Navigator.push(context,
-                                  MaterialPageRoute(
-                                builder: (context) {
-                                  return Updatepage(_list[index]);
-                                },
-                              ));
-                              if (dd == true) {
-                                getalldata();
-                                updateui();
-                              }
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.green,
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: _list.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 5),
+                      child: ListTile(
+                        leading: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: MemoryImage(
+                                base64Decode(_list[index]['image']),
+                              ),
+                              fit: BoxFit.cover,
                             ),
+                            shape: BoxShape.circle,
+                            color: Colors.white,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
+                        ),
+                        title: Text("${_list[index]['tname']}",
+                            style: TextStyle(color: Colors.white)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${_list[index]['temail']}",
+                                style: TextStyle(color: Colors.white)),
+                            Text("${_list[index]['tpass']}",
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                // Navigator.pushNamed(context, '/Updatepage',arguments: _list[index]);
+
+                                var dd = await Navigator.push(context,
+                                    MaterialPageRoute(
                                   builder: (context) {
-                                    return AlertDialog(
-                                      title: Text("${_list[index]['tname']}"),
-                                      content: Text(
-                                        "Are You Sure You Want To Delete this Data",
-                                        style:
-                                            TextStyle(color: Colors.redAccent),
-                                      ),
-                                      actions: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text("Cancel")),
-                                        ElevatedButton(
-                                            onPressed: () async {
-                                              Navigator.pop(context);
-                                              int userid = _list[index]['id'];
-                                              delete(_database!, userid);
-
-                                              setState(() {});
-                                            },
-                                            child: Text("YES")),
-                                      ],
-                                    );
-                                  });
-                              // setState(() {});
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
+                                    return Updatepage(_list[index]);
+                                  },
+                                ));
+                                if (dd == true) {
+                                  getalldata();
+                                  updateui();
+                                }
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.green,
+                              ),
                             ),
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text("${_list[index]['tname']}"),
+                                        content: Text(
+                                          "Are You Sure You Want To Delete this Data",
+                                          style: TextStyle(
+                                              color: Colors.redAccent),
+                                        ),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Cancel")),
+                                          ElevatedButton(
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                int userid = _list[index]['id'];
+                                                delete(_database!, userid);
+
+                                                setState(() {});
+                                              },
+                                              child: Text("YES")),
+                                        ],
+                                      );
+                                    });
+                                // setState(() {});
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(color: Colors.indigo),
-              );
-            }
+                    );
+                  },
+                );
+              } else {
+                return Center(
+                  child: Text('NO Data'),
+                );
+              }
             // } else {
-            //   return SizedBox(
-            //     width: 60,
-            //     height: 60,
-            //     child: CircularProgressIndicator(color: Colors.indigo),
+            //   return Center(
+            //     child: CircularProgressIndicator(),
             //   );
             // }
           },

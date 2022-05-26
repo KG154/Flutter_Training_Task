@@ -25,7 +25,6 @@ class _UpdatedataState extends State<Updatedata> {
   final ImagePicker _picker = ImagePicker();
   XFile? image;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -37,7 +36,7 @@ class _UpdatedataState extends State<Updatedata> {
   /*   */
   Future<void> EditData(String name, String email) async {
     var respons = await http.put(
-        Uri.parse("http://192.168.1.38/Practical_Api/api/edit_user_details"),
+        Uri.parse("http://192.168.1.42/Practical_Api/api/edit_user_details"),
         headers: {
           "Token":
               "dyGyy4ST5P8:APA91bFDJ_X9qdRcWvdAnXxnrKXU0DlVUpGf5CQez4mLSn9y6vo0qQUslK2Zj2YLO2eEH-x7K6dyf40Ltd5aCGoNs9Kk2ZRx_oCb88D3l_53SVqjhdKlLKz0enqdtvxDN3K0lg_eISlc"
@@ -72,7 +71,7 @@ class _UpdatedataState extends State<Updatedata> {
   ) async {
     final request = await http.MultipartRequest(
       'POST',
-      Uri.parse("http://192.168.1.38/Practical_Api/api/change_profile_pic"),
+      Uri.parse("http://192.168.1.42/Practical_Api/api/change_profile_pic"),
     );
     var header = {
       "Token":
@@ -341,12 +340,6 @@ class _UpdatedataState extends State<Updatedata> {
                         emailstatus = true;
                         emailerror = 'Enter Valid Email..';
                       } else {
-                        // Map<String, String> bodyData = Map<String, String>();
-                        // bodyData["user_id"] = widget.uid;
-                        // changeImage(
-                        //   image!.path,
-                        //   bodyData,
-                        // );
                         EditData(
                           name,
                           email,

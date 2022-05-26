@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/WEEK_1/Navigator.dart';
 
 import '../../Widget/commonWidget.dart';
 
@@ -29,6 +30,7 @@ class _Page3State extends State<Page3> {
           child: InkWell(
             onTap: () {
               Navigator.popUntil(context, ModalRoute.withName('/pag2'));
+
               // Navigator.of(context).pushNamedAndRemoveUntil('/pag2', (route) => false);
             },
             child: commonButton(

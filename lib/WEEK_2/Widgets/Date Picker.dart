@@ -43,7 +43,10 @@ class _Datepicker1State extends State<Datepicker1> {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
-              child: Text('${selectdate.day}/${selectdate.month}/${selectdate.year}',style: TextStyle(color: Colors.white),),
+              child: Text(
+                '${selectdate.day}/${selectdate.month}/${selectdate.year}',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             // Center(
             //   child: Column(
@@ -59,7 +62,6 @@ class _Datepicker1State extends State<Datepicker1> {
             //     ],
             //   ),
             // ),
-
           ],
         ),
       ),

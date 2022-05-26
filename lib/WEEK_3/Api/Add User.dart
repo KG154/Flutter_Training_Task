@@ -14,10 +14,9 @@ class AddUser extends StatefulWidget {
 }
 
 class _AddUserState extends State<AddUser> {
-
   bool isloding = false;
 
-  var uri = "http://192.168.1.38/Practical_Api/api/add_user";
+  var uri = "http://192.168.1.42/Practical_Api/api/add_user";
 
   login(String path, String name, String email) async {
     final request = await http.MultipartRequest(
@@ -37,7 +36,6 @@ class _AddUserState extends State<AddUser> {
     // final responseX = await res.stream.bytesToString();
     // print(responseX);
     if (res.statusCode == 200) {
-
       Navigator.pop(context, true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -91,8 +89,8 @@ class _AddUserState extends State<AddUser> {
                                       children: [
                                         ListTile(
                                           title: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 20.0),
                                             child: Text(
                                               'Select Your Image',
                                               style: TextStyle(fontSize: 20),
@@ -130,13 +128,13 @@ class _AddUserState extends State<AddUser> {
                                                           color: Colors
                                                               .green.shade900,
                                                         ),
-                                                        backgroundColor:
-                                                            Colors.green.shade100,
+                                                        backgroundColor: Colors
+                                                            .green.shade100,
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin:
-                                                          EdgeInsets.only(top: 5),
+                                                      margin: EdgeInsets.only(
+                                                          top: 5),
                                                       child: Text(
                                                         "Camera",
                                                         style: TextStyle(
@@ -150,7 +148,8 @@ class _AddUserState extends State<AddUser> {
                                             InkWell(
                                               onTap: () async {
                                                 image = await _picker.pickImage(
-                                                    source: ImageSource.gallery);
+                                                    source:
+                                                        ImageSource.gallery);
                                                 setState(() {});
                                                 Navigator.pop(context);
                                               },
@@ -173,13 +172,13 @@ class _AddUserState extends State<AddUser> {
                                                           color: Colors
                                                               .green.shade900,
                                                         ),
-                                                        backgroundColor:
-                                                            Colors.green.shade100,
+                                                        backgroundColor: Colors
+                                                            .green.shade100,
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin:
-                                                          EdgeInsets.only(top: 5),
+                                                      margin: EdgeInsets.only(
+                                                          top: 5),
                                                       child: Text(
                                                         "Camera",
                                                         style: TextStyle(
@@ -217,7 +216,6 @@ class _AddUserState extends State<AddUser> {
                                     height: 100,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
-
                                     ),
                                     child: Icon(
                                       Icons.camera_alt_rounded,
@@ -292,39 +290,55 @@ class _AddUserState extends State<AddUser> {
                       padding: const EdgeInsets.symmetric(horizontal: 110),
                       child: ElevatedButton(
                           onPressed: () {
-                            String name = tname.text;
-                            String email = temail.text;
+                            setState(() {
+                              String name = tname.text;
+                              String email = temail.text;
 
-                            bool emailValid = RegExp(
-                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                                .hasMatch(email);
-                            if (name.isEmpty && email.isEmpty) {
-                              namestatus = true;
-                              emailstatus = true;
-                              emailerror = 'Email Is required';
-                            } else if (name.isEmpty && !emailValid) {
-                              namestatus = true;
-                              emailstatus = true;
-                              emailerror = 'Enter Valid Email..';
-                            } else if (name.isEmpty) {
-                              namestatus = true;
-                            } else if (email.isEmpty) {
-                              emailstatus = true;
-                              emailerror = 'Email Is required';
-                            } else if (!emailValid) {
-                              emailstatus = true;
-                              emailerror = 'Enter Valid Email..';
-                            } else {
-                              login(image!.path, name, email);
-                              setState(() {
-                                isloding = true;
-                                Future.delayed(Duration(seconds: 1), () {
+                              bool emailValid = RegExp(
+                                      r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                                  .hasMatch(email);
+                              if (name.isEmpty) {
+                                namestatus = true;
+                              }
+                              if (email.isEmpty) {
+                                emailstatus = true;
+                                emailerror = 'Email Is required';
+                              }
+                              if (email.isNotEmpty) {
+                                if (!emailValid) {
+                                  emailstatus = true;
+                                  emailerror = 'Enter Valid Email';
+                                }
+                              }
+                              if (image == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.black87,
+                                    content: Text(
+                                      "Please Select image...",
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Colors.white60),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                if (!emailValid) {
+                                  emailstatus = true;
+                                  emailerror = 'Enter Valid Email..';
+                                } else {
+                                  login(image!.path, name, email);
                                   setState(() {
-                                    isloding = false;
+                                    isloding = true;
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      setState(() {
+                                        isloding = false;
+                                      });
+                                    });
                                   });
-                                });
-                              });
-                            }
+                                }
+                              }
+                            });
                           },
                           child: Text('SUBMIT')),
                     ),

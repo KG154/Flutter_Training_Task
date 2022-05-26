@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:taskproject/WEEK_9/Authentication/SignupScreen.dart';
-import 'package:taskproject/WEEK_9/Authentication/userMain_Screen/userMainScareen.dart';
+
 
 import '../../Widget/commonWidget.dart';
+import 'SignupScreen.dart';
 import 'forgetpassword.dart';
+import 'userMain_Screen/userMainScareen.dart';
 
 // class Authentation_Screen extends StatelessWidget {
 //   Authentation_Screen({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ import 'forgetpassword.dart';
 //           );
 //         }
 //         return MaterialApp(
-//           title: "Authentication",
+//           title: "1_Authentication",
 //           debugShowCheckedModeBanner: false,
 //           home: LoginScreen(),
 //         );

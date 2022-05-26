@@ -29,7 +29,7 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
   @override
   void dispose() {
     super.dispose();
-    // dispos();
+    dispos();
     WidgetsBinding.instance!.addObserver(this);
     print("Dispose");
   }
@@ -46,7 +46,7 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
     // TODO: implement deactivate
     super.deactivate();
     print("deactivate");
-    deactive();
+    // deactive();
   }
 
   void deactive() {
@@ -54,14 +54,6 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
         msg: "deactivate",
         toastLength: Toast.LENGTH_LONG,
         backgroundColor: Colors.black54);
-  }
-
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
   }
 
   @override
@@ -74,11 +66,6 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
         {
           lifecycle = "paused";
           showInSnackBar(lifecycle);
-
-          // Fluttertoast.showToast(
-          //     msg: "$lifecycle",
-          //     toastLength: Toast.LENGTH_LONG,
-          //     backgroundColor: Colors.green);
         }
 
         break;
@@ -86,11 +73,6 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
         {
           lifecycle = "resumed";
           showInSnackBar(lifecycle);
-
-          // Fluttertoast.showToast(
-          //     msg: "$lifecycle",
-          //     toastLength: Toast.LENGTH_LONG,
-          //     backgroundColor: Colors.green);
         }
 
         break;
@@ -109,12 +91,8 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
       case AppLifecycleState.detached:
         {
           lifecycle = "detached";
+          print("detached");
           showInSnackBar(lifecycle);
-          // Fluttertoast.showToast(
-          //     msg: "$lifecycle",
-          //
-          //     toastLength: Toast.LENGTH_LONG,
-          //     backgroundColor: Colors.green);
         }
 
         break;
@@ -142,11 +120,6 @@ class _SixState extends State<Six> with WidgetsBindingObserver {
         backgroundColor: Colors.black45,
         centerTitle: true,
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(

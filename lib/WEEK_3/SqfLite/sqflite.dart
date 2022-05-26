@@ -32,8 +32,8 @@ class _SqfLiteState extends State<SqfLite> {
 
   bool _loading = false;
 
-  final ImagePicker _picker = ImagePicker();
-  XFile? image;
+  // final ImagePicker _picker = ImagePicker();
+  // XFile? image;
   File? _image;
 
   @override
@@ -84,11 +84,12 @@ class _SqfLiteState extends State<SqfLite> {
                         padding: const EdgeInsets.symmetric(horizontal: 90),
                         child: InkWell(
                           onTap: () async {
-                            image = await _picker.pickImage(
-                                source: ImageSource.gallery);
-                            setState(() {
-                              _image = File(image!.path);
-                            });
+                            final photo = await ImagePicker.platform.getImage(
+                              source: ImageSource.gallery,
+                              imageQuality: 50,
+                            );
+                            _image = File(photo!.path);
+                            setState(() {});
                           },
                           child: _image != null
                               ? Container(
@@ -131,7 +132,6 @@ class _SqfLiteState extends State<SqfLite> {
                                 ),
                         ),
                       ),
-
                       Container(
                         child: TextField(
                           controller: tname,
@@ -221,49 +221,6 @@ class _SqfLiteState extends State<SqfLite> {
                           errorText: passstatus ? '$passworderror' : null,
                         ),
                       ),
-                      // Container(
-                      //   padding: EdgeInsets.only(top: 15, bottom: 30),
-                      //   child: TextField(
-                      //     controller: tpass,
-                      //     keyboardType: TextInputType.visiblePassword,
-                      //     obscureText: showpass,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         passstatus = false;
-                      //       });
-                      //     },
-                      //     style: TextStyle(color: Colors.white),
-                      //     decoration: InputDecoration(
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(16),
-                      //       ),
-                      //       labelText: 'Password',
-                      //       hintText: 'abc@123',
-                      //       labelStyle: TextStyle(color: Colors.white),
-                      //       hintStyle: TextStyle(color: Colors.white),
-                      //       prefixIcon: const Padding(
-                      //         padding: EdgeInsets.symmetric(horizontal: 20),
-                      //         child: Icon(
-                      //           Icons.lock,
-                      //           color: Colors.white,
-                      //           size: 30,
-                      //         ),
-                      //       ),
-                      //       suffixIcon: IconButton(
-                      //         color: Colors.white,
-                      //         onPressed: () {
-                      //           setState(() {
-                      //             showpass = !showpass;
-                      //           });
-                      //         },
-                      //         icon: Icon(showpass
-                      //             ? Icons.visibility_off
-                      //             : Icons.visibility),
-                      //       ),
-                      //       errorText: passstatus ? '$passworderror' : null,
-                      //     ),
-                      //   ),
-                      // ),
                       InkWell(
                         onTap: () {
                           setState(() {
@@ -323,15 +280,14 @@ class _SqfLiteState extends State<SqfLite> {
                             } else if (!emailValid) {
                               emailstatus = true;
                               emailerror = 'Enter Valid Email..';
-                            } else if (_image == null) {
-                              print("image is null");
                             } else {
-                              String? _a;
+                              String? _img;
                               if (_image != null) {
-                                _a = base64Encode(_image!.readAsBytesSync());
+                                _img = base64Encode(_image!.readAsBytesSync());
                               }
                               DatabaseHandler().insertdata(
-                                  _database!, name, email, password, _a);
+                                  _database!, name, email, password, _img);
+
                               setState(() {
                                 _loading = true;
                                 Future.delayed(Duration(milliseconds: 200), () {
@@ -351,7 +307,7 @@ class _SqfLiteState extends State<SqfLite> {
                               tname.text = "";
                               temail.text = "";
                               tpass.text = "";
-                              image = null;
+                              _image = null;
                             }
                           });
                         },
@@ -366,6 +322,7 @@ class _SqfLiteState extends State<SqfLite> {
                         padding: const EdgeInsets.only(top: 10, bottom: 10),
                         child: InkWell(
                           onTap: () {
+                            _image = null;
                             Navigator.of(context).pushNamed('/ViewPage');
                           },
                           child: commonButton(

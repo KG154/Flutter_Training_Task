@@ -36,6 +36,8 @@ class google_Login extends StatefulWidget {
 }
 
 class _google_LoginState extends State<google_Login> {
+  bool isLoading = true;
+
   final _auth = FirebaseAuth.instance;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -56,45 +58,59 @@ class _google_LoginState extends State<google_Login> {
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [Colors.black54, Color.fromRGBO(0, 41, 102, 1)])),
-        child: Center(
-          child: ElevatedButton.icon(
-              onPressed: () async {
-                try {
-                  final GoogleSignInAccount? googleSigninAcc =
-                      await _googleSignIn.signIn();
+        child: isLoading
+            ? Center(
+                child: ElevatedButton.icon(
+                    onPressed: () async {
+                      try {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        final GoogleSignInAccount? googleSigninAcc =
+                            await _googleSignIn.signIn();
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                  if (googleSigninAcc != null) {
-                    final GoogleSignInAuthentication authentication =
-                        await googleSigninAcc.authentication;
+                        if (googleSigninAcc != null) {
+                          final GoogleSignInAuthentication authentication =
+                              await googleSigninAcc.authentication;
+                          setState(() {
+                            isLoading = false;
+                          });
+                          final AuthCredential authCredential =
+                              GoogleAuthProvider.credential(
+                                  idToken: authentication.idToken,
+                                  accessToken: authentication.accessToken);
 
-                    final AuthCredential authCredential =
-                        GoogleAuthProvider.credential(
-                            idToken: authentication.idToken,
-                            accessToken: authentication.accessToken);
-
-                    UserCredential result =
-                        await _auth.signInWithCredential(authCredential);
-                    User? user = await result.user;
-
-                    if (user != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardScreen()));
-                    }
-                  }
-                } catch (e) {
-                  print(e);
-                }
-                isloading = false;
-                setState(() {});
-              },
-              icon: const Icon(
-                FontAwesomeIcons.google,
-                color: Colors.white,
+                          UserCredential result =
+                              await _auth.signInWithCredential(authCredential);
+                          User? user = await result.user;
+                          setState(() {
+                            isLoading = true;
+                          });
+                          if (user != null) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DashboardScreen()));
+                          }
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                      isloading = false;
+                      setState(() {});
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.google,
+                      color: Colors.white,
+                    ),
+                    label: Text("Login With Google")),
+              )
+            : Center(
+                child: CircularProgressIndicator(),
               ),
-              label: Text("Login With Google")),
-        ),
       ),
     );
   }

@@ -43,7 +43,7 @@ class _UpdatepageState extends State<Updatepage> {
       _database = value;
     });
   }
-  
+
   File? _image;
 
   @override
@@ -66,16 +66,80 @@ class _UpdatepageState extends State<Updatepage> {
                 end: Alignment.bottomLeft,
                 colors: [Colors.black54, Color.fromRGBO(0, 41, 102, 1)])),
         child: ListView(
-          padding: EdgeInsets.only(top: 100, left: 10, right: 10),
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
           children: [
-             InkWell(onTap: ()async{
-               final  _piked=await ImagePicker.platform.getImage(source: ImageSource.gallery);
-               _image=File(_piked!.path);
-               setState(() {
-                 
-               });
-               
-             },child: CircleAvatar(child:_image==null?Image.memory(base64Decode( widget._map['image'])):Image.file(_image!) ,)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 90),
+              child: InkWell(
+                  onTap: () async {
+                    final photo = await ImagePicker.platform.getImage(
+                      source: ImageSource.gallery,
+                      imageQuality: 50,
+                    );
+                    _image = File(photo!.path);
+                    setState(() {});
+                  },
+                  child: _image != null
+                      ? Container(
+                          height: 150,
+                          width: 150,
+                          margin: EdgeInsets.only(top: 20, bottom: 50),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFFFFF),
+                            image: DecorationImage(
+                              image: FileImage(_image!),
+                              fit: BoxFit.cover,
+                            ),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                        )
+                      : widget._map['image'] != null
+                          ? Container(
+                              height: 150,
+                              width: 150,
+                              margin: EdgeInsets.only(top: 20, bottom: 50),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFFFFF),
+                                image: DecorationImage(
+                                  image: MemoryImage(
+                                    base64Decode(widget._map['image']),
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(
+                              height: 150,
+                              width: 150,
+                              margin: EdgeInsets.only(top: 20, bottom: 50),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFFFFF),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              child: Text(widget._map['tname']
+                                  .toString()
+                                  .split(" ")[0][0]),
+                            )),
+            ),
             Container(
               child: TextField(
                 controller: tname,
@@ -234,13 +298,14 @@ class _UpdatepageState extends State<Updatepage> {
                   } else if (!emailValid) {
                     emailstatus = true;
                     emailerror = 'Enter Valid Email..';
-                  } else {   String? _a;
-                  if(_image!=null){
-                    _a =base64Encode(_image!.readAsBytesSync());
-
-                  }
-                    DatabaseHandler()
-                        .updateData(_database!, userid, name, email, password,_a!);
+                  } else {
+                    String? _a;
+                    if (_image != null) {
+                      _a = base64Encode(_image!.readAsBytesSync());
+                    }
+                    _a = _a ?? widget._map['image'];
+                    DatabaseHandler().updateData(
+                        _database!, userid, name, email, password, _a);
                     Navigator.pop(context, true);
                     // Navigator.popUntil(context, ModalRoute.withName('/SqfLite'));
 

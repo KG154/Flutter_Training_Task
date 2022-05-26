@@ -29,10 +29,13 @@ class _Page2State extends State<Page2> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 InkWell(
                   onTap: () {
-                    Navigator.popAndPushNamed(context, '/pag4');
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Page3();
+                      },
+                    ));
                   },
                   child: commonButton(
                     width: 200,
@@ -40,12 +43,9 @@ class _Page2State extends State<Page2> {
                     title: "pushReplacement",
                   ),
                 ),
-
-
                 SizedBox(
                   height: 20,
                 ),
-
                 InkWell(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -60,7 +60,6 @@ class _Page2State extends State<Page2> {
                     title: "Next Page",
                   ),
                 ),
-
               ],
             ),
           ),

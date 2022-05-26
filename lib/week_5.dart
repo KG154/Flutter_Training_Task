@@ -73,8 +73,12 @@ class _Week5State extends State<Week5> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => faceBookLogin()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FaceBookLoginDemo(),
+                  ),
+                );
               },
               child: commonContainer(
                 title: "Facebook",
