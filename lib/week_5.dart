@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'WEEK_5/Audio Player/Audio_Player List Page .dart';
+import 'WEEK_5/G_F_Login/HomeScreen.dart';
+import 'WEEK_5/G_F_Login/loginScrenn.dart';
 import 'WEEK_5/Google-Facebook/faceBookLogin.dart';
 import 'WEEK_5/Video Player/Video Player List Page.dart';
 import 'Widget/commonWidget.dart';
@@ -38,7 +41,6 @@ class _Week5State extends State<Week5> {
             SizedBox(
               height: 20,
             ),
-
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
@@ -63,58 +65,49 @@ class _Week5State extends State<Week5> {
                 title: "Video player",
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pushNamed('/Social_Media_Login');
-              },
-              child: commonContainer(
-                title: "Google",
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FaceBookLoginDemo(),
-                  ),
-                );
-              },
-              child: commonContainer(
-                title: "Facebook",
-              ),
-            ),
-
             // InkWell(
             //   onTap: () {
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) => Media_Login()));
+            //     Navigator.of(context).pushNamed('/Social_Media_Login');
             //   },
-            //   child: Container(
-            //     margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.only(
-            //         topRight: Radius.elliptical(70, 70),
-            //         bottomLeft: Radius.elliptical(70, 70),
-            //       ),
-            //       border: Border.all(width: 1.0, color: Colors.blue),
-            //       boxShadow: [
-            //         BoxShadow(
-            //             color: Colors.black87.withOpacity(0.3),
-            //             blurRadius: 1,
-            //             offset: Offset(0, 1),
-            //             spreadRadius: 1)
-            //       ],
-            //     ),
-            //     height: 75,
-            //     child: const Center(
-            //       child: Text(
-            //         "Social Media Login",
-            //         style: TextStyle(fontSize: 25, color: Colors.white),
-            //       ),
-            //     ),
+            //   child: commonContainer(
+            //     title: "Google",
             //   ),
             // ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => FaceBookLoginDemo(),
+            //       ),
+            //     );
+            //   },
+            //   child: commonContainer(
+            //     title: "Facebook",
+            //   ),
+            // ),
+            InkWell(
+              onTap: () {
+                if (FirebaseAuth.instance.currentUser == null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => G_F_Screen(),
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Sigin_In_Screnn(),
+                    ),
+                  );
+                }
+              },
+              child: commonContainer(
+                title: "Social Media Login",
+              ),
+            ),
           ],
         ),
       ),

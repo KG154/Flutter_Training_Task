@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">flutter demo</string>
-    <string name="facebook_app_id">404056505055333</string>
-    <string name="fb_login_protocol_scheme">fb404056505055333</string>
-<!--    <string name="facebook_client_token">56789</string>-->
+
+    <string name="app_name">taskpro</string>
+    <string name="facebook_app_id">715009603160725</string>
+    <string name="fb_login_protocol_scheme">fb715009603160725</string>
+    <string name="facebook_client_token">6093f32e765aa07fed9dcbbe8cb84ff8</string>
 
 
 </resources>

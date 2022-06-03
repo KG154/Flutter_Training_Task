@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taskproject/WEEK_9/1_Authentication/LoginScrenn.dart';
+import 'package:taskproject/WEEK_9&10/1_Authentication/LoginScrenn.dart';
 
 import '../../Widget/commonWidget.dart';
 
@@ -126,24 +126,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             prefixIcon: Icons.person,
                           ),
                         ),
-                        Padding(
-                          padding:
-                              EdgeInsets.only(top: 25, left: 10, right: 10),
-                          child: commonTextField(
-                            controller: tcall,
-                            keyboardType: TextInputType.number,
-                            onchange: (value) {
-                              setState(() {
-                                callstatus = false;
-                              });
-                            },
-                            color: Colors.black54,
-                            labelText: 'mobile no.',
-                            errorText:
-                                callstatus ? 'Mobile no.Is required' : null,
-                            prefixIcon: Icons.phone,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding:
+                        //       EdgeInsets.only(top: 25, left: 10, right: 10),
+                        //   child: commonTextField(
+                        //     controller: tcall,
+                        //     keyboardType: TextInputType.number,
+                        //     onchange: (value) {
+                        //       setState(() {
+                        //         callstatus = false;
+                        //       });
+                        //     },
+                        //     color: Colors.black54,
+                        //     labelText: 'mobile no.',
+                        //     errorText:
+                        //         callstatus ? 'Mobile no.Is required' : null,
+                        //     prefixIcon: Icons.phone,
+                        //   ),
+                        // ),
                         Padding(
                           padding:
                               EdgeInsets.only(top: 25, left: 10, right: 10),
@@ -205,9 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (tname.text.isEmpty) {
                                 namestatus = true;
                               }
-                              if (tcall.text.isEmpty) {
-                                callstatus = true;
-                              }
+
                               if (temail.text.isEmpty) {
                                 emailstatus = true;
                                 emailerror = 'Email Is required';
@@ -257,12 +255,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> registerUser() async {
     try {
+      setState(() {
+        isLoding = true;
+      });
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: temail.text,
         password: tpass.text,
       );
       print(userCredential);
+      setState(() {
+        isLoding = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.redAccent,
@@ -279,7 +283,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       );
     } on FirebaseAuthException catch (e) {
+
       if (e.code == 'weak-password') {
+        setState(() {
+          isLoding = false;
+        });
         print("Password Provided is too Weak");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -291,6 +299,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         );
       } else if (e.code == 'email-already-in-use') {
+        setState(() {
+          isLoding = false;
+        });
         print("Account Already exists");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

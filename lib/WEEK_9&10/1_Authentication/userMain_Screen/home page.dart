@@ -26,14 +26,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               autofocus: true,
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
+                    builder: (context) => LoginScreen(),
                   ),
-                  (route) => false,
                 );
               },
               child: Text("Logout"),

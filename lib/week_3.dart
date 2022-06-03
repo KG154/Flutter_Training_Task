@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/WEEK_3/Gestures1.dart';
 import 'WEEK_3/Gestures.dart';
+import 'WEEK_3/Gestures1.dart';
 import 'WEEK_3/Image Picker.dart';
 import 'WEEK_3/Api/calling web services.dart';
 import 'Widget/commonWidget.dart';
@@ -35,7 +37,6 @@ class _Week3State extends State<Week3> {
             SizedBox(
               height: 20,
             ),
-
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
@@ -63,7 +64,6 @@ class _Week3State extends State<Week3> {
             InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed('/SqfLite');
-
               },
               child: commonContainer(
                 title: "SqfLite",
@@ -81,6 +81,18 @@ class _Week3State extends State<Week3> {
                 title: "Calling Web",
               ),
             ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(
+            //       builder: (context) {
+            //         return allGestures();
+            //       },
+            //     ));
+            //   },
+            //   child: commonContainer(
+            //     title: "Gestures1",
+            //   ),
+            // ),
           ],
         ),
       ),

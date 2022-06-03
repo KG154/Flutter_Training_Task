@@ -1,5 +1,15 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class Local_NotificationScreen extends StatefulWidget {
   const Local_NotificationScreen({Key? key}) : super(key: key);
@@ -14,8 +24,47 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin!.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body!)],
+                  ),
+                ),
+              );
+            });
+      }
+    });
     initialisation();
   }
 
@@ -45,48 +94,47 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
         centerTitle: true,
         backgroundColor: Colors.black45,
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  showNotification();
-                },
-                child: Text("Local Notification"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  showNotificationWithSound();
-                },
-                child: Text("Local Notification With Sound"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  showNotificationWithProgress();
-                },
-                child: Text("Progress Notification"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  scheduleNotification();
-                },
-                child: Text("Schedule Notification"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  showNotificationWithImage();
-                },
-                child: Text("BigPicture Notification"),
-              ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     repeatNotification();
-              //   },
-              //   child: Text("repeated Notification"),
-              // ),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _showNotificationWithoutSound();
+              },
+              child: Text("Local Notification"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showNotificationWithSound();
+              },
+              child: Text("Local Notification with Sound"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showNotificationWithProgress();
+              },
+              child: Text("Progress Notification"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                scheduleNotification();
+              },
+              child: Text("Schedule Notification"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showNotificationWithImage();
+              },
+              child: Text("BigPicture Notification"),
+            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     repeatNotification();
+            //   },
+            //   child: Text("repeated Notification"),
+            // ),
+          ],
         ),
       ),
     );
@@ -97,10 +145,8 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
     var android = new AndroidNotificationDetails(
       'id',
       'channel',
-      styleInformation: BigTextStyleInformation(''),
       playSound: false,
       priority: Priority.high,
-      showWhen: false,
       importance: Importance.max,
     );
     var iOS = new IOSNotificationDetails();
@@ -108,6 +154,24 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
     await flutterLocalNotificationsPlugin!.show(
         0, 'New Tutorial', 'Local Notification', platform,
         payload: 'Welcome to the Local Notification demo');
+  }
+
+  Future _showNotificationWithoutSound() async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'your channel id', 'your channel name',
+        playSound: false, importance: Importance.max, priority: Priority.high);
+    var iOSPlatformChannelSpecifics =
+        new IOSNotificationDetails(presentSound: false);
+    var platformChannelSpecifics = new NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin!.show(
+      0,
+      'New Tutorial',
+      'Local Notification',
+      platformChannelSpecifics,
+      payload: 'No_Sound',
+    );
   }
 
   /// show Notification With Sound
@@ -123,7 +187,7 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
     var iOS = new IOSNotificationDetails();
     var platform = new NotificationDetails(android: android, iOS: iOS);
     await flutterLocalNotificationsPlugin!.show(
-        0, 'New Tutorial', 'Local Notification With Sound', platform,
+        0, 'New Tutorial', 'Local Notification with Sound', platform,
         payload: 'Welcome to the Local Notification demo');
   }
 

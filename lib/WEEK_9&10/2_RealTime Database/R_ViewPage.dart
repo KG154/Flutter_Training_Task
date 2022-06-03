@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -128,7 +129,16 @@ class _R_ViewPageState extends State<R_ViewPage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  await FirebaseAnalytics.instance.logEvent(
+                                    name: "update",
+                                    parameters: {
+                                      "update": "update data",
+                                    },
+                                  );
+                                  FirebaseAnalytics.instance.logEvent(
+                                    name: 'update RealTime',
+                                  );
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -154,7 +164,14 @@ class _R_ViewPageState extends State<R_ViewPage> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  await FirebaseAnalytics.instance.logEvent(
+                                    name: "delete",
+                                    parameters: {
+                                      "delete": "delete data Success",
+                                    },
+                                  );
+
                                   databaseRef.child(snapshot.key!).remove();
                                 },
                                 icon: Icon(

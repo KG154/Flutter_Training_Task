@@ -55,7 +55,6 @@ class _Gestures1State extends State<Gestures1> {
             isvertical = true;
           });
         },
-
         child: CarouselSlider.builder(
           itemCount: urlImages.length,
           options: CarouselOptions(

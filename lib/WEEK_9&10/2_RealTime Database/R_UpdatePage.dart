@@ -382,15 +382,22 @@ class _R_UpdateScreenState extends State<R_UpdateScreen> {
                               callError = 'Mobile no. must be of 10 digit';
                             } else {
                               if (_image == null) {
-                                Fluttertoast.showToast(
-                                  msg: "Please Provided Image.. ",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.deepPurple,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0,
-                                );
+                                setState(() {
+                                  loding = true;
+                                });
+                                databaseRef.child(widget.key1).update({
+                                  'name': tname.text,
+                                  'email': temail.text,
+                                  'phone': tcall.text,
+                                  'designation': tdesignation.text,
+                                  'salary': tsalary.text,
+                                  'gender': choice.toString(),
+                                  'url': widget.uUrl,
+                                });
+                                Navigator.pop(context);
+                                setState(() {
+                                  loding = false;
+                                });
                               } else {
                                 setState(() {
                                   loding = true;
@@ -409,15 +416,17 @@ class _R_UpdateScreenState extends State<R_UpdateScreen> {
                                 final String downloadUrl =
                                     await snapshot.ref.getDownloadURL();
 
-                                updateData(
-                                  tname.text,
-                                  temail.text,
-                                  tcall.text,
-                                  tdesignation.text,
-                                  tsalary.text,
-                                  choice.toString(),
-                                  downloadUrl,
-                                );
+                                databaseRef.child(widget.key1).update({
+                                  'name': tname.text,
+                                  'email': temail.text,
+                                  'phone': tcall.text,
+                                  'designation': tdesignation.text,
+                                  'salary': tsalary.text,
+                                  'gender': choice.toString(),
+                                  'url': downloadUrl,
+                                });
+
+                                Navigator.pop(context);
                                 setState(() {
                                   loding = false;
                                 });

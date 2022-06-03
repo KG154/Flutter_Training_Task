@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -363,6 +362,7 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                                       await snapshot.ref.getDownloadURL();
 
                                   ///
+
                                   insertdata(
                                     tname.text,
                                     temail.text,
@@ -447,8 +447,14 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
     );
   }
 
-  void insertdata(String name, String email, String phone, String designation,
-      String salary, String gender, String downloadUrl) {
+  Future<void> insertdata(
+      String name,
+      String email,
+      String phone,
+      String designation,
+      String salary,
+      String gender,
+      String downloadUrl) async {
     String? key = databaseRef.child("Employee").push().key;
     databaseRef.child("Employee").child(key!).set({
       'key': key,
