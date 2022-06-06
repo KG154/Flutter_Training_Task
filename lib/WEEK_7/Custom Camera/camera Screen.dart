@@ -372,10 +372,10 @@ class _CameraScreenState extends State<CameraScreen>
                                             onTap: () async {
                                               setState(() {
                                                 _currentFlashMode =
-                                                    FlashMode.always;
+                                                    FlashMode.auto;
                                               });
                                               await controller!.setFlashMode(
-                                                FlashMode.always,
+                                                FlashMode.auto,
                                               );
                                               _isFaceLiteSelected = false;
                                               setState(() {});
@@ -395,6 +395,7 @@ class _CameraScreenState extends State<CameraScreen>
                                                 FlashMode.off,
                                               );
                                               _isFaceLiteSelected = true;
+
                                               setState(() {});
                                             },
                                             child: Icon(

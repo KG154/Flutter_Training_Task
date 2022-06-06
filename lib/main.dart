@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:taskproject/week_11.dart';
+import 'package:taskproject/week_12.dart';
 import 'package:taskproject/week_5.dart';
 import 'package:taskproject/week_6.dart';
 import 'package:taskproject/week_7.dart';
@@ -111,13 +113,9 @@ class SpleshScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
-    );
+    return Container();
   }
 }
-
-
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -274,8 +272,30 @@ class _MyAppState extends State<MyApp> {
                     },
                   ));
                 },
-                child:
-                    commonContainer(height: 100, title: "WEEK 9", textSize: 25),
+                child: commonContainer(
+                    height: 100, title: "WEEK 9 & 10", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week11();
+                    },
+                  ));
+                },
+                child: commonContainer(
+                    height: 100, title: "WEEK 11", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week12();
+                    },
+                  ));
+                },
+                child: commonContainer(
+                    height: 100, title: "WEEK 12", textSize: 25),
               ),
             ],
           ),

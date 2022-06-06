@@ -10,7 +10,7 @@ import 'HomeScreen.dart';
 import 'loginScrenn.dart';
 
 class FGAuthControler extends GetxController {
-  static final auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   Rx<AuthUserData> userdata = AuthUserData().obs;
 
   RxString providerId = "".obs;

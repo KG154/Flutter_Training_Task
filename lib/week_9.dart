@@ -1,6 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'WEEK_9&10/1_Authentication/LoginScrenn.dart';
+import 'WEEK_9&10/1_Authentication/userMain_Screen/userMainScareen.dart';
 import 'WEEK_9&10/2_RealTime Database/R_Singup.dart';
 import 'WEEK_9&10/3_Firestore database/F_LoginScreen.dart';
 import 'WEEK_9&10/Firebase Creshlytics.dart';
@@ -22,7 +24,7 @@ class _Week9State extends State<Week9> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Week 9",
+          "Week 9 & 10",
           style: TextStyle(fontSize: 25),
         ),
         centerTitle: true,
@@ -40,6 +42,19 @@ class _Week9State extends State<Week9> {
           children: [
             InkWell(
               onTap: () {
+                // if (FirebaseAuth.instance.currentUser == null) {
+                //   Navigator.push(context, MaterialPageRoute(
+                //     builder: (context) {
+                //       return LoginScreen();
+                //     },
+                //   ));
+                // } else {
+                //   Navigator.push(context, MaterialPageRoute(
+                //     builder: (context) {
+                //       return userMainScareen();
+                //     },
+                //   ));
+                // }
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return LoginScreen();
