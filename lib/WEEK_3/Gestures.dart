@@ -43,6 +43,7 @@ class _Gestures1State extends State<Gestures1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: GestureDetector(
         onHorizontalDragEnd: (val) {
           setState(() {
@@ -59,7 +60,7 @@ class _Gestures1State extends State<Gestures1> {
           itemCount: urlImages.length,
           options: CarouselOptions(
             viewportFraction: 1,
-            enlargeCenterPage: false,
+            // enlargeCenterPage: false,
             scrollDirection: isvertical ? Axis.vertical : Axis.horizontal,
             height: MediaQuery.of(context).size.height,
             autoPlay: false,
@@ -69,6 +70,7 @@ class _Gestures1State extends State<Gestures1> {
           ),
           itemBuilder: (context, i, id) {
             return Container(
+              color: Colors.white,
               width: MediaQuery.of(context).size.width,
               child: PhotoViewGallery.builder(
                   scrollDirection: isvertical ? Axis.vertical : Axis.horizontal,

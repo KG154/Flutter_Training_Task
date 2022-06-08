@@ -17,10 +17,25 @@ class FGAuthControler extends GetxController {
 
   googleAuth() async {
     try {
+      print("1");
+
+      Get.dialog(
+          Material(
+            // color: Colors.transparent,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          barrierDismissible: false);
       final _pref = await SharedPreferences.getInstance();
+      print("2");
+      Get.back();
+
       final googleSignIn = await GoogleSignIn().signIn();
+      print("3");
 
       final authprovider = await googleSignIn!.authentication;
+      print("4");
 
       final credential = GoogleAuthProvider.credential(
           accessToken: authprovider.accessToken, idToken: authprovider.idToken);

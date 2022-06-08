@@ -954,7 +954,7 @@ class _AllPageState extends State<AllPage> {
                                       )),
                                 ),
                                 Container(
-                                  width: size.width * 0.35,
+                                  // width: size.width * 0.35,
                                   margin: EdgeInsets.only(right: 50, top: 70),
                                   decoration: BoxDecoration(
                                     color: Colors.indigo,
@@ -971,8 +971,7 @@ class _AllPageState extends State<AllPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 2, right: 5),
+                                  padding: EdgeInsets.only(top: 2, right: 5),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,

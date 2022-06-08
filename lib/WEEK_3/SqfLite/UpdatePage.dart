@@ -18,6 +18,12 @@ class Updatepage extends StatefulWidget {
 }
 
 class _UpdatepageState extends State<Updatepage> {
+  updateui() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   TextEditingController tname = TextEditingController();
   TextEditingController temail = TextEditingController();
   TextEditingController tpass = TextEditingController();
@@ -69,7 +75,7 @@ class _UpdatepageState extends State<Updatepage> {
           padding: EdgeInsets.only(top: 10, left: 10, right: 10),
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 90),
+              padding: EdgeInsets.symmetric(horizontal: 90),
               child: InkWell(
                   onTap: () async {
                     final photo = await ImagePicker.platform.getImage(
@@ -77,7 +83,7 @@ class _UpdatepageState extends State<Updatepage> {
                       imageQuality: 50,
                     );
                     _image = File(photo!.path);
-                    setState(() {});
+                    updateui();
                   },
                   child: _image != null
                       ? Container(
@@ -85,7 +91,7 @@ class _UpdatepageState extends State<Updatepage> {
                           width: 150,
                           margin: EdgeInsets.only(top: 20, bottom: 50),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFFFFFF),
+                            color: Color(0xFFFFFFFF),
                             image: DecorationImage(
                               image: FileImage(_image!),
                               fit: BoxFit.cover,
@@ -105,7 +111,7 @@ class _UpdatepageState extends State<Updatepage> {
                               width: 150,
                               margin: EdgeInsets.only(top: 20, bottom: 50),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFFFFFF),
+                                color: Color(0xFFFFFFFF),
                                 image: DecorationImage(
                                   image: MemoryImage(
                                     base64Decode(widget._map['image']),
@@ -126,7 +132,7 @@ class _UpdatepageState extends State<Updatepage> {
                               width: 150,
                               margin: EdgeInsets.only(top: 20, bottom: 50),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFFFFFF),
+                                color: Color(0xFFFFFFFF),
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
@@ -245,72 +251,71 @@ class _UpdatepageState extends State<Updatepage> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  String name = tname.text;
-                  String email = temail.text;
-                  String password = tpass.text;
+                String name = tname.text;
+                String email = temail.text;
+                String password = tpass.text;
 
-                  bool emailValid =
-                      RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                          .hasMatch(email);
-                  if (name.isEmpty && email.isEmpty && password.isEmpty) {
-                    namestatus = true;
-                    emailstatus = true;
-                    emailerror = 'Email Is required';
-                    passstatus = true;
-                    passworderror = 'Password Is required';
-                  } else if (name.isEmpty && email.isEmpty) {
-                    namestatus = true;
-                    emailstatus = true;
-                    emailerror = 'Email Is required';
-                  } else if (email.isEmpty && password.isEmpty) {
-                    emailstatus = true;
-                    emailerror = 'Email Is required';
-                    passstatus = true;
-                    passworderror = 'Password Is required';
-                  } else if (name.isEmpty && password.isEmpty && !emailValid) {
-                    namestatus = true;
-                    passstatus = true;
-                    passworderror = 'Password Is required';
-                    emailstatus = true;
-                    emailerror = 'Enter Valid Email..';
-                  } else if (name.isEmpty && password.isEmpty) {
-                    namestatus = true;
-                    passstatus = true;
-                    passworderror = 'Password Is required';
-                  } else if (name.isEmpty && !emailValid) {
-                    namestatus = true;
-                    emailstatus = true;
-                    emailerror = 'Enter Valid Email..';
-                  } else if (password.isEmpty && !emailValid) {
-                    passstatus = true;
-                    passworderror = 'Password Is required';
-                    emailstatus = true;
-                    emailerror = 'Enter Valid Email..';
-                  } else if (name.isEmpty) {
-                    namestatus = true;
-                  } else if (email.isEmpty) {
-                    emailstatus = true;
-                    emailerror = 'Email Is required';
-                  } else if (password.isEmpty) {
-                    passstatus = true;
-                    passworderror = 'Password Is required';
-                  } else if (!emailValid) {
-                    emailstatus = true;
-                    emailerror = 'Enter Valid Email..';
-                  } else {
-                    String? _a;
-                    if (_image != null) {
-                      _a = base64Encode(_image!.readAsBytesSync());
-                    }
-                    _a = _a ?? widget._map['image'];
-                    DatabaseHandler().updateData(
-                        _database!, userid, name, email, password, _a);
-                    Navigator.pop(context, true);
-                    // Navigator.popUntil(context, ModalRoute.withName('/SqfLite'));
-
+                bool emailValid =
+                    RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                        .hasMatch(email);
+                if (name.isEmpty && email.isEmpty && password.isEmpty) {
+                  namestatus = true;
+                  emailstatus = true;
+                  emailerror = 'Email Is required';
+                  passstatus = true;
+                  passworderror = 'Password Is required';
+                } else if (name.isEmpty && email.isEmpty) {
+                  namestatus = true;
+                  emailstatus = true;
+                  emailerror = 'Email Is required';
+                } else if (email.isEmpty && password.isEmpty) {
+                  emailstatus = true;
+                  emailerror = 'Email Is required';
+                  passstatus = true;
+                  passworderror = 'Password Is required';
+                } else if (name.isEmpty && password.isEmpty && !emailValid) {
+                  namestatus = true;
+                  passstatus = true;
+                  passworderror = 'Password Is required';
+                  emailstatus = true;
+                  emailerror = 'Enter Valid Email..';
+                } else if (name.isEmpty && password.isEmpty) {
+                  namestatus = true;
+                  passstatus = true;
+                  passworderror = 'Password Is required';
+                } else if (name.isEmpty && !emailValid) {
+                  namestatus = true;
+                  emailstatus = true;
+                  emailerror = 'Enter Valid Email..';
+                } else if (password.isEmpty && !emailValid) {
+                  passstatus = true;
+                  passworderror = 'Password Is required';
+                  emailstatus = true;
+                  emailerror = 'Enter Valid Email..';
+                } else if (name.isEmpty) {
+                  namestatus = true;
+                } else if (email.isEmpty) {
+                  emailstatus = true;
+                  emailerror = 'Email Is required';
+                } else if (password.isEmpty) {
+                  passstatus = true;
+                  passworderror = 'Password Is required';
+                } else if (!emailValid) {
+                  emailstatus = true;
+                  emailerror = 'Enter Valid Email..';
+                } else {
+                  String? _a;
+                  if (_image != null) {
+                    _a = base64Encode(_image!.readAsBytesSync());
                   }
-                });
+                  _a = _a ?? widget._map['image'];
+                  DatabaseHandler().updateData(
+                      _database!, userid, name, email, password, _a);
+                  Navigator.pop(context, true);
+                  // Navigator.popUntil(context, ModalRoute.withName('/SqfLite'));
+
+                }
+                updateui();
               },
               child: commonButton(
                 margin: EdgeInsets.symmetric(horizontal: size.width * 0.3),

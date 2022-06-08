@@ -67,7 +67,6 @@ dependencies:
   video_player: ^2.2.19
   rxdart:
   font_awesome_flutter: ^10.1.0
-  provider:
   flutter_facebook_auth:
   flutter_login_facebook:
 
@@ -103,6 +102,16 @@ dependencies:
   firebase_messaging:
   firebase_crashlytics: ^2.7.1
   firebase_analytics: ^9.1.6
+
+
+  #week 12
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
+  provider: ^6.0.3
+  flutter_redux: ^0.8.0
+  redux: ^5.0.0
+
+
 
 
 dev_dependencies:

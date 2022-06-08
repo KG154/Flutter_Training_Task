@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/WEEK_12/Redux/Redux1_Screen.dart';
 
+import 'WEEK_12/Bloc/homeBlocScreen.dart';
+import 'WEEK_12/provider/firstproviderScreen.dart';
 import 'Widget/commonWidget.dart';
 
 class Week12 extends StatefulWidget {
@@ -30,20 +33,39 @@ class _Week12State extends State<Week12> {
           ),
         ),
         child: ListView(
-          children: [
-            InkWell(
-              onTap: () {
-                // Navigator.push(context, MaterialPageRoute(
-                //   builder: (context) {
-                //     return SliverScreen();
-                //   },
-                // ));
-              },
-              child: commonContainer(title: "blocs", height: 75),
-            ),
+            children: [
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(context, MaterialPageRoute(
+          //       builder: (context) {
+          //         return BlocPage();
+          //       },
+          //     ));
+          //   },
+          //   child: commonContainer(title: "blocs", height: 75),
+          // ),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(context, MaterialPageRoute(
+          //       builder: (context) {
+          //         return ProviderDemo();
+          //       },
+          //     ));
+          //   },
+          //   child: commonContainer(title: "Provider", height: 75),
+        // ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(
+            //       builder: (context) {
+            //         return Redux1_Screen();
+            //       },
+            //     ));
+            //   },
+            //   child: commonContainer(title: "Redux", height: 75),
+            // ),
           ],
-        ),
       ),
-    );
+    ),);
   }
 }

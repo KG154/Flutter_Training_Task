@@ -69,109 +69,120 @@ class _ViewPageState extends State<ViewPage> {
           future: getalldata(),
           builder: (context, snapshot) {
             // if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: _list.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 5),
-                      child: ListTile(
-                        leading: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: MemoryImage(
-                                base64Decode(_list[index]['image']),
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: _list.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 5),
+                    child: ListTile(
+                      leading: _list[index]['tname'] != null
+                          ? Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: MemoryImage(
+                                    base64Decode(_list[index]['image']),
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                                shape: BoxShape.circle,
+                                color: Colors.white,
                               ),
-                              fit: BoxFit.cover,
-                            ),
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                        ),
-                        title: Text("${_list[index]['tname']}",
-                            style: TextStyle(color: Colors.white)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("${_list[index]['temail']}",
-                                style: TextStyle(color: Colors.white)),
-                            Text("${_list[index]['tpass']}",
-                                style: TextStyle(color: Colors.white)),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () async {
-                                // Navigator.pushNamed(context, '/Updatepage',arguments: _list[index]);
-
-                                var dd = await Navigator.push(context,
-                                    MaterialPageRoute(
-                                  builder: (context) {
-                                    return Updatepage(_list[index]);
-                                  },
-                                ));
-                                if (dd == true) {
-                                  getalldata();
-                                  updateui();
-                                }
-                              },
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.green,
+                            )
+                          : Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: Text(
+                                _list[index]['tname'].toString().split(" ")[0]
+                                    [0],
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text("${_list[index]['tname']}"),
-                                        content: Text(
-                                          "Are You Sure You Want To Delete this Data",
-                                          style: TextStyle(
-                                              color: Colors.redAccent),
-                                        ),
-                                        actions: [
-                                          ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text("Cancel")),
-                                          ElevatedButton(
-                                              onPressed: () async {
-                                                Navigator.pop(context);
-                                                int userid = _list[index]['id'];
-                                                delete(_database!, userid);
-
-                                                setState(() {});
-                                              },
-                                              child: Text("YES")),
-                                        ],
-                                      );
-                                    });
-                                // setState(() {});
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ],
-                        ),
+                      title: Text("${_list[index]['tname']}",
+                          style: TextStyle(color: Colors.white)),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${_list[index]['temail']}",
+                              style: TextStyle(color: Colors.white)),
+                          Text("${_list[index]['tpass']}",
+                              style: TextStyle(color: Colors.white)),
+                        ],
                       ),
-                    );
-                  },
-                );
-              } else {
-                return Center(
-                  child: Text('NO Data'),
-                );
-              }
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              var dd = await Navigator.push(context,
+                                  MaterialPageRoute(
+                                builder: (context) {
+                                  return Updatepage(_list[index]);
+                                },
+                              ));
+                              if (dd == true) {
+                                getalldata();
+                                updateui();
+                              }
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.green,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("${_list[index]['tname']}"),
+                                      content: Text(
+                                        "Are You Sure You Want To Delete this Data",
+                                        style:
+                                            TextStyle(color: Colors.redAccent),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Cancel")),
+                                        ElevatedButton(
+                                            onPressed: () async {
+                                              Navigator.pop(context);
+                                              int userid = _list[index]['id'];
+                                              delete(_database!, userid);
+
+                                              setState(() {});
+                                            },
+                                            child: Text("YES")),
+                                      ],
+                                    );
+                                  });
+                              // setState(() {});
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             // } else {
             //   return Center(
             //     child: CircularProgressIndicator(),

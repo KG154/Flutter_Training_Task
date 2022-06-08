@@ -198,20 +198,20 @@ class _fbAdsState extends State<fbAds> {
                 height: size.height * 0.07,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 30),
-              // alignment: Alignment(0.5, 1),
-              child: FacebookBannerAd(
-                placementId: "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID",
-                bannerSize: BannerSize.MEDIUM_RECTANGLE,
-                keepAlive: true,
-                listener: (result, value) {
-                  print("FbBannre   MEDIUM_RECTANGLE Ad: $result --> $value");
-                },
-              ),
-            ),
-            Text("Medium Rectangle Ad",
-                style: TextStyle(fontSize: 20, color: Colors.white)),
+            // Container(
+            //   margin: EdgeInsets.only(bottom: 30),
+            //   // alignment: Alignment(0.5, 1),
+            //   child: FacebookBannerAd(
+            //     placementId: "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID",
+            //     bannerSize: BannerSize.MEDIUM_RECTANGLE,
+            //     keepAlive: true,
+            //     listener: (result, value) {
+            //       print("FbBannre   MEDIUM_RECTANGLE Ad: $result --> $value");
+            //     },
+            //   ),
+            // ),
+            // Text("Medium Rectangle Ad",
+            //     style: TextStyle(fontSize: 20, color: Colors.white)),
             SizedBox(
               height: 10,
             ),

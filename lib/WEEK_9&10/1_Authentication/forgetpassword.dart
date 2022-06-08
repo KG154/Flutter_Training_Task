@@ -86,7 +86,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       emailstatus = true;
                       emailerror = 'Enter Valid Email';
                     } else {
-                      resetPassword();
+                      resetPassword(temail.text);
                     }
                     updateui();
                   },
@@ -118,11 +118,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  resetPassword() async {
+  resetPassword(String email) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: temail.text,
       );
+      temail.clear();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.black54,

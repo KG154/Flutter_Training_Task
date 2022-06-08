@@ -55,6 +55,7 @@ class _payment_GetWaysState extends State<payment_GetWays> {
                   applePay: true,
                   googlePay: true,
                   testEnv: true,
+
                   style: ThemeMode.dark,
                   merchantCountryCode: 'US',
                   merchantDisplayName: 'ANNIE'))
