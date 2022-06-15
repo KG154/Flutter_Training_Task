@@ -110,6 +110,10 @@ dependencies:
   provider: ^6.0.3
   flutter_redux: ^0.8.0
   redux: ^5.0.0
+  awesome_notifications: ^0.6.21
+
+
+
 
 
 

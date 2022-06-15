@@ -42,24 +42,24 @@ class _Week9State extends State<Week9> {
           children: [
             InkWell(
               onTap: () {
-                // if (FirebaseAuth.instance.currentUser == null) {
-                //   Navigator.push(context, MaterialPageRoute(
-                //     builder: (context) {
-                //       return LoginScreen();
-                //     },
-                //   ));
-                // } else {
-                //   Navigator.push(context, MaterialPageRoute(
-                //     builder: (context) {
-                //       return userMainScareen();
-                //     },
-                //   ));
-                // }
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return LoginScreen();
-                  },
-                ));
+                if (FirebaseAuth.instance.currentUser == null) {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ));
+                } else {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return userMainScareen();
+                    },
+                  ));
+                }
+                // Navigator.push(context, MaterialPageRoute(
+                //   builder: (context) {
+                //     return LoginScreen();
+                //   },
+                // ));
               },
               child: commonContainer(title: "Authentication", height: 75),
             ),
@@ -129,6 +129,7 @@ class _Week9State extends State<Week9> {
               },
               child: commonContainer(title: "Firebase Crashlytics", height: 75),
             ),
+
           ],
         ),
       ),

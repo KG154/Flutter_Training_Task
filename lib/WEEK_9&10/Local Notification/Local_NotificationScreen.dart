@@ -194,8 +194,8 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
   /// show Notification With Image
   Future<void> showNotificationWithImage() async {
     var bigPictureStyleInformation = BigPictureStyleInformation(
-        DrawableResourceAndroidBitmap("img"),
-        largeIcon: DrawableResourceAndroidBitmap("img"),
+        DrawableResourceAndroidBitmap("ic_launcher"),
+        largeIcon: DrawableResourceAndroidBitmap("ic_launcher"),
         contentTitle: 'Image Notification',
         htmlFormatContentTitle: true,
         summaryText: 'big image notifications',
@@ -246,7 +246,7 @@ class _Local_NotificationScreenState extends State<Local_NotificationScreen> {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'id',
       'name',
-      largeIcon: DrawableResourceAndroidBitmap('img'),
+      largeIcon: DrawableResourceAndroidBitmap('ic_launcher'),
     );
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(

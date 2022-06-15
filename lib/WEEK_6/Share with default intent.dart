@@ -6,6 +6,7 @@ import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:taskproject/WEEK_2/Widgets/1_mainScreen.dart';
 
 class share_with_default_intent extends StatefulWidget {
   const share_with_default_intent({Key? key}) : super(key: key);

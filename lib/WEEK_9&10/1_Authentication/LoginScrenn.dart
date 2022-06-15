@@ -31,14 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isLoding = false;
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  //   temail.dispose();
-  //   tpass.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

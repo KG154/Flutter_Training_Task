@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/WEEK_12/Redux/Redux1_Screen.dart';
-
+import 'package:taskproject/WEEK_12/video1.dart';
 import 'WEEK_12/Bloc/homeBlocScreen.dart';
+import 'WEEK_12/newpage.dart';
 import 'WEEK_12/provider/firstproviderScreen.dart';
 import 'Widget/commonWidget.dart';
+
+
+
 
 class Week12 extends StatefulWidget {
   const Week12({Key? key}) : super(key: key);
@@ -33,27 +37,47 @@ class _Week12State extends State<Week12> {
           ),
         ),
         child: ListView(
-            children: [
-          // InkWell(
-          //   onTap: () {
-          //     Navigator.push(context, MaterialPageRoute(
-          //       builder: (context) {
-          //         return BlocPage();
-          //       },
-          //     ));
-          //   },
-          //   child: commonContainer(title: "blocs", height: 75),
-          // ),
-          // InkWell(
-          //   onTap: () {
-          //     Navigator.push(context, MaterialPageRoute(
-          //       builder: (context) {
-          //         return ProviderDemo();
-          //       },
-          //     ));
-          //   },
-          //   child: commonContainer(title: "Provider", height: 75),
-        // ),
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return newPage();
+                  },
+                ));
+              },
+              child: commonContainer(title: "A -> B", height: 75),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return DefaultVideo();
+                  },
+                ));
+              },
+              child: commonContainer(title: "Default Video", height: 75),
+            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(
+            //       builder: (context) {
+            //         return BlocPage();
+            //       },
+            //     ));
+            //   },
+            //   c,hild: commonContainer(title: "blocs", height: 75),
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(
+            //       builder: (context) {
+            //         return ProviderDemo();
+            //       },
+            //     ));
+            //   },
+            //   child: commonContainer(title: "Provider", height: 75),
+            // ),
             // InkWell(
             //   onTap: () {
             //     Navigator.push(context, MaterialPageRoute(
@@ -65,7 +89,8 @@ class _Week12State extends State<Week12> {
             //   child: commonContainer(title: "Redux", height: 75),
             // ),
           ],
+        ),
       ),
-    ),);
+    );
   }
 }

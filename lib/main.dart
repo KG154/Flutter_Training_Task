@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,13 +14,13 @@ import 'package:taskproject/week_6.dart';
 import 'package:taskproject/week_7.dart';
 import 'package:taskproject/week_8.dart';
 import 'package:taskproject/week_9.dart';
-
 import 'WEEK_1/Navigator.dart';
 import 'WEEK_1/NavigatorPage/Page3.dart';
 import 'WEEK_1/NavigatorPage/page1.dart';
 import 'WEEK_1/NavigatorPage/page2.dart';
 import 'WEEK_2/Widgets/Alert Dialog.dart';
 import 'WEEK_2/Widgets/1_mainScreen.dart';
+
 import 'WEEK_2/drawer.dart';
 import 'WEEK_3/SqfLite/View Page.dart';
 import 'WEEK_3/SqfLite/sqflite.dart';
@@ -35,17 +36,18 @@ List<CameraDescription>? cameras;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
-  print(message.data);
-  flutterLocalNotificationsPlugin.show(
-      message.data.hashCode,
-      message.data['title'],
-      message.data['body'],
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-        ),
-      ));
+  print("mesagw = = ${message.data}");
+
+  // flutterLocalNotificationsPlugin.show(
+  //     message.data.hashCode,
+  //     message.data['title'],
+  //     message.data['body'],
+  //     NotificationDetails(
+  //       android: AndroidNotificationDetails(
+  //         channel.id,
+  //         channel.name,
+  //       ),
+  //     ));
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -57,6 +59,26 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
+Future<void> firebaseForegroundMessage(RemoteMessage message) async {
+  await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          //with image from URL
+          id: 1,
+          channelKey: 'basic',
+          //channel configuration key
+          title: message.notification!.title,
+          body: message.notification!.body,
+          bigPicture: message.notification!.android!.imageUrl != null
+              ? message.notification!.android!.imageUrl.toString()
+              : null,
+          notificationLayout: message.notification!.android!.imageUrl != null
+              ? NotificationLayout.BigPicture
+              : null,
+          payload: {"name": "flutter"}));
+  print(message.notification!.body);
+  print(message.notification!.android!.imageUrl.toString());
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -67,6 +89,31 @@ Future<void> main() async {
   // Stripe.publishableKey =
   //     "pk_test_51Kxk6qSCa4VaXPSqbWdqnGukVeJknMcampX2gG2HNYktsuJQWswbcCMgZ6x4sCiKdWzrQb1PNikUk8hJlQILJciV00TUsT9hrw";
   // Stripe.instance.applySettings();
+  //
+  // AwesomeNotifications().initialize('resource://drawable/ic_launcher', [
+  //   // notification icon
+  //   NotificationChannel(
+  //       channelGroupKey: 'basic_test',
+  //       channelKey: 'basic',
+  //       channelName: 'Basic notifications',
+  //       channelDescription: 'Notification channel for basic tests',
+  //       channelShowBadge: true,
+  //       importance: NotificationImportance.High,
+  //       playSound: true),
+  //   //add more notification type with different configuration
+  // ]);
+  //
+  // AwesomeNotifications()
+  //     .actionStream
+  //     .listen((ReceivedNotification receivedNotification) {
+  //   print(receivedNotification.payload!['title']);
+  //
+  //   //output from local notification click.
+  // });
+  //
+  FirebaseMessaging.onMessage.listen(firebaseForegroundMessage);
+  //
+  // FirebaseMessaging.instance.subscribeToTopic("all");
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
@@ -128,30 +175,52 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    var initialzationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettings =
-        InitializationSettings(android: initialzationSettingsAndroid);
+    // var initialzationSettingsAndroid =
+    //     AndroidInitializationSettings('@mipmap/ic_launcher');
+    // var initializationSettings =
+    //     InitializationSettings(android: initialzationSettingsAndroid);
+    //
+    // flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   RemoteNotification? notification = message.notification;
+    //   AndroidNotification? android = message.notification?.android;
+    //   if (notification != null && android != null) {
+    //     flutterLocalNotificationsPlugin.show(
+    //         notification.hashCode,
+    //         notification.title,
+    //         notification.body,
+    //         NotificationDetails(
+    //           android: AndroidNotificationDetails(
+    //             channel.id,
+    //             channel.name,
+    //             icon: android.smallIcon,
+    //             // largeIcon: DrawableResourceAndroidBitmap("ic_launcher"),
+    //           ),
+    //         ));
+    //   }
+    // });
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                icon: android.smallIcon,
-                // largeIcon: DrawableResourceAndroidBitmap("img"),
-              ),
-            ));
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title.toString()),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body.toString())],
+                  ),
+                ),
+              );
+            });
       }
     });
+
     getToken();
   }
 
@@ -286,17 +355,17 @@ class _MyAppState extends State<MyApp> {
                 child: commonContainer(
                     height: 100, title: "WEEK 11", textSize: 25),
               ),
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.push(context, MaterialPageRoute(
-              //       builder: (context) {
-              //         return Week12();
-              //       },
-              //     ));
-              //   },
-              //   child: commonContainer(
-              //       height: 100, title: "WEEK 12", textSize: 25),
-              // ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Week12();
+                    },
+                  ));
+                },
+                child: commonContainer(
+                    height: 100, title: "WEEK 12", textSize: 25),
+              ),
             ],
           ),
         ),
