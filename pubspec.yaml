@@ -103,7 +103,6 @@ dependencies:
   firebase_crashlytics: ^2.7.1
   firebase_analytics: ^9.1.6
 
-
   #week 12
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1

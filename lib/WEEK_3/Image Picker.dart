@@ -13,14 +13,13 @@ class ImagePicker1 extends StatefulWidget {
 
 class _ImagePicker1State extends State<ImagePicker1> {
   File? _image;
-  File? _cameraImage;
+
   File? _video;
-  File? _cameraVideo;
 
   ImagePicker picker = ImagePicker();
 
   VideoPlayerController? _videoPlayerController;
-  VideoPlayerController? _cameraVideoPlayerController;
+
 
   // This funcion will helps you to pick and Image from Gallery
   _pickImageFromGallery() async {
@@ -68,6 +67,13 @@ class _ImagePicker1State extends State<ImagePicker1> {
         setState(() {});
         _videoPlayerController!.play();
       });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _videoPlayerController!.dispose();
   }
 
   @override

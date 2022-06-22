@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/WEEK_4/Map_integration.dart';
 import 'package:taskproject/WEEK_4/sand%20service/Email.dart';
-import 'package:taskproject/main.dart';
 import 'WEEK_4/lazy loading/lazy loading.dart';
 import 'WEEK_4/sand service/Seravice.dart';
 import 'Widget/commonWidget.dart';
@@ -37,7 +36,6 @@ class _Week4State extends State<Week4> {
             SizedBox(
               height: 20,
             ),
-
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(

@@ -64,7 +64,7 @@ Future<void> firebaseForegroundMessage(RemoteMessage message) async {
       content: NotificationContent(
           //with image from URL
           id: 1,
-          channelKey: 'basic',
+          channelKey: 'basic_channel',
           //channel configuration key
           title: message.notification!.title,
           body: message.notification!.body,
@@ -89,29 +89,26 @@ Future<void> main() async {
   // Stripe.publishableKey =
   //     "pk_test_51Kxk6qSCa4VaXPSqbWdqnGukVeJknMcampX2gG2HNYktsuJQWswbcCMgZ6x4sCiKdWzrQb1PNikUk8hJlQILJciV00TUsT9hrw";
   // Stripe.instance.applySettings();
-  //
-  // AwesomeNotifications().initialize('resource://drawable/ic_launcher', [
-  //   // notification icon
-  //   NotificationChannel(
-  //       channelGroupKey: 'basic_test',
-  //       channelKey: 'basic',
-  //       channelName: 'Basic notifications',
-  //       channelDescription: 'Notification channel for basic tests',
-  //       channelShowBadge: true,
-  //       importance: NotificationImportance.High,
-  //       playSound: true),
-  //   //add more notification type with different configuration
-  // ]);
-  //
-  // AwesomeNotifications()
-  //     .actionStream
-  //     .listen((ReceivedNotification receivedNotification) {
-  //   print(receivedNotification.payload!['title']);
-  //
-  //   //output from local notification click.
-  // });
-  //
   FirebaseMessaging.onMessage.listen(firebaseForegroundMessage);
+  AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      null,
+      [
+        NotificationChannel(
+            channelGroupKey: 'basic_channel_group',
+            channelKey: 'basic_channel',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            // defaultColor: Color(0xFF9D50DD),
+            ledColor: Colors.white)
+      ],
+      // Channel groups are only visual and are not required
+      channelGroups: [
+        NotificationChannelGroup(
+            channelGroupkey: 'basic_channel_group',
+            channelGroupName: 'Basic group')
+      ],
+      debug: true);
   //
   // FirebaseMessaging.instance.subscribeToTopic("all");
 
@@ -155,15 +152,6 @@ Future<void> main() async {
   );
 }
 
-class SpleshScreen extends StatelessWidget {
-  const SpleshScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -174,7 +162,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
-
+    //
     // var initialzationSettingsAndroid =
     //     AndroidInitializationSettings('@mipmap/ic_launcher');
     // var initializationSettings =
@@ -236,6 +224,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+    double devicePixelRatio = queryData.devicePixelRatio;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -365,6 +356,9 @@ class _MyAppState extends State<MyApp> {
                 },
                 child: commonContainer(
                     height: 100, title: "WEEK 12", textSize: 25),
+              ),
+              Text(
+                'devicePixelRatio: $devicePixelRatio',
               ),
             ],
           ),

@@ -24,7 +24,9 @@ class _First1State extends State<First1> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
 
     return GestureDetector(
       onTap: () {
@@ -154,7 +156,6 @@ class _First1State extends State<First1> {
 
               InkWell(
                 onTap: () {
-
                   setState(() {
                     String name = tname.text;
                     String email = temail.text;
@@ -232,11 +233,12 @@ class _First1State extends State<First1> {
                   });
                 },
                 child: commonButton(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.3,vertical: size.height * 0.02),
-                    width: size.width * 0.27,
-                    height: size.height * 0.06,
-                    title: "Submit",),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.3,
+                      vertical: size.height * 0.02),
+                  width: size.width * 0.27,
+                  height: size.height * 0.06,
+                  title: "Submit",),
               ),
             ],
           ),
