@@ -344,38 +344,43 @@ class _R_SignUpScreenState extends State<R_SignUpScreen> {
                                     fontSize: 16.0,
                                   );
                                 } else {
-                                  setState(() {
-                                    loding = true;
-                                  });
-                                  String uplodfilename = DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString();
-                                  var fileName =
-                                      "id-${tname.text}-${uplodfilename}";
-                                  final destination = 'files/$fileName';
-                                  TaskSnapshot snapshot = await FirebaseStorage
-                                      .instance
-                                      .ref()
-                                      .child(destination)
-                                      .putFile(_image!);
-                                  final String downloadUrl =
-                                      await snapshot.ref.getDownloadURL();
+                                  if (!emailValid) {
+                                    emailStatus = true;
+                                    emailError = 'Enter Valid Email';
+                                  } else {
+                                    setState(() {
+                                      loding = true;
+                                    });
+                                    String uplodfilename = DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .toString();
+                                    var fileName =
+                                        "id-${tname.text}-${uplodfilename}";
+                                    final destination = 'files/$fileName';
+                                    TaskSnapshot snapshot =
+                                        await FirebaseStorage.instance
+                                            .ref()
+                                            .child(destination)
+                                            .putFile(_image!);
+                                    final String downloadUrl =
+                                        await snapshot.ref.getDownloadURL();
 
-                                  ///
+                                    ///
 
-                                  insertdata(
-                                    tname.text,
-                                    temail.text,
-                                    tcall.text,
-                                    tdesignation.text,
-                                    tsalary.text,
-                                    choice.toString(),
-                                    downloadUrl,
-                                  );
-                                  print("success");
-                                  setState(() {
-                                    loding = false;
-                                  });
+                                    insertdata(
+                                      tname.text,
+                                      temail.text,
+                                      tcall.text,
+                                      tdesignation.text,
+                                      tsalary.text,
+                                      choice.toString(),
+                                      downloadUrl,
+                                    );
+                                    print("success");
+                                    setState(() {
+                                      loding = false;
+                                    });
+                                  }
                                 }
                               }
                             }

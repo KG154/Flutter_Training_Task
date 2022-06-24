@@ -235,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Login",
+                                  "Register",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
@@ -276,14 +276,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
+      await FirebaseAuth.instance.signOut();
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
-
       if (e.code == 'weak-password') {
         setState(() {
           isLoding = false;

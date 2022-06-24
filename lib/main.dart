@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -84,6 +85,8 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await MobileAds.instance.initialize();
   cameras = await availableCameras();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  FirebaseCrashlytics.instance.setUserIdentifier("12345");
 
   /// payment gateways
   // Stripe.publishableKey =
@@ -109,9 +112,6 @@ Future<void> main() async {
             channelGroupName: 'Basic group')
       ],
       debug: true);
-  //
-  // FirebaseMessaging.instance.subscribeToTopic("all");
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -162,6 +162,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
+    FirebaseAnalytics.instance.setUserId(id: token);
+
     //
     // var initialzationSettingsAndroid =
     //     AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -259,8 +261,8 @@ class _MyAppState extends State<MyApp> {
                 onTap: () {
                   Navigator.of(context).pushNamed('/week2');
                 },
-                child:
-                    commonContainer(height: 100, title: "WEEK 2", textSize: 25),
+                child: commonContainer(
+                    width: 500, height: 100, title: "WEEK 2", textSize: 25),
               ),
               InkWell(
                 onTap: () {

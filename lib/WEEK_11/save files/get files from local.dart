@@ -219,6 +219,7 @@ class FileUtils {
     final directory = await getExternalStorageDirectory();
     final Directory _appDocDirFolder =
         Directory('${directory!.path}/${folderName}/');
+    print("Path ======== ${_appDocDirFolder.path}");
 
     if (await _appDocDirFolder.exists()) {
       //if folder already exists return path
@@ -253,6 +254,7 @@ class FileUtils {
   static Future<File> saveToFile(String name, data) async {
     print(name);
     final file = await getFile(name);
+    print("File ==== ${file}");
     return file.writeAsString(data);
   }
 

@@ -173,13 +173,28 @@ class _LoginScreenState extends State<LoginScreen> {
                           const EdgeInsets.only(top: 30, left: 50, right: 50),
                       child: InkWell(
                         onTap: () {
-                          if (temail.text.isEmpty) {
+                          bool emailValid = RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(temail.text);
+                          if (temail.text.isEmpty && tpass.text.isEmpty) {
                             emailstatus = true;
                             emailerror = 'Email Is required';
-                          }
-                          if (tpass.text.isEmpty) {
                             passstatus = true;
                             passworderror = 'Password Is required';
+                          } else if (temail.text.isEmpty) {
+                            emailstatus = true;
+                            emailerror = 'Email Is required';
+                          } else if (!emailValid && tpass.text.isEmpty) {
+                            emailstatus = true;
+                            emailerror = 'Enter Valid Email';
+                            passstatus = true;
+                            passworderror = 'Password Is required';
+                          } else if (tpass.text.isEmpty) {
+                            passstatus = true;
+                            passworderror = 'Password Is required';
+                          } else if (!emailValid) {
+                            emailstatus = true;
+                            emailerror = 'Enter Valid Email';
                           } else {
                             loginUser();
                           }

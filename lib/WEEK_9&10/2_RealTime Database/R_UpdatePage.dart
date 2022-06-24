@@ -381,55 +381,60 @@ class _R_UpdateScreenState extends State<R_UpdateScreen> {
                               callStatus = true;
                               callError = 'Mobile no. must be of 10 digit';
                             } else {
-                              if (_image == null) {
-                                setState(() {
-                                  loding = true;
-                                });
-                                databaseRef.child(widget.key1).update({
-                                  'name': tname.text,
-                                  'email': temail.text,
-                                  'phone': tcall.text,
-                                  'designation': tdesignation.text,
-                                  'salary': tsalary.text,
-                                  'gender': choice.toString(),
-                                  'url': widget.uUrl,
-                                });
-                                Navigator.pop(context);
-                                setState(() {
-                                  loding = false;
-                                });
+                              if (!emailValid) {
+                                emailStatus = true;
+                                emailError = 'Enter Valid Email';
                               } else {
-                                setState(() {
-                                  loding = true;
-                                });
-                                String uplodfilename = DateTime.now()
-                                    .millisecondsSinceEpoch
-                                    .toString();
-                                var fileName =
-                                    "id-${tname.text}-${uplodfilename}";
-                                final destination = 'files/$fileName';
-                                TaskSnapshot snapshot = await FirebaseStorage
-                                    .instance
-                                    .ref()
-                                    .child(destination)
-                                    .putFile(_image!);
-                                final String downloadUrl =
-                                    await snapshot.ref.getDownloadURL();
+                                if (_image == null) {
+                                  setState(() {
+                                    loding = true;
+                                  });
+                                  databaseRef.child(widget.key1).update({
+                                    'name': tname.text,
+                                    'email': temail.text,
+                                    'phone': tcall.text,
+                                    'designation': tdesignation.text,
+                                    'salary': tsalary.text,
+                                    'gender': choice.toString(),
+                                    'url': widget.uUrl,
+                                  });
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    loding = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    loding = true;
+                                  });
+                                  String uplodfilename = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
+                                  var fileName =
+                                      "id-${tname.text}-${uplodfilename}";
+                                  final destination = 'files/$fileName';
+                                  TaskSnapshot snapshot = await FirebaseStorage
+                                      .instance
+                                      .ref()
+                                      .child(destination)
+                                      .putFile(_image!);
+                                  final String downloadUrl =
+                                      await snapshot.ref.getDownloadURL();
 
-                                databaseRef.child(widget.key1).update({
-                                  'name': tname.text,
-                                  'email': temail.text,
-                                  'phone': tcall.text,
-                                  'designation': tdesignation.text,
-                                  'salary': tsalary.text,
-                                  'gender': choice.toString(),
-                                  'url': downloadUrl,
-                                });
+                                  databaseRef.child(widget.key1).update({
+                                    'name': tname.text,
+                                    'email': temail.text,
+                                    'phone': tcall.text,
+                                    'designation': tdesignation.text,
+                                    'salary': tsalary.text,
+                                    'gender': choice.toString(),
+                                    'url': downloadUrl,
+                                  });
 
-                                Navigator.pop(context);
-                                setState(() {
-                                  loding = false;
-                                });
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    loding = false;
+                                  });
+                                }
                               }
                             }
                           }
