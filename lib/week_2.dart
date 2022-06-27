@@ -112,7 +112,6 @@ class _Week2State extends State<Week2> {
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed('/widget');
-
                 },
                 child: commonContainer(
                   title: "Widgets",

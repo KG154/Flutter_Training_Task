@@ -202,19 +202,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               bool emailValid = RegExp(
                                       r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
                                   .hasMatch(temail.text);
-                              if (tname.text.isEmpty) {
+                              if (tname.text.isEmpty &&
+                                  temail.text.isEmpty &&
+                                  tpass.text.isEmpty) {
                                 namestatus = true;
-                              }
-
-                              if (temail.text.isEmpty) {
                                 emailstatus = true;
                                 emailerror = 'Email Is required';
-                              }
-                              if (tpass.text.isEmpty) {
                                 passstatus = true;
                                 passworderror = 'Password Is required';
-                              }
-                              if (!emailValid) {
+                              } else if (tname.text.isEmpty &&
+                                  temail.text.isEmpty) {
+                                namestatus = true;
+                                emailstatus = true;
+                                emailerror = 'Email Is required';
+                              } else if (tname.text.isEmpty &&
+                                  tpass.text.isEmpty &&
+                                  !emailValid) {
+                                namestatus = true;
+                                passstatus = true;
+                                passworderror = 'Password Is required';
+                                emailstatus = true;
+                                emailerror = 'Enter Valid Email';
+                              } else if (tname.text.isEmpty &&
+                                  tpass.text.isEmpty) {
+                                namestatus = true;
+                                passstatus = true;
+                                passworderror = 'Password Is required';
+                              } else if (temail.text.isEmpty &&
+                                  tpass.text.isEmpty) {
+                                emailstatus = true;
+                                emailerror = 'Email Is required';
+                                passstatus = true;
+                                passworderror = 'Password Is required';
+                              } else if (tname.text.isEmpty && !emailValid) {
+                                namestatus = true;
+                                emailstatus = true;
+                                emailerror = 'Enter Valid Email';
+                              } else if (tpass.text.isEmpty && !emailValid) {
+                                passstatus = true;
+                                passworderror = 'Password Is required';
+                                emailstatus = true;
+                                emailerror = 'Enter Valid Email';
+                              } else if (tname.text.isEmpty) {
+                                namestatus = true;
+                              } else if (temail.text.isEmpty) {
+                                emailstatus = true;
+                                emailerror = 'Email Is required';
+                              } else if (tpass.text.isEmpty) {
+                                passstatus = true;
+                                passworderror = 'Password Is required';
+                              } else if (!emailValid) {
                                 emailstatus = true;
                                 emailerror = 'Enter Valid Email';
                               } else {

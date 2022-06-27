@@ -20,7 +20,6 @@ class _ImagePicker1State extends State<ImagePicker1> {
 
   VideoPlayerController? _videoPlayerController;
 
-
   // This funcion will helps you to pick and Image from Gallery
   _pickImageFromGallery() async {
     XFile? pickedFile =
@@ -284,14 +283,10 @@ class _ImagePicker1State extends State<ImagePicker1> {
 
                 _video != null
                     ? _videoPlayerController!.value.isInitialized
-                        ? Container(
-                            width: double.infinity,
-                            height: 200,
-                            child: AspectRatio(
-                              aspectRatio:
-                                  _videoPlayerController!.value.aspectRatio,
-                              child: VideoPlayer(_videoPlayerController!),
-                            ),
+                        ? AspectRatio(
+                            aspectRatio:
+                                _videoPlayerController!.value.aspectRatio,
+                            child: VideoPlayer(_videoPlayerController!),
                           )
                         : Container()
                     : Container(),

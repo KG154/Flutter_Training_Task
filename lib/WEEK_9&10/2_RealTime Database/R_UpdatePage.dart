@@ -335,33 +335,23 @@ class _R_UpdateScreenState extends State<R_UpdateScreen> {
                               .hasMatch(email);
                           if (tname.text.isEmpty) {
                             nameStatus = true;
-                          }
-                          if (email.isEmpty) {
+                          } else if (email.isEmpty) {
                             emailStatus = true;
                             emailError = 'Email Is required';
-                          }
-                          if (tcall.text.isEmpty) {
+                          } else if (!emailValid) {
+                            emailStatus = true;
+                            emailError = 'Enter Valid Email';
+                          } else if (tcall.text.isEmpty) {
                             callStatus = true;
-                          }
-                          if (tcall.text.isNotEmpty) {
-                            if (tcall.text.length != 10) {
-                              callStatus = true;
-                              callError = 'Mobile no. must be of 10 digit';
-                            }
-                          }
-                          if (tdesignation.text.isEmpty) {
+                            callError = 'Mobile no.Is required';
+                          } else if (tcall.text.length != 10) {
+                            callStatus = true;
+                            callError = 'Mobile no. must be of 10 digit';
+                          } else if (tdesignation.text.isEmpty) {
                             designationStatus = true;
-                          }
-                          if (tsalary.text.isEmpty) {
+                          } else if (tsalary.text.isEmpty) {
                             salaryStatus = true;
-                          }
-                          if (email.isNotEmpty) {
-                            if (!emailValid) {
-                              emailStatus = true;
-                              emailError = 'Enter Valid Email';
-                            }
-                          }
-                          if (choice.isEmpty) {
+                          } else if (choice.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: Colors.black87,
@@ -384,6 +374,9 @@ class _R_UpdateScreenState extends State<R_UpdateScreen> {
                               if (!emailValid) {
                                 emailStatus = true;
                                 emailError = 'Enter Valid Email';
+                              } else if (tcall.text.length != 10) {
+                                callStatus = true;
+                                callError = 'Mobile no. must be of 10 digit';
                               } else {
                                 if (_image == null) {
                                   setState(() {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -15,6 +17,8 @@ import 'package:taskproject/week_6.dart';
 import 'package:taskproject/week_7.dart';
 import 'package:taskproject/week_8.dart';
 import 'package:taskproject/week_9.dart';
+import 'Ticket Booking.dart';
+import 'Timer Task.dart';
 import 'WEEK_1/Navigator.dart';
 import 'WEEK_1/NavigatorPage/Page3.dart';
 import 'WEEK_1/NavigatorPage/page1.dart';
@@ -85,7 +89,8 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await MobileAds.instance.initialize();
   cameras = await availableCameras();
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FirebaseCrashlytics.instance.setUserIdentifier("12345");
 
   /// payment gateways
@@ -151,6 +156,82 @@ Future<void> main() async {
     ),
   );
 }
+
+// void main() async {
+//   runZonedGuarded<Future<void>>(() async {
+//     WidgetsFlutterBinding.ensureInitialized();
+//     await Firebase.initializeApp();
+//     // The following lines are the same as previously explained in "Handling uncaught errors"
+//
+//     await MobileAds.instance.initialize();
+//     cameras = await availableCameras();
+//     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+//     FirebaseCrashlytics.instance.setUserIdentifier("12345");
+//
+//     /// payment gateways
+//     // Stripe.publishableKey =
+//     //     "pk_test_51Kxk6qSCa4VaXPSqbWdqnGukVeJknMcampX2gG2HNYktsuJQWswbcCMgZ6x4sCiKdWzrQb1PNikUk8hJlQILJciV00TUsT9hrw";
+//     // Stripe.instance.applySettings();
+//     FirebaseMessaging.onMessage.listen(firebaseForegroundMessage);
+//     AwesomeNotifications().initialize(
+//         // set the icon to null if you want to use the default app icon
+//         null,
+//         [
+//           NotificationChannel(
+//               channelGroupKey: 'basic_channel_group',
+//               channelKey: 'basic_channel',
+//               channelName: 'Basic notifications',
+//               channelDescription: 'Notification channel for basic tests',
+//               // defaultColor: Color(0xFF9D50DD),
+//               ledColor: Colors.white)
+//         ],
+//         // Channel groups are only visual and are not required
+//         channelGroups: [
+//           NotificationChannelGroup(
+//               channelGroupkey: 'basic_channel_group',
+//               channelGroupName: 'Basic group')
+//         ],
+//         debug: true);
+//     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+//     await flutterLocalNotificationsPlugin
+//         .resolvePlatformSpecificImplementation<
+//             AndroidFlutterLocalNotificationsPlugin>()
+//         ?.createNotificationChannel(channel);
+//
+//     await FirebaseMessaging.instance
+//         .setForegroundNotificationPresentationOptions(
+//       alert: true,
+//       badge: true,
+//       sound: true,
+//     );
+//     FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+//     runApp(
+//       GetMaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         home: MyApp(),
+//         navigatorObservers: [
+//           FirebaseAnalyticsObserver(analytics: analytics),
+//         ],
+//         initialRoute: '/',
+//         routes: {
+//           '/week1': (context) => Week1(),
+//           '/week2': (context) => Week2(),
+//           '/Week3': (context) => Week3(),
+//           '/Social_Media_Login': (context) => googlelogine1(),
+//           '/ViewPage': (context) => ViewPage(),
+//           '/SqfLite': (context) => SqfLite(),
+//           '/widget': (context) => MainScreen(),
+//           '/Alert': (context) => alert1(),
+//           '/Drawer': (context) => Drawerr(),
+//           '/pag1': (context) => Seven(),
+//           '/pag2': (context) => Page1(),
+//           '/pag3': (context) => Page2(),
+//           '/pag4': (context) => Page3(),
+//         },
+//       ),
+//     );
+//   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
+// }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -273,11 +354,15 @@ class _MyAppState extends State<MyApp> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return Week4();
-                    },
-                  ));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Week4();
+                      },
+                      settings: RouteSettings(name: 'week4'),
+                    ),
+                  );
                 },
                 child:
                     commonContainer(height: 100, title: "WEEK 4", textSize: 25),
@@ -358,6 +443,28 @@ class _MyAppState extends State<MyApp> {
                 },
                 child: commonContainer(
                     height: 100, title: "WEEK 12", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Time_Task();
+                    },
+                  ));
+                },
+                child: commonContainer(
+                    height: 100, title: "Time Task", textSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return MyHomePage();
+                    },
+                  ));
+                },
+                child: commonContainer(
+                    height: 100, title: "Ticket Booking", textSize: 25),
               ),
               Text(
                 'devicePixelRatio: $devicePixelRatio',

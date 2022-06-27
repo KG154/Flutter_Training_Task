@@ -36,12 +36,12 @@ class _newPageState extends State<newPage> {
         actions: [
           IconButton(
             onPressed: () {
+              fetchUsers();
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) {
                   return newSecondScreen();
                 },
               ));
-              fetchUsers();
             },
             icon: Icon(Icons.navigate_next_outlined),
           ),

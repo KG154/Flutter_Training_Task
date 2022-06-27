@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:taskproject/WEEK_1/NavigatorPage/page1.dart';
 import 'package:taskproject/Widget/commonWidget.dart';
 
 class Seven extends StatefulWidget {
@@ -28,6 +29,15 @@ class _SevenState extends State<Seven> {
           child: InkWell(
             onTap: () {
               Navigator.of(context).pushNamed('/pag2');
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return Page1();
+              //     },
+              //     settings: RouteSettings(name: 'page1'),
+              //   ),
+              // );
             },
             child: commonButton(
               width: 100,

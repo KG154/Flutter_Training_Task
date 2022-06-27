@@ -21,6 +21,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   bool emailstatus = false;
   String emailerror = "";
 
+  bool isLoding = false;
+
   // @override
   // void dispose() {
   //   // TODO: implement dispose
@@ -42,88 +44,98 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 20.0),
-                child: Text(
-                  'Reset Link will be sent to your email id !',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 25, left: 10, right: 10),
-                child: Container(
-                  child: commonTextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: temail,
-                    color: Colors.black54,
-                    onchange: (value) {
-                      setState(() {
-                        emailstatus = false;
-                      });
-                    },
-                    labelText: 'Enter Email',
-                    errorText: emailstatus ? '${emailerror}' : null,
-                    prefixIcon: Icons.mail,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30, left: 50, right: 50),
-                child: InkWell(
-                  onTap: () {
-                    bool emailValid = RegExp(
-                            r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                        .hasMatch(temail.text);
-
-                    if (temail.text.isEmpty) {
-                      emailstatus = true;
-                      emailerror = 'Email Is required';
-                    }
-                    if (!emailValid) {
-                      emailstatus = true;
-                      emailerror = 'Enter Valid Email';
-                    } else {
-                      resetPassword(temail.text);
-                    }
-                    updateui();
-                  },
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.deepPurpleAccent.shade700,
-                          Colors.deepPurple.shade400,
-                        ],
-                      ),
-                    ),
-                    child: Center(
+        child: isLoding
+            ? Center(
+                child: CircularProgressIndicator(
+                    color: Colors.deepPurpleAccent.shade700),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
                       child: Text(
-                        "Send Email",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                        'Reset Link will be sent to your email id !',
+                        style: TextStyle(fontSize: 20.0),
                       ),
                     ),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+                      child: Container(
+                        child: commonTextField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: temail,
+                          color: Colors.black54,
+                          onchange: (value) {
+                            setState(() {
+                              emailstatus = false;
+                            });
+                          },
+                          labelText: 'Enter Email',
+                          errorText: emailstatus ? '${emailerror}' : null,
+                          prefixIcon: Icons.mail,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 30, left: 50, right: 50),
+                      child: InkWell(
+                        onTap: () {
+                          bool emailValid = RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(temail.text);
+
+                          if (temail.text.isEmpty) {
+                            emailstatus = true;
+                            emailerror = 'Email Is required';
+                          } else if (!emailValid) {
+                            emailstatus = true;
+                            emailerror = 'Enter Valid Email';
+                          } else {
+                            resetPassword(temail.text);
+                          }
+                          updateui();
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurpleAccent.shade700,
+                                Colors.deepPurple.shade400,
+                              ],
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Send Email",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
 
   resetPassword(String email) async {
     try {
+      setState(() {
+        isLoding = true;
+      });
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: temail.text,
       );
-      temail.clear();
+      setState(() {
+        isLoding = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.black54,
@@ -133,8 +145,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           ),
         ),
       );
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        setState(() {
+          isLoding = false;
+          temail.clear();
+        });
         print('No user found for that email.');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/WEEK_4/Map_integration.dart';
 import 'package:taskproject/WEEK_4/sand%20service/Email.dart';
+import 'package:taskproject/week_2.dart';
 import 'WEEK_4/lazy loading/lazy loading.dart';
 import 'WEEK_4/sand service/Seravice.dart';
 import 'Widget/commonWidget.dart';

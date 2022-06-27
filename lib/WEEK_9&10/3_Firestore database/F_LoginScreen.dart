@@ -159,7 +159,8 @@ class _F_LoginScreenState extends State<F_LoginScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 25, left: 10, right: 10,bottom: 10),
+                        padding: EdgeInsets.only(
+                            top: 25, left: 10, right: 10, bottom: 10),
                         child: TextField(
                           onTap: () {
                             showModalBottomSheet(
@@ -224,32 +225,40 @@ class _F_LoginScreenState extends State<F_LoginScreen> {
                             vertical:
                                 MediaQuery.of(context).size.height * 0.030),
                         child: InkWell(
-                          onTap: () async {
-                            if (tTitle.text.isEmpty) {
+                          onTap: () {
+                            if (tTitle.text.isEmpty &&
+                                tdescription.text.isEmpty &&
+                                tenddate.text.isEmpty &&
+                                tstatus.text.isEmpty) {
                               titleStatus = true;
-                            }
-                            if (tdescription.text.isEmpty) {
                               descriptionStatus = true;
-                            }
-                            if (tenddate.text.isEmpty) {
                               endDateStatus = true;
-                            }
-                            if (tstatus.text.isEmpty) {
                               statusStatus = true;
                             } else {
-                              setState(() {
-                                loding = true;
-                              });
-                              adddata();
-                              setState(() {
-                                loding = false;
-                              });
+                              if (tTitle.text.isEmpty) {
+                                titleStatus = true;
+                              } else if (tdescription.text.isEmpty) {
+                                descriptionStatus = true;
+                              } else if (tenddate.text.isEmpty) {
+                                endDateStatus = true;
+                              } else if (tstatus.text.isEmpty) {
+                                statusStatus = true;
+                              } else {
+                                setState(() {
+                                  loding = true;
+                                });
+                                adddata();
+                                endDateStatus = false;
+                                statusStatus = false;
+                                tTitle.clear();
+                                tdescription.clear();
+                                tenddate.clear();
+                                tstatus.clear();
+                                setState(() {
+                                  loding = false;
+                                });
+                              }
                             }
-
-                            tTitle.clear();
-                            tdescription.clear();
-                            tenddate.clear();
-                            tstatus.clear();
                             updateui();
                           },
                           child: Container(

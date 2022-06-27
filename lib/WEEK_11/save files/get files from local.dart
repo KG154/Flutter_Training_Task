@@ -1,4 +1,4 @@
-  import 'dart:io';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +135,11 @@ class ViewFilePAge extends StatefulWidget {
 }
 
 class _ViewFilePAgeState extends State<ViewFilePAge> {
+  TextEditingController tname = TextEditingController();
+  TextEditingController tdoc = TextEditingController();
+  bool namestatus = false;
+  bool docstatus = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -171,39 +176,155 @@ class _ViewFilePAgeState extends State<ViewFilePAge> {
               });
             },
           );
+          print('dttt === ${dt}');
           return Card(
             elevation: 4,
-            child: ListTile(
-              title: Text(file_name),
-              onTap: () {
-                FileUtils.readFromFile(file_name).then((value) {
-                  return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          elevation: 20,
-                          title: Text(
-                            file_name,
-                            style: TextStyle(color: Colors.black45),
-                          ),
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Text(
-                                  value,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 18,
+            child: Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      FileUtils.readFromFile(file_name).then((value) {
+                        return showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                elevation: 20,
+                                title: Text(
+                                  file_name,
+                                  style: TextStyle(color: Colors.black45),
+                                ),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        value,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
+                              );
+                            });
                       });
-                });
-              },
+                    },
+                    child: Row(
+                      children: [
+                        Text(file_name),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          FileUtils.readFromFile(file_name).then((value) {
+                            tname.text = file_name;
+                            tdoc.text = value;
+                            return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    elevation: 20,
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 25, left: 10, right: 10),
+                                            child: commonTextField(
+                                              enabled: false,
+                                              controller: tname,
+                                              onchange: (value) {
+                                                setState(() {
+                                                  namestatus = false;
+                                                });
+                                              },
+                                              color: Colors.black54,
+                                              labelText: 'File Name',
+                                              errorText: namestatus
+                                                  ? 'File Name Is required'
+                                                  : null,
+                                              prefixIcon: Icons.person,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 25, left: 10, right: 10),
+                                            child: commonTextField(
+                                              controller: tdoc,
+                                              maxLines: 5,
+                                              onchange: (value) {
+                                                setState(() {
+                                                  docstatus = false;
+                                                });
+                                              },
+                                              color: Colors.black54,
+                                              labelText: 'Message',
+                                              errorText: docstatus
+                                                  ? 'Message Is required'
+                                                  : null,
+                                              prefixIcon: Icons.message,
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                if (tname.text.isEmpty) {
+                                                  namestatus = true;
+                                                }
+                                                if (tdoc.text.isEmpty) {
+                                                  docstatus = true;
+                                                } else {
+                                                  FileUtils.saveToFile(
+                                                          "${tname.text}",
+                                                          tdoc.text)
+                                                      .then(
+                                                    (value) => {
+                                                      FileUtils.getFiles().then(
+                                                        (value) => {
+                                                          setState(
+                                                            () {
+                                                              listFiles = value;
+                                                            },
+                                                          )
+                                                        },
+                                                      )
+                                                    },
+                                                  );
+                                                  Navigator.pop(context);
+                                                }
+                                              });
+                                            },
+                                            child: Text("Save File"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          });
+                        },
+                        icon: Icon(Icons.edit),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final file = await FileUtils.getFile(file_name);
+                          await file.delete();
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.delete),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -236,7 +357,7 @@ class FileUtils {
     final directory = await getExternalStorageDirectory();
     final Directory _appDocDirFolder =
         Directory('${directory!.path}/${folderName}/');
-    print(_appDocDirFolder);
+    print("getfiles ==== ${_appDocDirFolder}");
 
     if (await _appDocDirFolder.exists()) {
       //if folder already exists return path
@@ -257,6 +378,21 @@ class FileUtils {
     print("File ==== ${file}");
     return file.writeAsString(data);
   }
+
+// static Future<File> renameToFile(String name, data) async {
+//     print(name);
+//     final file = await getFile(name);
+//     print("File ==== ${file}");
+//     return file.rename(data);
+//   }
+
+  // static Future<File> deletefile() async {
+  //   final file = await getFiles();
+  //
+  //
+  //
+  //   return file.delete();
+  // }
 
   static Future<String> readFromFile(name) async {
     try {

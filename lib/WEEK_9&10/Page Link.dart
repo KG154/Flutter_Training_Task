@@ -52,14 +52,18 @@ class _Page_LinkState extends State<Page_Link> {
       final Uri? deepLink = data?.link;
 
       if (deepLink != null) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Week3()));
+        // Navigator.popUntil(context, ModalRoute.withName('week3'));
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Week3(),
+        ));
       }
 
       FirebaseDynamicLinks.instance.onLink
           .listen((PendingDynamicLinkData dynamicLink) async {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Week3()));
+        // Navigator.popUntil(context, ModalRoute.withName('week3'));
       });
       setState(() {});
     } catch (e) {

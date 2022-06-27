@@ -237,27 +237,34 @@ class _F_UpdateScreenState extends State<F_UpdateScreen> {
                             vertical:
                                 MediaQuery.of(context).size.height * 0.030),
                         child: InkWell(
-                          onTap: () async {
-                            if (tTitle.text.isEmpty) {
+                          onTap: () {
+                            if (tTitle.text.isEmpty &&
+                                tdescription.text.isEmpty &&
+                                tenddate.text.isEmpty &&
+                                tstatus.text.isEmpty) {
                               titleStatus = true;
-                            }
-                            if (tdescription.text.isEmpty) {
                               descriptionStatus = true;
-                            }
-                            if (tenddate.text.isEmpty) {
                               endDateStatus = true;
-                            }
-                            if (tstatus.text.isEmpty) {
                               statusStatus = true;
                             } else {
-                              setState(() {
-                                loding = true;
-                              });
-                              updatedata();
-                              setState(() {
-                                loding = false;
-                              });
-                              Navigator.pop(context);
+                              if (tTitle.text.isEmpty) {
+                                titleStatus = true;
+                              } else if (tdescription.text.isEmpty) {
+                                descriptionStatus = true;
+                              } else if (tenddate.text.isEmpty) {
+                                endDateStatus = true;
+                              } else if (tstatus.text.isEmpty) {
+                                statusStatus = true;
+                              } else {
+                                setState(() {
+                                  loding = true;
+                                });
+                                updatedata();
+                                setState(() {
+                                  loding = false;
+                                });
+                                Navigator.pop(context);
+                              }
                             }
 
                             updateui();
