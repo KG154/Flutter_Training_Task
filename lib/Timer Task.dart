@@ -187,6 +187,13 @@ class _SecondPageState extends State<SecondPage> {
   Timer? _timer;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer!.cancel();
+  }
+
+  @override
   void initState() {
     // T   ODO: implement initState
     super.initState();
