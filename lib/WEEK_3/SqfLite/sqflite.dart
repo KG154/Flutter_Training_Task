@@ -318,6 +318,9 @@ class _SqfLiteState extends State<SqfLite> {
                             height: size.height * 0.06,
                             title: "Submit"),
                       ),
+
+
+
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 10),
                         child: InkWell(
@@ -334,6 +337,9 @@ class _SqfLiteState extends State<SqfLite> {
                           ),
                         ),
                       ),
+
+
+
                     ],
                   ),
           ),

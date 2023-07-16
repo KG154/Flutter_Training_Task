@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../Widget/commonWidget.dart';
@@ -69,10 +71,12 @@ class _file_ScreenState extends State<file_Screen> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  if (tname.text.isEmpty) {
+                  if (tname.text.isEmpty && tdoc.text.isEmpty) {
                     namestatus = true;
-                  }
-                  if (tdoc.text.isEmpty) {
+                    docstatus = true;
+                  } else if (tname.text.isEmpty) {
+                    namestatus = true;
+                  } else if (tdoc.text.isEmpty) {
                     docstatus = true;
                   } else {
                     // saveFile();
@@ -171,12 +175,11 @@ class _ViewFilePAgeState extends State<ViewFilePAge> {
           String file_name = path.substring(path.lastIndexOf("/") + 1);
           FileUtils.readFromFile(file_name).then(
             (contents) {
-              setState(() {
-                dt = contents;
-              });
+              // setState(() {
+              dt = contents;
+              // });
             },
           );
-          print('dttt === ${dt}');
           return Card(
             elevation: 4,
             child: Padding(
@@ -189,12 +192,17 @@ class _ViewFilePAgeState extends State<ViewFilePAge> {
                       FileUtils.readFromFile(file_name).then((value) {
                         return showDialog(
                             context: context,
-                            builder: (context) {
+                             builder: (context) {
                               return AlertDialog(
                                 elevation: 20,
-                                title: Text(
-                                  file_name,
-                                  style: TextStyle(color: Colors.black45),
+                                title: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    file_name,
+                                    style: TextStyle(
+                                      color: Colors.black45,
+                                    ),
+                                  ),
                                 ),
                                 content: SingleChildScrollView(
                                   child: Column(
@@ -216,17 +224,26 @@ class _ViewFilePAgeState extends State<ViewFilePAge> {
                     },
                     child: Row(
                       children: [
-                        Text(file_name),
+                        Container(
+                          width: 230,
+                          child: Text(
+                            file_name,
+                            style: TextStyle(overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Row(
+                    // mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisSize: MainAxisSize.max,
                     children: [
                       IconButton(
                         onPressed: () {
                           FileUtils.readFromFile(file_name).then((value) {
                             tname.text = file_name;
                             tdoc.text = value;
+                            // docstatus = true;
                             return showDialog(
                                 context: context,
                                 builder: (context) {
@@ -267,40 +284,53 @@ class _ViewFilePAgeState extends State<ViewFilePAge> {
                                               },
                                               color: Colors.black54,
                                               labelText: 'Message',
-                                              errorText: docstatus
-                                                  ? 'Message Is required'
-                                                  : null,
+                                              // errorText: docstatus
+                                              //     ? 'Message Is required'
+                                              //     : null,
                                               prefixIcon: Icons.message,
                                             ),
                                           ),
                                           ElevatedButton(
                                             onPressed: () {
-                                              setState(() {
-                                                if (tname.text.isEmpty) {
-                                                  namestatus = true;
-                                                }
-                                                if (tdoc.text.isEmpty) {
-                                                  docstatus = true;
-                                                } else {
-                                                  FileUtils.saveToFile(
-                                                          "${tname.text}",
-                                                          tdoc.text)
-                                                      .then(
-                                                    (value) => {
-                                                      FileUtils.getFiles().then(
-                                                        (value) => {
-                                                          setState(
-                                                            () {
-                                                              listFiles = value;
-                                                            },
-                                                          )
-                                                        },
-                                                      )
-                                                    },
-                                                  );
-                                                  Navigator.pop(context);
-                                                }
-                                              });
+                                              // setState(() {
+                                              // if (tname.text.isEmpty) {
+                                              //   namestatus = true;
+                                              // }
+                                              if (tdoc.text.isEmpty) {
+                                                print("Docu");
+                                                Fluttertoast.showToast(
+                                                    msg: "Message Is required",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.black54,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0);
+
+                                                docstatus = true;
+                                              } else {
+                                                FileUtils.saveToFile(
+                                                        "${tname.text}",
+                                                        tdoc.text)
+                                                    .then(
+                                                  (value) => {
+                                                    FileUtils.getFiles().then(
+                                                      (value) => {
+                                                        setState(
+                                                          () {
+                                                            listFiles = value;
+                                                          },
+                                                        )
+                                                      },
+                                                    )
+                                                  },
+                                                );
+                                                Navigator.pop(context);
+                                              }
+                                              // });
                                             },
                                             child: Text("Save File"),
                                           ),
@@ -317,7 +347,16 @@ class _ViewFilePAgeState extends State<ViewFilePAge> {
                         onPressed: () async {
                           final file = await FileUtils.getFile(file_name);
                           await file.delete();
-                          Navigator.pop(context);
+                          FileUtils.getFiles().then(
+                            (value) => {
+                              setState(
+                                () {
+                                  listFiles = value;
+                                },
+                              )
+                            },
+                          );
+                          // Navigator.pop(context);
                         },
                         icon: Icon(Icons.delete),
                       ),
@@ -340,7 +379,7 @@ class FileUtils {
     final directory = await getExternalStorageDirectory();
     final Directory _appDocDirFolder =
         Directory('${directory!.path}/${folderName}/');
-    print("Path ======== ${_appDocDirFolder.path}");
+    // print("Path ======== ${_appDocDirFolder.path}");
 
     if (await _appDocDirFolder.exists()) {
       //if folder already exists return path

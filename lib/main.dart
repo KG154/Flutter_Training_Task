@@ -5,11 +5,13 @@ import 'package:camera/camera.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:taskproject/WEEK_9&10/Page%20Link.dart';
 import 'package:taskproject/week_11.dart';
 import 'package:taskproject/week_12.dart';
 import 'package:taskproject/week_5.dart';
@@ -152,6 +154,7 @@ Future<void> main() async {
         '/pag2': (context) => Page1(),
         '/pag3': (context) => Page2(),
         '/pag4': (context) => Page3(),
+        // '/Page_Link': (context) => Page_Link(),
       },
     ),
   );
@@ -240,10 +243,13 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+
     FirebaseAnalytics.instance.setUserId(id: token);
+    // DyanmicLink.retrieveDynamicLink(context);
 
     //
     // var initialzationSettingsAndroid =
@@ -293,6 +299,37 @@ class _MyAppState extends State<MyApp> {
     });
 
     getToken();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      this.retrieveDynamicLink(context);
+    }
+  }
+
+  void retrieveDynamicLink(BuildContext context) async {
+    try {
+      final PendingDynamicLinkData? data =
+          await FirebaseDynamicLinks.instance.getInitialLink();
+      final Uri? deepLink = data?.link;
+      if (deepLink != null) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Page_Link(),
+        ));
+        // Navigator.popUntil(context, ModalRoute.withName('Page_Link'));
+      }
+
+         FirebaseDynamicLinks.instance.onLink
+          .listen((PendingDynamicLinkData dynamicLink) async {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Page_Link()));
+        // Navigator.popUntil(context, ModalRoute.withName('Page_Link'));
+      });
+      setState(() {});
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   String? token;
